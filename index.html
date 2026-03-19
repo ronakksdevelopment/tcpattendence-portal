@@ -6,13 +6,13 @@
     <title>The Computer Point | Smart Attendance</title>
     
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- QR Code Libraries -->
+    <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 
@@ -22,9 +22,11 @@
                 extend: {
                     fontFamily: { sans: ['Poppins', 'sans-serif'] },
                     colors: {
-                        neon: '#00f3ff',
-                        darkBg: '#0b1120',
-                        glassPanel: 'rgba(15, 23, 42, 0.6)'
+                        deepBlue: '#0f172a',
+                        neonBlue: '#3b82f6',
+                        glowBlue: '#60a5fa',
+                        darkBg: '#020617',
+                        glassPanel: 'rgba(15, 23, 42, 0.7)'
                     }
                 }
             }
@@ -32,75 +34,80 @@
     </script>
 
     <style>
-        /* CSS Variables & Base Styles */
+        /* CSS Variables & Deep Blue Base Styles */
         :root {
-            --neon-glow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
-            --neon-glow-red: 0 0 10px rgba(255, 50, 50, 0.5), 0 0 20px rgba(255, 50, 50, 0.3);
+            --neon-glow: 0 0 15px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4);
+            --neon-glow-red: 0 0 15px rgba(239, 68, 68, 0.6), 0 0 30px rgba(239, 68, 68, 0.4);
         }
         
         body {
-            background-color: #0b1120;
+            background-color: #020617;
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.08), transparent 25%);
+                radial-gradient(circle at 20% 40%, rgba(59, 130, 246, 0.1), transparent 30%),
+                radial-gradient(circle at 80% 60%, rgba(96, 165, 250, 0.08), transparent 30%);
             color: white;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Glassmorphism Classes */
         .glass {
             background: var(--glassPanel);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
         
         .glass-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(96, 165, 250, 0.2);
             color: white;
             transition: all 0.3s ease;
         }
         
         .glass-input:focus {
             outline: none;
-            border-color: #00f3ff;
-            box-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
+            border-color: #3b82f6;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+            background: rgba(59, 130, 246, 0.05);
         }
 
-        /* Neon Styles */
+        /* Deep Blue Neon Styles */
         .text-neon {
-            color: #00f3ff;
+            color: #60a5fa;
             text-shadow: var(--neon-glow);
         }
         
         .border-neon {
-            border-color: #00f3ff;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2) inset, 0 0 10px rgba(0, 243, 255, 0.2);
+            border-color: #3b82f6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) inset, 0 0 15px rgba(59, 130, 246, 0.3);
         }
 
         .btn-neon {
-            background: linear-gradient(135deg, rgba(0,243,255,0.1) 0%, rgba(0,132,255,0.1) 100%);
-            border: 1px solid #00f3ff;
-            color: #00f3ff;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(29, 78, 216, 0.4) 100%);
+            border: 1px solid #60a5fa;
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
         }
         
         .btn-neon:hover {
-            background: rgba(0, 243, 255, 0.2);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.4) 0%, rgba(29, 78, 216, 0.6) 100%);
             box-shadow: var(--neon-glow);
             transform: translateY(-2px);
+            border-color: #93c5fd;
         }
 
         /* Animations */
-        .fade-in { animation: fadeIn 0.5s ease forwards; }
-        .slide-up { animation: slideUp 0.5s ease forwards; }
+        .fade-in { animation: fadeIn 0.4s ease forwards; }
+        .slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .pulse-qr { animation: pulseQR 3s infinite; }
+        .pop-in { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -108,38 +115,55 @@
         }
         
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes pulseQR {
-            0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.3); }
-            50% { box-shadow: 0 0 0 15px rgba(0, 243, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Timer Bar */
+        .timer-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #93c5fd);
+            width: 100%;
+            transition: width 1s linear;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
         }
 
         /* QR Scanner customization for mobile */
-        #reader {
-            width: 100% !important;
-            border: none !important;
-            border-radius: 1rem;
+        #reader-container {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 1.5rem;
             overflow: hidden;
+            position: relative;
             background: #000;
+            border: 2px solid #3b82f6;
+            box-shadow: var(--neon-glow);
         }
+        #reader { width: 100% !important; border: none !important; }
         #reader video {
             width: 100% !important;
-            height: auto !important;
+            height: 100% !important;
             object-fit: cover;
-            border-radius: 1rem;
             display: block;
         }
-        /* Hide html5-qrcode standard annoying elements if any appear */
-        #reader img, #reader span { display: none !important; }
+        #reader img, #reader span, #reader select, #reader a { display: none !important; }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0b1120; }
-        ::-webkit-scrollbar-thumb { background: #00f3ff; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
         
         /* Utility */
         .hidden-view { display: none !important; }
@@ -147,173 +171,192 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between font-sans antialiased text-sm md:text-base">
 
-    <!-- Header (Always visible) -->
-    <header class="w-full p-4 flex justify-between items-center glass rounded-b-2xl sticky top-0 z-50 max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="w-full p-4 flex justify-between items-center glass rounded-b-2xl sticky top-0 z-50 max-w-7xl mx-auto border-t-0">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full border-2 border-[#00f3ff] flex items-center justify-center text-neon shadow-[0_0_10px_rgba(0,243,255,0.5)] shrink-0">
+            <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-400 flex items-center justify-center text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)] shrink-0">
                 <i class="ph ph-cpu text-2xl"></i>
             </div>
             <div>
-                <h1 class="font-bold text-base md:text-xl tracking-wider truncate">THE COMPUTER POINT</h1>
-                <p class="text-[10px] md:text-xs text-cyan-400 opacity-80 uppercase tracking-widest">Agartala, Tripura</p>
+                <h1 class="font-bold text-base md:text-xl tracking-wider truncate text-white">THE COMPUTER POINT</h1>
+                <p class="text-[10px] md:text-xs text-blue-400 opacity-80 uppercase tracking-widest font-medium">Agartala, Tripura</p>
             </div>
         </div>
-        <div id="header-actions" class="flex gap-2 shrink-0">
-            <!-- Dynamic buttons will appear here -->
-        </div>
+        <div id="header-actions" class="flex gap-2 shrink-0"></div>
     </header>
 
     <!-- Main Content Area -->
-    <main id="main-container" class="flex-grow w-full max-w-7xl mx-auto p-4 flex flex-col items-center justify-center relative relative">
+    <main id="main-container" class="flex-grow w-full max-w-7xl mx-auto p-4 flex flex-col items-center justify-center relative">
         
         <!-- VIEW 0: MODE SELECTOR -->
         <section id="view-selector" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up flex flex-col gap-6 text-center">
-            <h2 class="text-2xl font-bold text-neon mb-2">Select Operation Mode</h2>
-            <p class="text-gray-400 text-sm mb-4">Choose how this device will be used in the attendance system.</p>
+            <div class="w-16 h-16 bg-blue-500/10 border-2 border-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                <i class="ph ph-fingerprint text-3xl text-blue-400"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white">System Initialization</h2>
+            <p class="text-blue-200/60 text-sm mb-4">Select the operational role for this device.</p>
             
-            <button onclick="app.switchView('terminal')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
-                <i class="ph ph-desktop text-2xl"></i> PC Terminal (Admin)
+            <button onclick="window.app.switchView('terminal')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
+                <i class="ph ph-desktop text-2xl"></i> PC Terminal
             </button>
-            <button onclick="app.switchView('mobile-role')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
+            <button onclick="window.app.switchView('mobile-role')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
                 <i class="ph ph-device-mobile-camera text-2xl"></i> Mobile Scanner
             </button>
         </section>
 
         <!-- VIEW 1: PC TERMINAL (QR GENERATOR) -->
-        <section id="view-terminal" class="w-full max-w-5xl slide-up hidden-view flex flex-col lg:flex-row items-center justify-center gap-8">
-            <!-- Left: QR Code -->
-            <div class="glass p-8 md:p-12 rounded-3xl flex flex-col items-center justify-center gap-8 relative border-neon pulse-qr w-full lg:w-auto">
-                <div class="text-center">
-                    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-widest uppercase mb-2">Attendance Terminal</h2>
-                    <p class="text-gray-400 text-sm">Scan using your mobile device</p>
+        <section id="view-terminal" class="w-full max-w-6xl slide-up hidden-view flex flex-col lg:flex-row items-center justify-center gap-8">
+            <!-- Left: QR Code & Pin -->
+            <div class="glass p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center gap-6 relative border-neon pulse-qr w-full lg:w-auto">
+                <div class="text-center w-full">
+                    <h2 class="text-3xl font-bold text-white tracking-widest uppercase mb-1">Live Attendance</h2>
+                    <p class="text-blue-300/70 text-sm">Scan QR or enter PIN on mobile</p>
                 </div>
                 
-                <div class="bg-white p-4 rounded-2xl shadow-[0_0_30px_rgba(0,243,255,0.2)]">
+                <div class="bg-white p-4 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.2)]">
                     <div id="qrcode" class="w-64 h-64 md:w-72 md:h-72 flex justify-center items-center"></div>
                 </div>
                 
-                <div class="flex items-center gap-2 text-cyan-400 bg-cyan-900/30 px-4 py-2 rounded-full border border-cyan-500/30">
-                    <i class="ph ph-shield-check text-xl"></i>
-                    <span class="text-xs uppercase tracking-wider font-semibold">Secure Static QR Active</span>
+                <div class="w-full bg-blue-950/50 border border-blue-500/30 rounded-2xl p-4 text-center">
+                    <p class="text-xs uppercase tracking-widest text-blue-400 font-bold mb-1">Session PIN</p>
+                    <p id="session-pin" class="text-5xl font-black text-white tracking-[0.2em] font-mono">-----</p>
+                </div>
+
+                <div class="w-full">
+                    <div class="flex justify-between text-[10px] text-blue-300 uppercase font-bold mb-1">
+                        <span>Code Refreshes in</span>
+                        <span id="timer-text">30s</span>
+                    </div>
+                    <div class="w-full bg-blue-950 rounded-full h-1.5 overflow-hidden">
+                        <div id="timer-bar" class="timer-bar"></div>
+                    </div>
                 </div>
             </div>
 
             <!-- Right: Live Feed -->
-            <div class="glass p-6 rounded-3xl w-full lg:w-[400px] min-h-[450px] flex flex-col">
-                <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-4">
-                    <h3 class="font-bold text-lg flex items-center gap-2"><i class="ph ph-activity text-neon"></i> Live Feed</h3>
-                    <span class="relative flex h-3 w-3">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-                    </span>
+            <div class="glass p-6 rounded-3xl w-full lg:w-[450px] lg:h-[650px] flex flex-col border border-blue-500/20">
+                <div class="flex justify-between items-center border-b border-blue-500/20 pb-4 mb-4">
+                    <h3 class="font-bold text-xl flex items-center gap-2 text-white"><i class="ph ph-activity text-blue-400"></i> Activity Feed</h3>
+                    <div class="flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span class="text-[10px] uppercase font-bold text-green-400 tracking-wider">Live P2P Sync</span>
+                    </div>
                 </div>
                 
-                <div id="live-feed" class="flex-grow flex flex-col gap-3 overflow-y-auto max-h-[400px] pr-2">
-                    <div class="text-center text-gray-500 mt-10 italic">Waiting for scans...</div>
+                <div id="live-feed" class="flex-grow flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
+                    <div class="text-center text-blue-500/50 mt-10 italic">Awaiting scans...</div>
                 </div>
             </div>
         </section>
 
         <!-- VIEW 2: ADMIN LOGIN -->
         <section id="view-admin-login" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6">
-            <h2 class="text-2xl font-bold text-center text-neon">Admin Portal</h2>
+            <h2 class="text-2xl font-bold text-center text-white">Admin Authentication</h2>
             <form id="admin-login-form" class="flex flex-col gap-4">
                 <div>
-                    <label class="text-xs text-gray-400 uppercase tracking-wider mb-1 block">Username</label>
+                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-1 block font-semibold">Username</label>
                     <div class="relative">
-                        <i class="ph ph-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="admin-user" class="glass-input w-full pl-10 pr-4 py-3 rounded-xl" placeholder="Enter username" required>
+                        <i class="ph ph-shield absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-lg"></i>
+                        <input type="text" id="admin-user" class="glass-input w-full pl-12 pr-4 py-4 rounded-xl" placeholder="Admin Username" required>
                     </div>
                 </div>
                 <div>
-                    <label class="text-xs text-gray-400 uppercase tracking-wider mb-1 block">Password</label>
+                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-1 block font-semibold">Password</label>
                     <div class="relative">
-                        <i class="ph ph-lock-key absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="password" id="admin-pass" class="glass-input w-full pl-10 pr-4 py-3 rounded-xl" placeholder="••••••••" required>
+                        <i class="ph ph-lock-key absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-lg"></i>
+                        <input type="password" id="admin-pass" class="glass-input w-full pl-12 pr-4 py-4 rounded-xl" placeholder="••••••••" required>
                     </div>
                 </div>
-                <button type="submit" class="btn-neon w-full py-3 rounded-xl font-bold mt-2">Login to Dashboard</button>
+                <button type="submit" class="btn-neon w-full py-4 rounded-xl font-bold mt-2 text-lg">Access Dashboard</button>
             </form>
-            <button onclick="app.switchView('terminal')" class="text-gray-400 hover:text-white text-sm text-center">Back to Terminal</button>
+            <button onclick="window.app.switchView('terminal')" class="text-blue-400 hover:text-white text-sm text-center transition-colors">Return to Terminal</button>
         </section>
 
         <!-- VIEW 3: ADMIN DASHBOARD -->
-        <section id="view-admin-dashboard" class="w-full slide-up hidden-view flex flex-col gap-6">
-            <div class="glass rounded-2xl p-4 flex gap-2 md:gap-4 overflow-x-auto whitespace-nowrap">
-                <button onclick="app.adminTab('approvals')" class="admin-tab px-4 py-2 rounded-lg bg-cyan-900/50 text-cyan-400 border border-cyan-400/50 text-sm">Pending Approvals</button>
-                <button onclick="app.adminTab('users')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm">All Users</button>
-                <button onclick="app.adminTab('logs')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm">Attendance Logs</button>
-                <button onclick="app.adminTab('settings')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm">API Settings</button>
+        <section id="view-admin-dashboard" class="w-full max-w-6xl slide-up hidden-view flex flex-col gap-6">
+            <div class="glass rounded-2xl p-4 flex gap-2 md:gap-4 overflow-x-auto whitespace-nowrap border border-blue-500/30">
+                <button onclick="window.app.adminTab('settings')" class="admin-tab px-4 py-2 rounded-lg bg-blue-600/30 text-white border border-blue-400/50 text-sm font-semibold transition-all">Sheets API Setup</button>
+                <button onclick="window.app.adminTab('approvals')" class="admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all">Pending Approvals</button>
+                <button onclick="window.app.adminTab('users')" class="admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all">All Users</button>
+                <button onclick="window.app.adminTab('logs')" class="admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all">Attendance Logs</button>
             </div>
 
-            <div class="glass rounded-3xl p-4 md:p-6 min-h-[400px]">
+            <div class="glass rounded-3xl p-4 md:p-8 min-h-[500px] border border-blue-500/20">
+                
+                <!-- Tab: Settings -->
+                <div id="tab-settings" class="admin-content max-w-2xl mx-auto py-8">
+                    <div class="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+                        <i class="ph ph-google-logo text-3xl text-blue-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2 text-white text-center">Google Sheets Integration</h3>
+                    <p class="text-sm text-blue-200/60 text-center mb-8">Link your Google Apps Script Web App URL to enable automatic cloud backup of all attendance logs.</p>
+                    
+                    <div class="flex flex-col gap-5">
+                        <div>
+                            <label class="text-xs text-blue-300 uppercase font-bold mb-2 block">Google Sheets Web App URL</label>
+                            <input type="text" id="setting-student-url" class="glass-input w-full px-5 py-4 rounded-xl font-mono text-sm" placeholder="https://script.google.com/macros/s/.../exec">
+                        </div>
+                        <button onclick="window.app.saveSettings()" class="btn-neon w-full py-4 rounded-xl font-bold mt-4 shadow-[0_0_20px_rgba(59,130,246,0.3)]">Save Configuration</button>
+                    </div>
+                </div>
+
                 <!-- Tab: Approvals -->
-                <div id="tab-approvals" class="admin-content">
-                    <h3 class="text-xl font-bold mb-4 text-neon">Pending Registrations</h3>
+                <div id="tab-approvals" class="admin-content hidden-view">
+                    <h3 class="text-xl font-bold mb-6 text-white border-b border-blue-500/20 pb-4">Pending Registrations</h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[500px]">
                             <thead>
-                                <tr class="border-b border-gray-700 text-gray-400 text-sm">
-                                    <th class="p-3">Role</th>
-                                    <th class="p-3">Name</th>
-                                    <th class="p-3">Details (Reg/Course)</th>
-                                    <th class="p-3 text-right">Action</th>
+                                <tr class="text-blue-300 text-xs uppercase tracking-wider bg-blue-950/50">
+                                    <th class="p-4 rounded-l-lg">Role</th>
+                                    <th class="p-4">Name</th>
+                                    <th class="p-4">Details</th>
+                                    <th class="p-4 text-right rounded-r-lg">Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-approvals-list"></tbody>
+                            <tbody id="admin-approvals-list" class="divide-y divide-blue-500/10"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Tab: Users -->
                 <div id="tab-users" class="admin-content hidden-view">
-                    <h3 class="text-xl font-bold mb-4 text-neon">Manage Users</h3>
+                    <h3 class="text-xl font-bold mb-6 text-white border-b border-blue-500/20 pb-4">Manage Users</h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[500px]">
                             <thead>
-                                <tr class="border-b border-gray-700 text-gray-400 text-sm">
-                                    <th class="p-3">Role</th>
-                                    <th class="p-3">Name</th>
-                                    <th class="p-3">Status</th>
-                                    <th class="p-3 text-right">Action</th>
+                                <tr class="text-blue-300 text-xs uppercase tracking-wider bg-blue-950/50">
+                                    <th class="p-4 rounded-l-lg">Role</th>
+                                    <th class="p-4">Name</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4 text-right rounded-r-lg">Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-users-list"></tbody>
+                            <tbody id="admin-users-list" class="divide-y divide-blue-500/10"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Tab: Logs -->
                 <div id="tab-logs" class="admin-content hidden-view">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bold text-neon">Attendance Logs</h3>
-                        <button onclick="app.clearLogs()" class="text-xs text-red-400 hover:text-red-300 border border-red-500/30 px-3 py-1 rounded">Clear Logs</button>
+                    <div class="flex justify-between items-center mb-6 border-b border-blue-500/20 pb-4">
+                        <h3 class="text-xl font-bold text-white">Attendance Logs</h3>
+                        <button onclick="window.app.clearLogs()" class="text-xs bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30 px-4 py-2 rounded-lg transition-colors font-bold uppercase">Clear Logs</button>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[500px]">
                             <thead>
-                                <tr class="border-b border-gray-700 text-gray-400 text-sm">
-                                    <th class="p-3">Time</th>
-                                    <th class="p-3">Name</th>
-                                    <th class="p-3">Type</th>
-                                    <th class="p-3">Role</th>
+                                <tr class="text-blue-300 text-xs uppercase tracking-wider bg-blue-950/50">
+                                    <th class="p-4 rounded-l-lg">Time</th>
+                                    <th class="p-4">Name</th>
+                                    <th class="p-4">Event</th>
+                                    <th class="p-4 rounded-r-lg">Role</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-logs-list"></tbody>
+                            <tbody id="admin-logs-list" class="divide-y divide-blue-500/10"></tbody>
                         </table>
-                    </div>
-                </div>
-
-                <!-- Tab: Settings -->
-                <div id="tab-settings" class="admin-content hidden-view max-w-2xl mx-auto">
-                    <h3 class="text-xl font-bold mb-6 text-neon text-center">Google Sheets API Setup</h3>
-                    <div class="flex flex-col gap-5">
-                        <p class="text-sm text-gray-400 mb-2">Paste your Google Apps Script Web App URLs below to enable automatic data saving to Google Sheets.</p>
-                        <div>
-                            <label class="text-xs text-gray-400 uppercase mb-1 block">Student & Teacher Web App URL</label>
-                            <input type="text" id="setting-student-url" class="glass-input w-full px-4 py-3 rounded-xl" placeholder="https://script.google.com/macros/s/.../exec">
-                        </div>
-                        <button onclick="app.saveSettings()" class="btn-neon w-full py-3 rounded-xl font-bold mt-4">Save Settings</button>
                     </div>
                 </div>
             </div>
@@ -321,88 +364,87 @@
 
         <!-- VIEW 4: MOBILE ROLE SELECTOR -->
         <section id="view-mobile-role" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6 text-center">
-            <h2 class="text-2xl font-bold text-neon mb-2">Identify Yourself</h2>
-            <p class="text-gray-400 text-sm mb-6">Are you a student or a teacher at The Computer Point?</p>
+            <h2 class="text-2xl font-bold text-white mb-2">Identify Yourself</h2>
+            <p class="text-blue-200/70 text-sm mb-4">Select your role at The Computer Point to proceed.</p>
             
-            <button onclick="app.selectRole('student')" class="glass p-6 rounded-2xl hover:border-cyan-400 transition-all group flex flex-col items-center gap-3">
-                <i class="ph ph-student text-5xl text-gray-400 group-hover:text-neon transition-colors"></i>
-                <span class="text-lg font-bold group-hover:text-white">I am a Student</span>
+            <button onclick="window.app.selectRole('student')" class="glass p-8 rounded-2xl border-blue-500/20 hover:border-blue-400 hover:bg-blue-600/10 transition-all group flex flex-col items-center gap-4">
+                <i class="ph ph-student text-5xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all"></i>
+                <span class="text-xl font-bold text-white tracking-wide">Student</span>
             </button>
             
-            <button onclick="app.selectRole('teacher')" class="glass p-6 rounded-2xl hover:border-cyan-400 transition-all group flex flex-col items-center gap-3">
-                <i class="ph ph-chalkboard-teacher text-5xl text-gray-400 group-hover:text-neon transition-colors"></i>
-                <span class="text-lg font-bold group-hover:text-white">I am a Teacher</span>
+            <button onclick="window.app.selectRole('teacher')" class="glass p-8 rounded-2xl border-blue-500/20 hover:border-blue-400 hover:bg-blue-600/10 transition-all group flex flex-col items-center gap-4">
+                <i class="ph ph-chalkboard-teacher text-5xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all"></i>
+                <span class="text-xl font-bold text-white tracking-wide">Teacher</span>
             </button>
         </section>
 
         <!-- VIEW 5: REGISTRATION FORM -->
         <section id="view-register" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6">
-            <h2 class="text-2xl font-bold text-center text-neon" id="reg-title">Registration</h2>
-            <form id="register-form" class="flex flex-col gap-4">
+            <h2 class="text-2xl font-bold text-center text-white" id="reg-title">Registration</h2>
+            <form id="register-form" class="flex flex-col gap-5">
                 <div id="reg-no-group">
-                    <label class="text-xs text-gray-400 uppercase tracking-wider mb-1 block">Registration No.</label>
-                    <input type="text" id="reg-no" class="glass-input w-full px-4 py-3 rounded-xl" placeholder="e.g. TCP-2023-001">
+                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-2 block font-bold">Registration No.</label>
+                    <input type="text" id="reg-no" class="glass-input w-full px-5 py-4 rounded-xl" placeholder="e.g. TCP-2023-001">
                 </div>
                 <div>
-                    <label class="text-xs text-gray-400 uppercase tracking-wider mb-1 block">Full Name</label>
-                    <input type="text" id="reg-name" class="glass-input w-full px-4 py-3 rounded-xl" placeholder="John Doe" required>
+                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-2 block font-bold">Full Name</label>
+                    <input type="text" id="reg-name" class="glass-input w-full px-5 py-4 rounded-xl" placeholder="Enter full name" required>
                 </div>
                 <div id="reg-course-group">
-                    <label class="text-xs text-gray-400 uppercase tracking-wider mb-1 block">Course Name</label>
-                    <input type="text" id="reg-course" class="glass-input w-full px-4 py-3 rounded-xl" placeholder="e.g. Web Development">
+                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-2 block font-bold">Course Name</label>
+                    <input type="text" id="reg-course" class="glass-input w-full px-5 py-4 rounded-xl" placeholder="e.g. Web Development">
                 </div>
-                <button type="submit" class="btn-neon w-full py-3 rounded-xl font-bold mt-4">Submit Registration</button>
+                <button type="submit" class="btn-neon w-full py-4 rounded-xl font-bold mt-2 text-lg">Register Device</button>
             </form>
-            <button onclick="app.clearLocalUser()" class="text-xs text-gray-500 hover:text-white text-center mt-2">Reset / Start Over</button>
+            <button onclick="window.app.clearLocalUser()" class="text-xs text-blue-400 hover:text-white text-center transition-colors mt-2">← Change Role / Back</button>
         </section>
 
-        <!-- ADMIN APPROVAL MODAL (Triggered during scan if unapproved) -->
-        <div id="approval-modal" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm">
-            <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative slide-up border border-cyan-400/50 shadow-[0_0_30px_rgba(0,243,255,0.2)]">
-                <div class="w-16 h-16 rounded-full border-4 border-yellow-500 flex items-center justify-center text-yellow-500 mx-auto mb-2">
-                    <i class="ph ph-shield-warning text-3xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-neon text-center mb-2">Admin Approval Required</h3>
-                <p class="text-xs text-gray-400 text-center mb-4">Admin must enter credentials on this device to authorize it for attendance.</p>
-                
-                <input type="text" id="modal-admin-user" class="glass-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Admin Username">
-                <input type="password" id="modal-admin-pass" class="glass-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Admin Password">
-                
-                <div class="flex gap-2 mt-4">
-                    <button onclick="app.closeApprovalModal()" class="flex-1 py-3 rounded-xl font-bold text-sm bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 transition-colors">Cancel</button>
-                    <button onclick="app.submitApprovalModal()" class="btn-neon flex-1 py-3 rounded-xl font-bold text-sm">Approve</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- VIEW 7: SCANNER -->
+        <!-- VIEW 6: SCANNER -->
         <section id="view-scanner" class="w-full max-w-md slide-up hidden-view flex flex-col gap-4">
-            <div class="glass rounded-3xl p-5 md:p-6 flex flex-col items-center gap-4">
-                <div class="w-full flex justify-between items-center px-1">
-                    <div class="text-left">
-                        <p class="text-xs text-gray-400 uppercase tracking-wider">Welcome back,</p>
-                        <p class="font-bold text-neon truncate max-w-[200px] text-lg" id="scanner-user-name">User</p>
+            <div class="glass rounded-3xl p-5 md:p-6 flex flex-col items-center gap-5">
+                <!-- User Info Header -->
+                <div class="w-full flex justify-between items-center bg-blue-950/40 p-3 rounded-xl border border-blue-500/20">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-400/50 flex items-center justify-center text-blue-400">
+                            <i id="scanner-role-icon" class="ph ph-user text-xl"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[10px] text-blue-300 uppercase tracking-widest font-bold">Welcome Back</p>
+                            <p class="font-bold text-white truncate max-w-[150px] text-sm" id="scanner-user-name">User Name</p>
+                        </div>
                     </div>
-                    <button onclick="app.clearLocalUser()" class="text-xs bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg border border-red-500/50 hover:bg-red-500/40 transition-colors flex items-center gap-1">
-                        <i class="ph ph-sign-out"></i> Logout
+                    <button onclick="window.app.clearLocalUser()" class="text-xs bg-red-500/10 text-red-400 px-3 py-2 rounded-lg border border-red-500/30 hover:bg-red-500/20 transition-colors">
+                        Logout
                     </button>
                 </div>
                 
-                <!-- Scanner Viewport Container -->
-                <div class="w-full aspect-square relative rounded-2xl border-2 border-neon bg-black shadow-[0_0_20px_rgba(0,243,255,0.2)] flex items-center justify-center overflow-hidden">
-                    <div id="reader" class="w-full h-full flex items-center justify-center text-gray-500 text-sm">
-                        Initializing Camera...
+                <!-- Dynamic PIN Entry OR Scanner -->
+                <div class="w-full relative">
+                    <!-- Manual PIN Entry -->
+                    <div id="manual-pin-entry" class="w-full flex flex-col gap-3 mb-4">
+                        <label class="text-xs text-blue-300 uppercase tracking-wider text-center font-bold">Enter 5-Digit Terminal PIN</label>
+                        <div class="flex gap-2 justify-center">
+                            <input type="text" id="pin-input" maxlength="5" class="glass-input w-full text-center text-3xl tracking-[0.5em] font-mono py-4 rounded-xl font-black uppercase" placeholder="-----">
+                        </div>
+                        <button onclick="window.app.submitPin()" class="btn-neon w-full py-3 rounded-xl font-bold text-sm">Submit PIN</button>
+                    </div>
+
+                    <div class="text-center text-xs text-blue-400/50 uppercase tracking-widest font-bold mb-4">- OR -</div>
+                    
+                    <!-- Scanner Viewport Container -->
+                    <div id="reader-container" class="hidden">
+                        <div id="reader" class="w-full h-full flex items-center justify-center text-blue-400 font-mono text-sm bg-black">
+                            <i class="ph ph-spinner-gap animate-spin text-2xl mb-2"></i><br>Activating Camera...
+                        </div>
                     </div>
                 </div>
-                
-                <p class="text-xs md:text-sm text-center text-gray-300 mt-2 px-2">Point your camera at the Terminal QR code to mark your attendance.</p>
                 
                 <div class="flex gap-2 w-full mt-2">
-                    <button onclick="app.startScanner()" class="btn-neon flex-1 py-3 rounded-xl font-bold text-sm flex justify-center items-center gap-2">
-                        <i class="ph ph-camera"></i> Start Scan
+                    <button id="btn-start-scan" onclick="window.app.startScanner()" class="btn-neon flex-1 py-4 rounded-xl font-bold text-sm flex justify-center items-center gap-2">
+                        <i class="ph ph-qr-code text-xl"></i> Scan QR Instead
                     </button>
-                    <button onclick="app.stopScanner()" class="bg-gray-800 border border-gray-600 flex-1 py-3 rounded-xl font-bold text-sm text-gray-300 hover:bg-gray-700 transition-colors">
-                        Stop
+                    <button id="btn-stop-scan" onclick="window.app.stopScannerUI()" class="hidden bg-gray-800 border border-gray-600 flex-1 py-4 rounded-xl font-bold text-sm text-gray-300 hover:bg-gray-700 transition-colors items-center justify-center gap-2">
+                        <i class="ph ph-x-circle text-xl"></i> Cancel Scan
                     </button>
                 </div>
             </div>
@@ -410,25 +452,72 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="w-full p-4 text-center text-xs text-gray-500 mt-auto">
-        Developed With <span class="text-red-500">♥</span> By Rajdeep Singh & Gemini AI
-    </footer>
+    <!-- FULL SCREEN ATTENDANCE POPUP -->
+    <div id="attendance-popup" class="fixed inset-0 bg-black/90 z-[200] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-6 relative pop-in border-2 border-green-500 shadow-[0_0_50px_rgba(34,197,94,0.3)] bg-gradient-to-b from-green-900/20 to-transparent">
+            
+            <div id="popup-icon-container" class="w-24 h-24 rounded-full border-4 border-green-500 flex items-center justify-center text-green-500 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.5)]">
+                <i id="popup-icon" class="ph ph-check-circle text-5xl"></i>
+            </div>
+            
+            <div class="text-center w-full">
+                <p id="popup-status" class="text-green-400 font-bold uppercase tracking-widest text-sm mb-2">Access Granted</p>
+                <h3 id="popup-name" class="text-3xl font-black text-white mb-1 truncate">John Doe</h3>
+                <p id="popup-action" class="text-lg text-blue-200">Arrival Recorded</p>
+                <p id="popup-time" class="text-sm text-blue-400/60 font-mono mt-4 border-t border-blue-500/20 pt-4">10:45 AM</p>
+            </div>
+            
+            <button onclick="window.app.closePopup()" class="w-full py-4 rounded-xl font-bold text-sm bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20 mt-2">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- ADMIN APPROVAL MODAL -->
+    <div id="approval-modal" class="fixed inset-0 bg-black/80 z-[150] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative pop-in border border-yellow-500/50 shadow-[0_0_40px_rgba(234,179,8,0.2)] bg-gradient-to-b from-yellow-900/20 to-transparent">
+            <div class="w-20 h-20 rounded-full border-4 border-yellow-500 flex items-center justify-center text-yellow-500 mx-auto mb-2 bg-yellow-500/10 shadow-[0_0_20px_rgba(234,179,8,0.4)]">
+                <i class="ph ph-shield-warning text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white text-center mb-1">Authorization Required</h3>
+            <p class="text-xs text-blue-200/70 text-center mb-4 leading-relaxed">Admin must enter credentials on this device to approve it for attendance scanning.</p>
+            
+            <input type="text" id="modal-admin-user" class="glass-input w-full px-5 py-4 rounded-xl text-sm" placeholder="Admin Username">
+            <input type="password" id="modal-admin-pass" class="glass-input w-full px-5 py-4 rounded-xl text-sm" placeholder="Admin Password">
+            
+            <div class="flex gap-3 mt-4">
+                <button onclick="window.app.closeApprovalModal()" class="flex-1 py-4 rounded-xl font-bold text-sm bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors">Cancel</button>
+                <button onclick="window.app.submitApprovalModal()" class="btn-neon flex-1 py-4 rounded-xl font-bold text-sm">Authorize</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[200] flex flex-col gap-3 w-[90%] max-w-sm pointer-events-none"></div>
+    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[300] flex flex-col gap-3 w-[90%] max-w-sm pointer-events-none"></div>
 
-    <!-- Application Logic -->
-    <script>
-        /**
-         * The Computer Point - Attendance Management System
-         * Architecture: Pure Frontend (HTML/CSS/JS)
-         * Storage: LocalStorage (Simulated Backend) + Google Apps Script integration
-         */
+    <!-- Firebase SDK & Application Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, onSnapshot, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase / P2P Setup
+        let db, auth, appId;
+        let isFirebaseActive = false;
         
-        // Static secure token for reliable scanning (No timeouts)
-        const STATIC_QR_TOKEN = "TCP_ATTENDANCE_VALID";
-        
+        try {
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+            if (firebaseConfig) {
+                const firebaseApp = initializeApp(firebaseConfig);
+                auth = getAuth(firebaseApp);
+                db = getFirestore(firebaseApp);
+                appId = typeof __app_id !== 'undefined' ? __app_id : 'tcp-attendance';
+                isFirebaseActive = true;
+            }
+        } catch (e) {
+            console.warn("Firebase config not found. Falling back to LocalStorage (No Cross-Device Sync).", e);
+        }
+
         const app = {
             state: {
                 currentView: 'selector',
@@ -436,8 +525,120 @@
                 isProcessingScan: false,
                 localUser: JSON.parse(localStorage.getItem('tcp_user')) || null,
                 adminSettings: JSON.parse(localStorage.getItem('tcp_settings')) || { studentUrl: '' },
-                users: JSON.parse(localStorage.getItem('tcp_all_users')) || [],
-                logs: JSON.parse(localStorage.getItem('tcp_logs')) || []
+                users: [],
+                logs: [],
+                activeSessionCode: '-----',
+                qrInterval: null,
+                fbUnsubLogs: null,
+                fbUnsubUsers: null,
+                fbUnsubSession: null
+            },
+
+            // --- P2P Database Sync ---
+            initDatabase: async () => {
+                if (!isFirebaseActive) {
+                    // Fallback to local storage
+                    app.state.users = JSON.parse(localStorage.getItem('tcp_all_users')) || [];
+                    app.state.logs = JSON.parse(localStorage.getItem('tcp_logs')) || [];
+                    window.addEventListener('storage', app.syncLocalData);
+                    return;
+                }
+
+                // Authenticate before query using the correct authentication logic for the Canvas isolated app environment
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            app.startRealtimeListeners();
+                        }
+                    });
+                } catch(e) {
+                    console.error("Auth error:", e);
+                }
+            },
+
+            startRealtimeListeners: () => {
+                if(!isFirebaseActive) return;
+                
+                // 1. Logs Collection
+                const logsRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs');
+                app.state.fbUnsubLogs = onSnapshot(logsRef, (snapshot) => {
+                    const fetchedLogs = [];
+                    snapshot.forEach(doc => fetchedLogs.push({ id: doc.id, ...doc.data() }));
+                    app.state.logs = fetchedLogs.sort((a,b) => a.timestamp - b.timestamp);
+                    if (app.state.currentView === 'terminal') app.renderLiveFeed();
+                    if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
+                }, (error) => console.error("Logs Snapshot Error:", error));
+
+                // 2. Users Collection
+                const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_users');
+                app.state.fbUnsubUsers = onSnapshot(usersRef, (snapshot) => {
+                    const fetchedUsers = [];
+                    snapshot.forEach(doc => fetchedUsers.push({ id: doc.id, ...doc.data() }));
+                    app.state.users = fetchedUsers;
+                    
+                    // Sync local user status
+                    if (app.state.localUser) {
+                        const globalUser = fetchedUsers.find(u => u.id === app.state.localUser.id);
+                        if (globalUser && globalUser.status !== app.state.localUser.status) {
+                            app.state.localUser.status = globalUser.status;
+                            localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
+                        }
+                    }
+                    if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
+                }, (error) => console.error("Users Snapshot Error:", error));
+
+                // 3. Active Session Code
+                const sessionRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_session');
+                app.state.fbUnsubSession = onSnapshot(sessionRef, (snapshot) => {
+                    snapshot.forEach(doc => {
+                        if(doc.id === 'current') app.state.activeSessionCode = doc.data().code;
+                    });
+                }, (error) => console.error("Session Snapshot Error:", error));
+            },
+
+            saveGlobalData: async (type, data) => {
+                if (!isFirebaseActive) {
+                    if (type === 'user') app.state.users.push(data);
+                    if (type === 'log') app.state.logs.push(data);
+                    if (type === 'updateUser') {
+                        const idx = app.state.users.findIndex(u => u.id === data.id);
+                        if(idx > -1) app.state.users[idx] = data;
+                    }
+                    localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
+                    localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
+                    window.dispatchEvent(new Event('storage'));
+                    return;
+                }
+
+                // Guard write operation against unauthenticated state
+                if (!auth || !auth.currentUser) return;
+
+                try {
+                    if (type === 'user') {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', data.id), data);
+                    } else if (type === 'updateUser') {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', data.id), data);
+                    } else if (type === 'log') {
+                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs'), data);
+                    } else if (type === 'session') {
+                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_session', 'current'), { code: data });
+                    }
+                } catch(e) {
+                    console.error("Firebase write error:", e);
+                }
+            },
+
+            syncLocalData: () => {
+                app.state.users = JSON.parse(localStorage.getItem('tcp_all_users')) || [];
+                app.state.logs = JSON.parse(localStorage.getItem('tcp_logs')) || [];
+                if (app.state.currentView === 'terminal') app.renderLiveFeed();
+                if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
             },
 
             // --- UI Management ---
@@ -450,20 +651,22 @@
                 app.updateHeaderActions();
                 
                 if (viewId === 'terminal') {
-                    app.generateQR();
+                    app.startTerminalSession();
                     app.renderLiveFeed();
-                } 
+                } else {
+                    app.stopTerminalSession();
+                }
 
                 if (viewId === 'scanner') {
                     document.getElementById('scanner-user-name').innerText = app.state.localUser.name;
-                    app.startScanner();
+                    document.getElementById('scanner-role-icon').className = `ph ${app.state.localUser.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl`;
+                    // Reset scanner UI state
+                    app.stopScannerUI();
                 } else {
                     app.stopScanner();
                 }
 
-                if (viewId === 'admin-dashboard') {
-                    app.renderAdminDashboard();
-                }
+                if (viewId === 'admin-dashboard') app.renderAdminDashboard();
             },
 
             updateHeaderActions: () => {
@@ -473,13 +676,13 @@
                 if (['terminal', 'admin-login', 'admin-dashboard'].includes(app.state.currentView)) {
                     if (app.state.currentView !== 'admin-dashboard') {
                         const btn = document.createElement('button');
-                        btn.className = 'text-xs md:text-sm px-3 py-1.5 rounded border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-darkBg transition-all flex items-center gap-1 font-medium';
+                        btn.className = 'text-xs md:text-sm px-4 py-2 rounded-lg border border-blue-500/50 text-blue-400 hover:bg-blue-600/20 transition-all flex items-center gap-2 font-bold';
                         btn.innerHTML = '<i class="ph ph-shield-check text-lg"></i> Admin';
                         btn.onclick = () => app.switchView('admin-login');
                         container.appendChild(btn);
                     } else {
                         const btn = document.createElement('button');
-                        btn.className = 'text-xs md:text-sm px-3 py-1.5 rounded bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500/40 transition-all flex items-center gap-1 font-medium';
+                        btn.className = 'text-xs md:text-sm px-4 py-2 rounded-lg bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500/20 transition-all flex items-center gap-2 font-bold';
                         btn.innerHTML = '<i class="ph ph-sign-out text-lg"></i> Logout';
                         btn.onclick = () => app.switchView('terminal');
                         container.appendChild(btn);
@@ -487,7 +690,7 @@
                 }
                 
                 const switchBtn = document.createElement('button');
-                switchBtn.className = 'text-xs md:text-sm px-2 py-1.5 rounded bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 transition-colors ml-2 flex items-center gap-1';
+                switchBtn.className = 'text-xs md:text-sm px-3 py-2 rounded-lg bg-blue-900/30 text-blue-300 border border-blue-500/30 hover:bg-blue-800/50 transition-colors ml-2 flex items-center gap-1 font-bold';
                 switchBtn.innerHTML = '<i class="ph ph-arrows-left-right text-lg"></i> Mode';
                 switchBtn.onclick = () => {
                     app.stopScanner();
@@ -500,36 +703,65 @@
                 const container = document.getElementById('toast-container');
                 const toast = document.createElement('div');
                 const colors = {
-                    success: 'border-cyan-400 bg-cyan-900/90 text-cyan-100 shadow-[0_5px_15px_rgba(0,243,255,0.3)]',
-                    error: 'border-red-500 bg-red-900/90 text-red-100 shadow-[0_5px_15px_rgba(255,0,0,0.3)]',
-                    warning: 'border-yellow-500 bg-yellow-900/90 text-yellow-100 shadow-[0_5px_15px_rgba(255,255,0,0.3)]'
+                    success: 'border-green-400 bg-green-950/90 text-green-100 shadow-[0_5px_20px_rgba(34,197,94,0.4)]',
+                    error: 'border-red-500 bg-red-950/90 text-red-100 shadow-[0_5px_20px_rgba(239,68,68,0.4)]',
+                    warning: 'border-yellow-500 bg-yellow-950/90 text-yellow-100 shadow-[0_5px_20px_rgba(234,179,8,0.4)]'
                 };
-                const icons = {
-                    success: 'ph-check-circle',
-                    error: 'ph-x-circle',
-                    warning: 'ph-warning'
-                };
+                const icons = { success: 'ph-check-circle', error: 'ph-x-circle', warning: 'ph-warning' };
 
-                toast.className = `glass flex items-center gap-3 px-4 py-3 rounded-xl border-l-4 ${colors[type]} slide-up transition-all duration-300 pointer-events-auto backdrop-blur-xl`;
-                toast.innerHTML = `<i class="ph ${icons[type]} text-2xl shrink-0"></i><p class="text-sm font-medium">${message}</p>`;
+                toast.className = `glass flex items-center gap-3 px-5 py-4 rounded-2xl border-l-4 ${colors[type]} slide-up transition-all duration-300 pointer-events-auto backdrop-blur-xl font-medium`;
+                toast.innerHTML = `<i class="ph ${icons[type]} text-2xl shrink-0"></i><p class="text-sm">${message}</p>`;
                 
                 container.appendChild(toast);
                 setTimeout(() => {
                     toast.classList.add('opacity-0', '-translate-y-4');
-                    setTimeout(() => toast.remove(), 300);
+                    setTimeout(() => toast.remove(), 400);
                 }, 4000);
             },
 
-            // --- Terminal & QR Logic ---
-            generateQR: () => {
-                const qrcodeContainer = document.getElementById("qrcode");
-                qrcodeContainer.innerHTML = ''; // Clear existing
+            // --- Terminal Generator ---
+            startTerminalSession: () => {
+                app.generateNewSessionCode();
+                let timeLeft = 30;
                 
+                app.state.qrInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('timer-text').innerText = `${timeLeft}s`;
+                    document.getElementById('timer-bar').style.width = `${(timeLeft/30)*100}%`;
+                    
+                    if (timeLeft <= 0) {
+                        app.generateNewSessionCode();
+                        timeLeft = 30;
+                        document.getElementById('timer-bar').style.transition = 'none';
+                        document.getElementById('timer-bar').style.width = '100%';
+                        setTimeout(() => document.getElementById('timer-bar').style.transition = 'width 1s linear', 50);
+                    }
+                }, 1000);
+            },
+
+            stopTerminalSession: () => {
+                if (app.state.qrInterval) clearInterval(app.state.qrInterval);
+            },
+
+            generateNewSessionCode: () => {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let code = '';
+                for(let i=0; i<5; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+                
+                document.getElementById("session-pin").innerText = code;
+                app.state.activeSessionCode = code;
+                
+                // Write to DB
+                app.saveGlobalData('session', code);
+
+                // Update QR
+                const qrcodeContainer = document.getElementById("qrcode");
+                qrcodeContainer.innerHTML = ''; 
                 new QRCode(qrcodeContainer, {
-                    text: STATIC_QR_TOKEN,
-                    width: 288, // Slightly larger
-                    height: 288,
-                    colorDark : "#000000",
+                    text: `TCP_ATTENDANCE_${code}`,
+                    width: 256,
+                    height: 256,
+                    colorDark : "#020617",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
                 });
@@ -541,42 +773,39 @@
                 const todayLogs = app.state.logs.filter(l => new Date(l.timestamp).toDateString() === today).reverse().slice(0, 15);
                 
                 if (todayLogs.length === 0) {
-                    feed.innerHTML = '<div class="text-center text-gray-500 mt-10 italic">Waiting for scans...</div>';
+                    feed.innerHTML = '<div class="text-center text-blue-500/50 mt-10 italic">Awaiting scans...</div>';
                     return;
                 }
 
                 feed.innerHTML = todayLogs.map(log => `
-                    <div class="glass p-3 rounded-xl flex items-center justify-between border-l-4 ${log.type === 'Arrival' ? 'border-green-400' : 'border-red-400'} slide-up">
+                    <div class="glass p-3 rounded-xl flex items-center justify-between border-l-4 ${log.type === 'Arrival' ? 'border-green-400 bg-green-900/10' : 'border-blue-400 bg-blue-900/10'} pop-in">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center shrink-0">
-                                <i class="ph ${log.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl text-gray-300"></i>
+                            <div class="w-10 h-10 rounded-full bg-blue-950 flex items-center justify-center shrink-0 border border-blue-500/30">
+                                <i class="ph ${log.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl text-blue-300"></i>
                             </div>
                             <div class="overflow-hidden">
-                                <p class="font-bold text-white text-sm truncate w-[130px] sm:w-[160px]">${log.name}</p>
-                                <p class="text-[11px] text-gray-400">${log.type} • ${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                                <p class="font-bold text-white text-sm truncate w-[130px] sm:w-[180px]">${log.name}</p>
+                                <p class="text-[11px] text-blue-300/70 font-mono">${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                             </div>
                         </div>
-                        <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-gray-800 border ${log.type === 'Arrival' ? 'border-green-400/30 text-green-400' : 'border-red-400/30 text-red-400'} shrink-0">
+                        <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-blue-950 border ${log.type === 'Arrival' ? 'border-green-400/50 text-green-400' : 'border-blue-400/50 text-blue-400'} shrink-0 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
                             ${log.type}
                         </span>
                     </div>
                 `).join('');
             },
 
-            // --- Mobile Logic ---
+            // --- Mobile Role & Reg Logic ---
             selectRole: (role) => {
                 app.state.selectedRole = role;
-                
                 if (app.state.localUser && app.state.localUser.role === role) {
                     app.switchView('scanner');
                 } else {
                     document.getElementById('reg-title').innerText = role === 'student' ? 'Student Registration' : 'Teacher Registration';
                     document.getElementById('reg-no-group').style.display = role === 'student' ? 'block' : 'none';
                     document.getElementById('reg-course-group').style.display = role === 'student' ? 'block' : 'none';
-                    
                     document.getElementById('reg-no').required = role === 'student';
                     document.getElementById('reg-course').required = role === 'student';
-                    
                     app.switchView('register');
                 }
             },
@@ -587,77 +816,101 @@
                 const name = document.getElementById('reg-name').value;
                 const regNo = role === 'student' ? document.getElementById('reg-no').value : null;
                 const course = role === 'student' ? document.getElementById('reg-course').value : null;
-                
                 const userId = `USR_${Date.now()}`;
+                
                 const newUser = { id: userId, role, name, regNo, course, status: 'pending' };
                 
-                // Save locally for device
                 localStorage.setItem('tcp_user', JSON.stringify(newUser));
                 app.state.localUser = newUser;
+                app.saveGlobalData('user', newUser);
                 
-                // Add to global users DB (simulating backend)
-                app.state.users.push(newUser);
-                app.saveGlobalData();
-                
-                app.showToast('Registration complete. Scan QR on Terminal to verify.', 'success');
+                app.showToast('Registration complete. Scan or enter PIN to verify.', 'success');
                 app.switchView('scanner');
             },
 
             clearLocalUser: () => {
                 localStorage.removeItem('tcp_user');
                 app.state.localUser = null;
-                app.stopScanner();
+                app.stopScannerUI();
                 app.switchView('mobile-role');
             },
 
-            // --- Scanner Logic ---
+            // --- Scanner / Attendance Logic ---
+            submitPin: () => {
+                const pin = document.getElementById('pin-input').value.toUpperCase();
+                if(pin.length !== 5) return app.showToast("Enter a valid 5-digit PIN", "warning");
+                app.processAttendanceAttempt(pin);
+            },
+
             startScanner: () => {
+                document.getElementById('manual-pin-entry').classList.add('hidden');
+                document.getElementById('reader-container').classList.remove('hidden');
+                document.getElementById('btn-start-scan').classList.add('hidden');
+                document.getElementById('btn-stop-scan').classList.remove('hidden');
+                document.getElementById('btn-stop-scan').classList.add('flex');
+
                 if (!app.state.html5QrcodeScanner) {
                     app.state.html5QrcodeScanner = new Html5Qrcode("reader");
                 }
-
+                
                 if (app.state.html5QrcodeScanner.isScanning) return;
 
-                // Adjust config for reliable mobile scanning
-                const config = { 
-                    fps: 10, 
-                    qrbox: { width: 250, height: 250 },
-                    aspectRatio: 1.0 // Force square ratio for UI consistency
-                };
-
+                const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
                 app.state.html5QrcodeScanner.start(
-                    { facingMode: "environment" },
-                    config,
-                    (decodedText) => app.handleScan(decodedText),
-                    (errorMessage) => { /* Ignore harmless scanning logs */ }
+                    { facingMode: "environment" }, config,
+                    (decodedText) => {
+                        if (decodedText.startsWith("TCP_ATTENDANCE_")) {
+                            app.processAttendanceAttempt(decodedText.split("_")[2]);
+                        } else {
+                            app.showToast("Invalid QR Format", "error");
+                        }
+                    },
+                    (err) => { /* ignore logs */ }
                 ).catch((err) => {
                     console.error("Camera Error:", err);
-                    app.showToast("Camera access required. Please grant permissions.", "error");
+                    app.showToast("Camera access denied.", "error");
+                    app.stopScannerUI();
                 });
+            },
+
+            stopScannerUI: () => {
+                app.stopScanner();
+                document.getElementById('manual-pin-entry').classList.remove('hidden');
+                document.getElementById('reader-container').classList.add('hidden');
+                document.getElementById('btn-start-scan').classList.remove('hidden');
+                document.getElementById('btn-stop-scan').classList.add('hidden');
+                document.getElementById('btn-stop-scan').classList.remove('flex');
             },
 
             stopScanner: () => {
                 if (app.state.html5QrcodeScanner && app.state.html5QrcodeScanner.isScanning) {
-                    app.state.html5QrcodeScanner.stop().catch(err => console.error("Error stopping scanner:", err));
+                    app.state.html5QrcodeScanner.stop().catch(err => console.error(err));
                 }
             },
 
-            handleScan: (text) => {
-                // Prevent duplicate rapid scans
+            processAttendanceAttempt: async (submittedCode) => {
                 if (app.state.isProcessingScan) return;
                 app.state.isProcessingScan = true;
-                setTimeout(() => app.state.isProcessingScan = false, 3000); // 3 sec cooldown
+                setTimeout(() => app.state.isProcessingScan = false, 3000);
 
-                app.stopScanner();
+                // Instantly stop camera UI
+                app.stopScannerUI();
+                document.getElementById('pin-input').value = '';
 
-                // Validate Static QR Format
-                if (text !== STATIC_QR_TOKEN) {
-                    app.showToast("Invalid QR Code recognized.", "error");
-                    setTimeout(app.startScanner, 2000);
-                    return;
+                // Validate Code (Check Firebase Active Session OR Fallback)
+                let isValid = false;
+                if (isFirebaseActive) {
+                    isValid = (submittedCode === app.state.activeSessionCode);
+                } else {
+                    // Fallback local mode - we assume code is correct if format matches length 5
+                    isValid = (submittedCode.length === 5);
                 }
 
-                // Check if user needs Admin Approval
+                if (!isValid) {
+                    return app.showToast("Invalid or Expired Session PIN.", "error");
+                }
+
+                // Check Admin Approval
                 if (app.state.localUser.status === 'pending') {
                     document.getElementById('approval-modal').classList.remove('hidden');
                     document.getElementById('approval-modal').classList.add('flex');
@@ -667,49 +920,36 @@
                 app.submitAttendance();
             },
 
-            closeApprovalModal: () => {
-                document.getElementById('approval-modal').classList.add('hidden');
-                document.getElementById('approval-modal').classList.remove('flex');
-                app.showToast('Scan cancelled. Admin approval required.', 'warning');
-                setTimeout(app.startScanner, 2000);
-            },
-
             submitApprovalModal: () => {
                 const u = document.getElementById('modal-admin-user').value;
                 const p = document.getElementById('modal-admin-pass').value;
                 
                 if (u === 'thecomputerpoint' && p === 'tcplogin1997') {
-                    // Update Local User
                     app.state.localUser.status = 'approved';
                     localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
                     
-                    // Update Global User Array
-                    const globalUser = app.state.users.find(user => user.id === app.state.localUser.id);
-                    if (globalUser) {
-                        globalUser.status = 'approved';
-                    } else {
-                        app.state.users.push(app.state.localUser);
-                    }
-                    app.saveGlobalData();
+                    app.saveGlobalData('updateUser', app.state.localUser);
                     
-                    // Close Modal & Clear Fields
-                    document.getElementById('approval-modal').classList.add('hidden');
-                    document.getElementById('approval-modal').classList.remove('flex');
-                    document.getElementById('modal-admin-user').value = '';
-                    document.getElementById('modal-admin-pass').value = '';
-
-                    app.showToast('Device Approved Successfully!', 'success');
+                    app.closeApprovalModal();
+                    app.showToast('Device Authorized Successfully!', 'success');
                     app.submitAttendance();
                 } else {
                     app.showToast('Invalid admin credentials.', 'error');
                 }
             },
 
+            closeApprovalModal: () => {
+                document.getElementById('approval-modal').classList.add('hidden');
+                document.getElementById('approval-modal').classList.remove('flex');
+                document.getElementById('modal-admin-user').value = '';
+                document.getElementById('modal-admin-pass').value = '';
+            },
+
             submitAttendance: async () => {
                 const user = app.state.localUser;
                 const today = new Date().toDateString();
                 
-                // Determine Arrival vs Departure based on today's logs for this user
+                // Determine Arrival/Departure
                 const userTodayLogs = app.state.logs.filter(l => l.userId === user.id && new Date(l.timestamp).toDateString() === today);
                 const isArrival = userTodayLogs.length === 0 || userTodayLogs.length % 2 === 0;
                 const type = isArrival ? 'Arrival' : 'Departure';
@@ -717,46 +957,67 @@
 
                 const logEntry = { userId: user.id, name: user.name, role: user.role, type, timestamp, regNo: user.regNo, course: user.course };
                 
-                // Save to simulated backend (LocalStorage)
-                app.state.logs.push(logEntry);
-                app.saveGlobalData();
+                // 1. Save locally & Firebase
+                app.saveGlobalData('log', logEntry);
 
-                // Google Sheets Web App Push
-                const url = app.state.adminSettings.studentUrl; // Shared URL for both sheets
-                if (url) {
+                // 2. Sync to Google Sheets Web App (Robust fetch)
+                const url = app.state.adminSettings.studentUrl;
+                if (url && url.length > 10) {
+                    const payload = {
+                        name: user.name,
+                        role: user.role,
+                        reg_no: user.regNo || 'N/A',
+                        course: user.course || 'N/A',
+                        type: type,
+                        timestamp: new Date(timestamp).toLocaleString()
+                    };
                     try {
-                        const payload = {
-                            name: user.name,
-                            role: user.role,
-                            reg_no: user.regNo || '',
-                            course: user.course || '',
-                            type: type,
-                            timestamp: new Date(timestamp).toLocaleString()
-                        };
-                        
+                        // no-cors mode hides the response, but the POST goes through
                         fetch(url, {
                             method: 'POST',
                             mode: 'no-cors',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(payload)
-                        }).catch(e => console.warn("Google Sheet Sync Note:", e));
+                        }).catch(e => console.warn("Sheets Push Note:", e));
                     } catch (err) {}
                 }
 
-                // Show Feedback UI
-                if (isArrival) {
-                    app.showToast(`Welcome, ${user.name}! Arrival recorded.`, "success");
-                } else {
-                    app.showToast(`Take Care, ${user.name}! Departure recorded.`, "warning");
-                }
-
-                // Auto-restart scanner after a delay
-                setTimeout(() => {
-                    if(app.state.currentView === 'scanner') app.startScanner();
-                }, 3500);
+                // 3. Show Success Popup
+                app.showSuccessPopup(user.name, type, timestamp);
             },
 
-            // --- Admin Logic ---
+            showSuccessPopup: (name, type, timestamp) => {
+                const popup = document.getElementById('attendance-popup');
+                const iconContainer = document.getElementById('popup-icon-container');
+                const icon = document.getElementById('popup-icon');
+                
+                document.getElementById('popup-name').innerText = name;
+                document.getElementById('popup-action').innerText = `${type} Recorded`;
+                document.getElementById('popup-time').innerText = new Date(timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                if (type === 'Arrival') {
+                    popup.className = "fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-4 backdrop-blur-md";
+                    popup.firstElementChild.className = "glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-6 relative pop-in border-2 border-green-500 shadow-[0_0_50px_rgba(34,197,94,0.3)] bg-gradient-to-b from-green-900/20 to-transparent";
+                    iconContainer.className = "w-24 h-24 rounded-full border-4 border-green-500 flex items-center justify-center text-green-500 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.5)]";
+                    icon.className = "ph ph-check-circle text-5xl";
+                    document.getElementById('popup-status').innerText = "Access Granted";
+                    document.getElementById('popup-status').className = "text-green-400 font-bold uppercase tracking-widest text-sm mb-2";
+                } else {
+                    popup.className = "fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-4 backdrop-blur-md";
+                    popup.firstElementChild.className = "glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-6 relative pop-in border-2 border-blue-500 shadow-[0_0_50px_rgba(59,130,246,0.3)] bg-gradient-to-b from-blue-900/20 to-transparent";
+                    iconContainer.className = "w-24 h-24 rounded-full border-4 border-blue-500 flex items-center justify-center text-blue-500 bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.5)]";
+                    icon.className = "ph ph-sign-out text-5xl";
+                    document.getElementById('popup-status').innerText = "Session Ended";
+                    document.getElementById('popup-status').className = "text-blue-400 font-bold uppercase tracking-widest text-sm mb-2";
+                }
+            },
+
+            closePopup: () => {
+                document.getElementById('attendance-popup').classList.add('hidden');
+                document.getElementById('attendance-popup').classList.remove('flex');
+            },
+
+            // --- Admin Dash Logic ---
             adminLogin: (e) => {
                 e.preventDefault();
                 const u = document.getElementById('admin-user').value;
@@ -776,55 +1037,51 @@
                 document.getElementById(`tab-${tabId}`).classList.remove('hidden-view');
                 
                 document.querySelectorAll('.admin-tab').forEach(btn => {
-                    btn.className = 'admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm';
+                    btn.className = 'admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all';
                 });
-                event.target.className = 'admin-tab px-4 py-2 rounded-lg bg-cyan-900/50 text-cyan-400 border border-cyan-400/50 text-sm';
+                event.target.className = 'admin-tab px-4 py-2 rounded-lg bg-blue-600/30 text-white border border-blue-400/50 text-sm font-semibold transition-all';
             },
 
             renderAdminDashboard: () => {
-                // Approvals
                 const pending = app.state.users.filter(u => u.status === 'pending');
                 document.getElementById('admin-approvals-list').innerHTML = pending.length ? pending.map(u => `
-                    <tr class="border-b border-gray-800 hover:bg-white/5 transition-colors">
-                        <td class="p-3 capitalize text-gray-300"><span class="px-2 py-1 rounded text-xs bg-gray-800">${u.role}</span></td>
-                        <td class="p-3 font-medium text-white">${u.name}</td>
-                        <td class="p-3 text-xs text-gray-400">${u.role === 'student' ? `${u.regNo}<br>${u.course}` : 'N/A'}</td>
-                        <td class="p-3 text-right">
-                            <button onclick="app.approveUser('${u.id}')" class="bg-green-500/20 text-green-400 border border-green-500/50 px-3 py-1 rounded text-xs hover:bg-green-500/40">Approve</button>
-                            <button onclick="app.rejectUser('${u.id}')" class="bg-red-500/20 text-red-400 border border-red-500/50 px-3 py-1 rounded text-xs hover:bg-red-500/40 ml-2">Reject</button>
+                    <tr class="hover:bg-blue-600/10 transition-colors">
+                        <td class="p-4 capitalize text-blue-300"><span class="px-2 py-1 rounded-md text-xs bg-blue-900/50 font-bold border border-blue-500/30">${u.role}</span></td>
+                        <td class="p-4 font-bold text-white">${u.name}</td>
+                        <td class="p-4 text-xs text-blue-200">${u.role === 'student' ? `${u.regNo}<br>${u.course}` : 'N/A'}</td>
+                        <td class="p-4 text-right">
+                            <button onclick="window.app.approveUser('${u.id}')" class="bg-green-500/20 text-green-400 border border-green-500/50 px-3 py-1.5 rounded-lg text-xs hover:bg-green-500/30 font-bold">Approve</button>
+                            <button onclick="window.app.rejectUser('${u.id}')" class="bg-red-500/20 text-red-400 border border-red-500/50 px-3 py-1.5 rounded-lg text-xs hover:bg-red-500/30 font-bold ml-2">Reject</button>
                         </td>
                     </tr>
-                `).join('') : `<tr><td colspan="4" class="text-center p-6 text-gray-500 italic">No pending registrations.</td></tr>`;
+                `).join('') : `<tr><td colspan="4" class="text-center p-8 text-blue-500/50 italic font-semibold">No pending registrations.</td></tr>`;
 
-                // Users
                 const approved = app.state.users.filter(u => u.status === 'approved');
                 document.getElementById('admin-users-list').innerHTML = approved.length ? approved.map(u => `
-                    <tr class="border-b border-gray-800 hover:bg-white/5 transition-colors">
-                        <td class="p-3 capitalize text-gray-300"><span class="px-2 py-1 rounded text-xs bg-gray-800">${u.role}</span></td>
-                        <td class="p-3 font-medium text-white">${u.name}</td>
-                        <td class="p-3"><span class="text-green-400 text-xs flex items-center gap-1"><i class="ph-fill ph-check-circle"></i> Active</span></td>
-                        <td class="p-3 text-right">
-                            <button onclick="app.rejectUser('${u.id}')" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded border border-transparent hover:border-red-500/30">Remove</button>
+                    <tr class="hover:bg-blue-600/10 transition-colors">
+                        <td class="p-4 capitalize text-blue-300"><span class="px-2 py-1 rounded-md text-xs bg-blue-900/50 font-bold border border-blue-500/30">${u.role}</span></td>
+                        <td class="p-4 font-bold text-white">${u.name}</td>
+                        <td class="p-4"><span class="text-green-400 text-xs flex items-center gap-1 font-bold"><i class="ph-fill ph-check-circle text-sm"></i> Active</span></td>
+                        <td class="p-4 text-right">
+                            <button onclick="window.app.rejectUser('${u.id}')" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded border border-transparent hover:border-red-500/30 font-bold">Remove</button>
                         </td>
                     </tr>
-                `).join('') : `<tr><td colspan="4" class="text-center p-6 text-gray-500 italic">No active users.</td></tr>`;
+                `).join('') : `<tr><td colspan="4" class="text-center p-8 text-blue-500/50 italic font-semibold">No active users.</td></tr>`;
 
-                // Logs
                 const sortedLogs = [...app.state.logs].reverse();
                 document.getElementById('admin-logs-list').innerHTML = sortedLogs.length ? sortedLogs.map(l => `
-                    <tr class="border-b border-gray-800 hover:bg-white/5 transition-colors">
-                        <td class="p-3 text-xs text-gray-400">${new Date(l.timestamp).toLocaleString()}</td>
-                        <td class="p-3 font-medium text-white">${l.name}</td>
-                        <td class="p-3">
-                            <span class="text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded bg-gray-800 border ${l.type === 'Arrival' ? 'border-green-400/30 text-green-400' : 'border-red-400/30 text-red-400'}">
+                    <tr class="hover:bg-blue-600/10 transition-colors">
+                        <td class="p-4 text-xs text-blue-300 font-mono">${new Date(l.timestamp).toLocaleString()}</td>
+                        <td class="p-4 font-bold text-white">${l.name}</td>
+                        <td class="p-4">
+                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-blue-950 border ${l.type === 'Arrival' ? 'border-green-400/50 text-green-400' : 'border-blue-400/50 text-blue-400'}">
                                 ${l.type}
                             </span>
                         </td>
-                        <td class="p-3 capitalize text-gray-400 text-xs">${l.role}</td>
+                        <td class="p-4 capitalize text-blue-400 text-xs font-bold">${l.role}</td>
                     </tr>
-                `).join('') : `<tr><td colspan="4" class="text-center p-6 text-gray-500 italic">No attendance logs yet.</td></tr>`;
+                `).join('') : `<tr><td colspan="4" class="text-center p-8 text-blue-500/50 italic font-semibold">No attendance logs yet.</td></tr>`;
 
-                // Settings
                 document.getElementById('setting-student-url').value = app.state.adminSettings.studentUrl || '';
             },
 
@@ -832,73 +1089,82 @@
                 const user = app.state.users.find(u => u.id === id);
                 if (user) {
                     user.status = 'approved';
-                    app.saveGlobalData();
-                    app.renderAdminDashboard();
+                    app.saveGlobalData('updateUser', user);
                     app.showToast(`${user.name} approved!`, 'success');
                 }
             },
 
-            rejectUser: (id) => {
+            rejectUser: async (id) => {
                 if(confirm("Are you sure you want to remove this user?")) {
-                    app.state.users = app.state.users.filter(u => u.id !== id);
-                    app.saveGlobalData();
-                    app.renderAdminDashboard();
+                    if (isFirebaseActive && auth && auth.currentUser) {
+                        try {
+                            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', id));
+                        } catch(e) {}
+                    } else {
+                        app.state.users = app.state.users.filter(u => u.id !== id);
+                        app.saveGlobalData('sync', null);
+                    }
                     app.showToast(`User removed.`, 'warning');
                 }
             },
 
-            clearLogs: () => {
-                if(confirm("Are you sure you want to clear all local logs?")) {
+            clearLogs: async () => {
+                if(confirm("Are you sure you want to clear local logs view? (Note: Sheets data remains safe)")) {
                     app.state.logs = [];
-                    app.saveGlobalData();
+                    if(!isFirebaseActive) app.saveGlobalData('sync', null);
                     app.renderAdminDashboard();
-                    app.showToast("Logs cleared.", "success");
+                    app.showToast("Logs cleared locally.", "success");
                 }
             },
 
             saveSettings: () => {
                 app.state.adminSettings.studentUrl = document.getElementById('setting-student-url').value;
                 localStorage.setItem('tcp_settings', JSON.stringify(app.state.adminSettings));
-                app.showToast("API URL Saved.", "success");
+                app.showToast("Google Sheets API URL Saved.", "success");
             },
 
-            // --- Cross-Tab Sync (Simulating Realtime) ---
-            saveGlobalData: () => {
-                localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
-                localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
-                window.dispatchEvent(new Event('storage'));
-            },
-
-            initSyncListener: () => {
-                window.addEventListener('storage', () => {
-                    app.state.users = JSON.parse(localStorage.getItem('tcp_all_users')) || [];
-                    app.state.logs = JSON.parse(localStorage.getItem('tcp_logs')) || [];
-                    
-                    if (app.state.currentView === 'terminal') {
-                        app.renderLiveFeed();
-                    } else if (app.state.currentView === 'admin-dashboard') {
-                        app.renderAdminDashboard();
-                    }
-                });
-            },
-
-            // --- Initialization ---
             init: () => {
                 document.getElementById('register-form').addEventListener('submit', app.registerUser);
                 document.getElementById('admin-login-form').addEventListener('submit', app.adminLogin);
-                app.initSyncListener();
-
-                // Responsive default view routing
-                if (window.innerWidth > 1024) {
-                    app.switchView('terminal');
-                } else {
-                    app.switchView('selector');
-                }
+                
+                app.initDatabase();
+                
+                if (window.innerWidth > 1024) app.switchView('terminal');
+                else app.switchView('selector');
             }
         };
 
-        // Boot App
-        window.onload = app.init;
+        window.app = app;
+        window.addEventListener('DOMContentLoaded', app.init);
     </script>
+    
+    <!--
+      *** GITHUB PAGES & GOOGLE SHEETS SETUP GUIDE ***
+      
+      GOOGLE SHEETS SCRIPT (doPost Webhook):
+      Use this updated robust version in your Apps Script:
+      
+        function doPost(e) {
+            var sheet = SpreadsheetApp.getActiveSpreadsheet();
+            try {
+                var data = JSON.parse(e.postData.contents);
+                var targetSheet = data.role === 'student' ? sheet.getSheetByName("Students") : sheet.getSheetByName("Teachers");
+                if (!targetSheet) {
+                    targetSheet = sheet.insertSheet(data.role === 'student' ? "Students" : "Teachers");
+                    if (data.role === 'student') targetSheet.appendRow(["Timestamp", "Type", "Name", "Reg No", "Course"]);
+                    else targetSheet.appendRow(["Timestamp", "Type", "Name"]);
+                }
+                
+                if (data.role === 'student') targetSheet.appendRow([data.timestamp, data.type, data.name, data.reg_no, data.course]);
+                else targetSheet.appendRow([data.timestamp, data.type, data.name]);
+                
+                return ContentService.createTextOutput(JSON.stringify({"status":"success"})).setMimeType(ContentService.MimeType.JSON);
+            } catch(error) {
+                return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": error.toString()})).setMimeType(ContentService.MimeType.JSON);
+            }
+        }
+        
+      Make sure to deploy as "Web App" -> Execute as "Me" -> Access "Anyone".
+    -->
 </body>
 </html>
