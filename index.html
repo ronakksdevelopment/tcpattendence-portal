@@ -405,6 +405,16 @@
                 </div>
                 
                 <div class="w-full relative">
+                    <!-- Manual PIN Entry -->
+                    <div id="manual-pin-entry" class="w-full flex flex-col gap-3 mb-4">
+                        <label class="text-xs text-blue-300 uppercase tracking-wider text-center font-bold">Enter 5-Digit Terminal PIN</label>
+                        <div class="flex gap-2 justify-center">
+                            <input type="text" id="pin-input" maxlength="5" class="glass-input w-full text-center text-3xl tracking-[0.5em] font-mono py-4 rounded-xl font-black uppercase" placeholder="-----">
+                        </div>
+                        <button onclick="window.app.submitPin()" class="btn-neon w-full py-3 rounded-xl font-bold text-sm">Submit PIN</button>
+                        <div class="text-center text-xs text-blue-400/50 uppercase tracking-widest font-bold mt-2 mb-2">- OR -</div>
+                    </div>
+
                     <!-- Scanner Viewport Container -->
                     <div id="reader-container" class="hidden">
                         <div id="reader" class="w-full h-full flex items-center justify-center text-blue-400 font-mono text-sm bg-black">
@@ -661,8 +671,10 @@
                 }
 
                 if (viewId === 'scanner') {
-                    document.getElementById('scanner-user-name').innerText = app.state.localUser.name;
-                    document.getElementById('scanner-role-icon').className = `ph ${app.state.localUser.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl`;
+                    if(app.state.localUser) {
+                        document.getElementById('scanner-user-name').innerText = app.state.localUser.name;
+                        document.getElementById('scanner-role-icon').className = `ph ${app.state.localUser.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl`;
+                    }
                     app.stopScannerUI(); // Make sure camera is reset
                 } else {
                     app.stopScanner();
@@ -877,7 +889,6 @@
             processAttendanceAttempt: async (submittedCode) => {
                 if (app.state.isProcessingScan) return;
                 app.state.isProcessingScan = true;
-                setTimeout(() => app.state.isProcessingScan = false, 6000); // Extended to accommodate GPS fetch
 
                 // Instantly stop camera UI
                 app.stopScannerUI();
@@ -893,21 +904,27 @@
                 if (isFirebaseActive && app.state.activeSessionCode !== '-----') {
                     isValid = (codeToCheck === app.state.activeSessionCode);
                 } else {
+                    // Fallback to accepting any 5-length code if P2P sync is offline/delayed
                     isValid = (codeToCheck.length === 5);
                 }
 
                 if (!isValid) {
+                    app.state.isProcessingScan = false;
                     return app.showToast("Invalid or Expired Session PIN.", "error");
                 }
 
                 // Check Admin Approval
                 if (app.state.localUser.status === 'pending') {
+                    app.state.isProcessingScan = false;
                     document.getElementById('approval-modal').classList.remove('hidden');
                     document.getElementById('approval-modal').classList.add('flex');
                     return;
                 }
 
-                app.submitAttendance();
+                await app.submitAttendance();
+                
+                // Release lock securely
+                setTimeout(() => app.state.isProcessingScan = false, 2000); 
             },
 
             submitApprovalModal: () => {
@@ -1011,6 +1028,7 @@
                 const locationData = await app.getLocation();
 
                 if (locationData.error) {
+                    app.state.isProcessingScan = false; // Release lock so user can retry immediately
                     app.showToast("Location access is required to mark attendance.", "error");
                     return; // Block attendance
                 }
@@ -1021,6 +1039,7 @@
                 const distanceKm = app.calculateDistance(INSTITUTE_LAT, INSTITUTE_LNG, locationData.lat, locationData.lng);
 
                 if (distanceKm > 1.0) {
+                    app.state.isProcessingScan = false; // Release lock
                     app.showToast(`Access Denied: You are ${distanceKm.toFixed(2)}km away from the institute. Must be within 1km.`, "error");
                     return; // Block attendance
                 }
@@ -1041,7 +1060,7 @@
                         reg_no: user.regNo || 'N/A',
                         course: user.course || 'N/A',
                         type: type,
-                        timestamp: new Date(timestamp).toLocaleString(),
+                        timestamp: new Date(timestamp).toLocaleString('en-US', { hour12: true }), // Explicit AM/PM formatting
                         location: userLocationStr
                     };
                     try {
@@ -1066,7 +1085,9 @@
                 
                 document.getElementById('popup-name').innerText = name;
                 document.getElementById('popup-action').innerText = `${type} Recorded`;
-                document.getElementById('popup-time').innerText = new Date(timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                // Standard 12-Hour format with AM/PM explicitly defined
+                document.getElementById('popup-time').innerText = new Date(timestamp).toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit', hour12: true});
                 
                 if (type === 'Arrival') {
                     popup.className = "fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-4 backdrop-blur-md";
@@ -1144,7 +1165,7 @@
                 const sortedLogs = [...app.state.logs].reverse();
                 document.getElementById('admin-logs-list').innerHTML = sortedLogs.length ? sortedLogs.map(l => `
                     <tr class="hover:bg-blue-600/10 transition-colors">
-                        <td class="p-4 text-xs text-blue-300 font-mono">${new Date(l.timestamp).toLocaleString()}</td>
+                        <td class="p-4 text-xs text-blue-300 font-mono">${new Date(l.timestamp).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short', hour12: true })}</td>
                         <td class="p-4 font-bold text-white">${l.name}</td>
                         <td class="p-4">
                             <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-blue-950 border ${l.type === 'Arrival' ? 'border-green-400/50 text-green-400' : 'border-blue-400/50 text-blue-400'}">
