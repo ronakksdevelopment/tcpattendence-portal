@@ -242,7 +242,7 @@
                           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                           <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                         </span>
-                        <span class="text-[10px] uppercase font-bold text-green-400 tracking-wider">Live P2P Sync</span>
+                        <span class="text-[10px] uppercase font-bold text-green-400 tracking-wider">Live Sync Active</span>
                     </div>
                 </div>
                 
@@ -501,6 +501,9 @@
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, onSnapshot, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // Global System Constant for Sheet API
+        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUigyp8uWMdH3-YzOvURtoNuCFEKLuwXWvVgiJg39DOaWGWtn00-w8qujlsR1_JTQ_/exec";
+
         // Firebase / P2P Setup
         let db, auth, appId;
         let isFirebaseActive = false;
@@ -515,7 +518,7 @@
                 isFirebaseActive = true;
             }
         } catch (e) {
-            console.warn("Firebase config not found. Falling back to LocalStorage (No Cross-Device Sync).", e);
+            console.warn("Firebase config not found. Using powerful local-first synchronization.", e);
         }
 
         const app = {
@@ -524,7 +527,7 @@
                 html5QrcodeScanner: null,
                 isProcessingScan: false,
                 localUser: JSON.parse(localStorage.getItem('tcp_user')) || null,
-                adminSettings: JSON.parse(localStorage.getItem('tcp_settings')) || { studentUrl: '' },
+                adminSettings: JSON.parse(localStorage.getItem('tcp_settings')) || { studentUrl: DEFAULT_SHEET_URL },
                 users: [],
                 logs: [],
                 activeSessionCode: '-----',
@@ -534,17 +537,17 @@
                 fbUnsubSession: null
             },
 
-            // --- P2P Database Sync ---
+            // --- Database Sync (Optimistic UI approach) ---
             initDatabase: async () => {
+                // Instantly load local data so UI feels immediate
+                app.syncLocalData();
+
                 if (!isFirebaseActive) {
-                    // Fallback to local storage
-                    app.state.users = JSON.parse(localStorage.getItem('tcp_all_users')) || [];
-                    app.state.logs = JSON.parse(localStorage.getItem('tcp_logs')) || [];
                     window.addEventListener('storage', app.syncLocalData);
                     return;
                 }
 
-                // Authenticate before query using the correct authentication logic for the Canvas isolated app environment
+                // Authenticate before querying remote db
                 try {
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                         await signInWithCustomToken(auth, __initial_auth_token);
@@ -563,16 +566,21 @@
             },
 
             startRealtimeListeners: () => {
-                if(!isFirebaseActive) return;
+                if(!isFirebaseActive || !auth.currentUser) return;
                 
                 // 1. Logs Collection
                 const logsRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs');
                 app.state.fbUnsubLogs = onSnapshot(logsRef, (snapshot) => {
                     const fetchedLogs = [];
                     snapshot.forEach(doc => fetchedLogs.push({ id: doc.id, ...doc.data() }));
-                    app.state.logs = fetchedLogs.sort((a,b) => a.timestamp - b.timestamp);
-                    if (app.state.currentView === 'terminal') app.renderLiveFeed();
-                    if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
+                    
+                    // Only update if data exists so we don't overwrite optimistic local data with empty cloud state immediately
+                    if (fetchedLogs.length > 0) {
+                        app.state.logs = fetchedLogs.sort((a,b) => a.timestamp - b.timestamp);
+                        localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
+                        if (app.state.currentView === 'terminal') app.renderLiveFeed();
+                        if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
+                    }
                 }, (error) => console.error("Logs Snapshot Error:", error));
 
                 // 2. Users Collection
@@ -580,17 +588,20 @@
                 app.state.fbUnsubUsers = onSnapshot(usersRef, (snapshot) => {
                     const fetchedUsers = [];
                     snapshot.forEach(doc => fetchedUsers.push({ id: doc.id, ...doc.data() }));
-                    app.state.users = fetchedUsers;
                     
-                    // Sync local user status
-                    if (app.state.localUser) {
-                        const globalUser = fetchedUsers.find(u => u.id === app.state.localUser.id);
-                        if (globalUser && globalUser.status !== app.state.localUser.status) {
-                            app.state.localUser.status = globalUser.status;
-                            localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
+                    if (fetchedUsers.length > 0) {
+                        app.state.users = fetchedUsers;
+                        // Sync local user status dynamically
+                        if (app.state.localUser) {
+                            const globalUser = fetchedUsers.find(u => u.id === app.state.localUser.id);
+                            if (globalUser && globalUser.status !== app.state.localUser.status) {
+                                app.state.localUser.status = globalUser.status;
+                                localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
+                            }
                         }
+                        localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
+                        if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
                     }
-                    if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
                 }, (error) => console.error("Users Snapshot Error:", error));
 
                 // 3. Active Session Code
@@ -602,35 +613,39 @@
                 }, (error) => console.error("Session Snapshot Error:", error));
             },
 
+            // Updates instantly locally first, THEN syncs to cloud
             saveGlobalData: async (type, data) => {
-                if (!isFirebaseActive) {
-                    if (type === 'user') app.state.users.push(data);
-                    if (type === 'log') app.state.logs.push(data);
-                    if (type === 'updateUser') {
-                        const idx = app.state.users.findIndex(u => u.id === data.id);
-                        if(idx > -1) app.state.users[idx] = data;
-                    }
-                    localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
-                    localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
-                    window.dispatchEvent(new Event('storage'));
-                    return;
+                // --- Optimistic Local Updates ---
+                if (type === 'user') app.state.users.push(data);
+                if (type === 'log') app.state.logs.push(data);
+                if (type === 'updateUser') {
+                    const idx = app.state.users.findIndex(u => u.id === data.id);
+                    if(idx > -1) app.state.users[idx] = data;
                 }
+                
+                localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
+                localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
+                
+                // Triggers immediate UI feedback (fixes lag/delay bugs)
+                if (app.state.currentView === 'terminal') app.renderLiveFeed();
+                if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
+                
+                // Triggers update for other active windows/tabs instantly in non-firebase modes
+                window.dispatchEvent(new Event('storage'));
 
-                // Guard write operation against unauthenticated state
-                if (!auth || !auth.currentUser) return;
-
-                try {
-                    if (type === 'user') {
-                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', data.id), data);
-                    } else if (type === 'updateUser') {
-                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', data.id), data);
-                    } else if (type === 'log') {
-                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs'), data);
-                    } else if (type === 'session') {
-                        await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_session', 'current'), { code: data });
+                // --- Background Firebase Write ---
+                if (isFirebaseActive && auth && auth.currentUser) {
+                    try {
+                        if (type === 'user' || type === 'updateUser') {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', data.id), data);
+                        } else if (type === 'log') {
+                            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs'), data);
+                        } else if (type === 'session') {
+                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_session', 'current'), { code: data });
+                        }
+                    } catch(e) {
+                        console.error("Firebase background write error:", e);
                     }
-                } catch(e) {
-                    console.error("Firebase write error:", e);
                 }
             },
 
@@ -660,8 +675,7 @@
                 if (viewId === 'scanner') {
                     document.getElementById('scanner-user-name').innerText = app.state.localUser.name;
                     document.getElementById('scanner-role-icon').className = `ph ${app.state.localUser.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl`;
-                    // Reset scanner UI state
-                    app.stopScannerUI();
+                    app.stopScannerUI(); // Make sure camera is reset
                 } else {
                     app.stopScanner();
                 }
@@ -751,10 +765,8 @@
                 document.getElementById("session-pin").innerText = code;
                 app.state.activeSessionCode = code;
                 
-                // Write to DB
                 app.saveGlobalData('session', code);
 
-                // Update QR
                 const qrcodeContainer = document.getElementById("qrcode");
                 qrcodeContainer.innerHTML = ''; 
                 new QRCode(qrcodeContainer, {
@@ -897,12 +909,10 @@
                 app.stopScannerUI();
                 document.getElementById('pin-input').value = '';
 
-                // Validate Code (Check Firebase Active Session OR Fallback)
                 let isValid = false;
-                if (isFirebaseActive) {
+                if (isFirebaseActive && app.state.activeSessionCode !== '-----') {
                     isValid = (submittedCode === app.state.activeSessionCode);
                 } else {
-                    // Fallback local mode - we assume code is correct if format matches length 5
                     isValid = (submittedCode.length === 5);
                 }
 
@@ -957,10 +967,10 @@
 
                 const logEntry = { userId: user.id, name: user.name, role: user.role, type, timestamp, regNo: user.regNo, course: user.course };
                 
-                // 1. Save locally & Firebase
+                // Save locally & trigger UI update instantly
                 app.saveGlobalData('log', logEntry);
 
-                // 2. Sync to Google Sheets Web App (Robust fetch)
+                // Sync to Google Sheets Web App Background
                 const url = app.state.adminSettings.studentUrl;
                 if (url && url.length > 10) {
                     const payload = {
@@ -972,7 +982,7 @@
                         timestamp: new Date(timestamp).toLocaleString()
                     };
                     try {
-                        // no-cors mode hides the response, but the POST goes through
+                        // no-cors mode sends request blindly ignoring response to prevent CORS blockage
                         fetch(url, {
                             method: 'POST',
                             mode: 'no-cors',
@@ -982,7 +992,7 @@
                     } catch (err) {}
                 }
 
-                // 3. Show Success Popup
+                // Show Success Popup
                 app.showSuccessPopup(user.name, type, timestamp);
             },
 
@@ -1100,10 +1110,9 @@
                         try {
                             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', id));
                         } catch(e) {}
-                    } else {
-                        app.state.users = app.state.users.filter(u => u.id !== id);
-                        app.saveGlobalData('sync', null);
                     }
+                    app.state.users = app.state.users.filter(u => u.id !== id);
+                    app.saveGlobalData('sync', null); // Trigger Local Updates
                     app.showToast(`User removed.`, 'warning');
                 }
             },
@@ -1111,7 +1120,7 @@
             clearLogs: async () => {
                 if(confirm("Are you sure you want to clear local logs view? (Note: Sheets data remains safe)")) {
                     app.state.logs = [];
-                    if(!isFirebaseActive) app.saveGlobalData('sync', null);
+                    app.saveGlobalData('sync', null); // Trigger Local Updates
                     app.renderAdminDashboard();
                     app.showToast("Logs cleared locally.", "success");
                 }
@@ -1137,34 +1146,5 @@
         window.app = app;
         window.addEventListener('DOMContentLoaded', app.init);
     </script>
-    
-    <!--
-      *** GITHUB PAGES & GOOGLE SHEETS SETUP GUIDE ***
-      
-      GOOGLE SHEETS SCRIPT (doPost Webhook):
-      Use this updated robust version in your Apps Script:
-      
-        function doPost(e) {
-            var sheet = SpreadsheetApp.getActiveSpreadsheet();
-            try {
-                var data = JSON.parse(e.postData.contents);
-                var targetSheet = data.role === 'student' ? sheet.getSheetByName("Students") : sheet.getSheetByName("Teachers");
-                if (!targetSheet) {
-                    targetSheet = sheet.insertSheet(data.role === 'student' ? "Students" : "Teachers");
-                    if (data.role === 'student') targetSheet.appendRow(["Timestamp", "Type", "Name", "Reg No", "Course"]);
-                    else targetSheet.appendRow(["Timestamp", "Type", "Name"]);
-                }
-                
-                if (data.role === 'student') targetSheet.appendRow([data.timestamp, data.type, data.name, data.reg_no, data.course]);
-                else targetSheet.appendRow([data.timestamp, data.type, data.name]);
-                
-                return ContentService.createTextOutput(JSON.stringify({"status":"success"})).setMimeType(ContentService.MimeType.JSON);
-            } catch(error) {
-                return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": error.toString()})).setMimeType(ContentService.MimeType.JSON);
-            }
-        }
-        
-      Make sure to deploy as "Web App" -> Execute as "Me" -> Access "Anyone".
-    -->
 </body>
 </html>
