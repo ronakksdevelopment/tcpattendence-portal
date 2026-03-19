@@ -100,7 +100,7 @@
         /* Animations */
         .fade-in { animation: fadeIn 0.5s ease forwards; }
         .slide-up { animation: slideUp 0.5s ease forwards; }
-        .pulse-qr { animation: pulseQR 2s infinite; }
+        .pulse-qr { animation: pulseQR 3s infinite; }
         
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -113,26 +113,28 @@
         }
 
         @keyframes pulseQR {
-            0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 243, 255, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.3); }
+            50% { box-shadow: 0 0 0 15px rgba(0, 243, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
         }
 
-        /* Timer Ring */
-        .timer-ring {
-            transition: stroke-dashoffset 1s linear;
-        }
-
-        /* QR Scanner customization */
+        /* QR Scanner customization for mobile */
         #reader {
+            width: 100% !important;
             border: none !important;
             border-radius: 1rem;
             overflow: hidden;
+            background: #000;
         }
         #reader video {
+            width: 100% !important;
+            height: auto !important;
             object-fit: cover;
             border-radius: 1rem;
+            display: block;
         }
+        /* Hide html5-qrcode standard annoying elements if any appear */
+        #reader img, #reader span { display: none !important; }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
@@ -148,15 +150,15 @@
     <!-- Header (Always visible) -->
     <header class="w-full p-4 flex justify-between items-center glass rounded-b-2xl sticky top-0 z-50 max-w-7xl mx-auto">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full border-2 border-[#00f3ff] flex items-center justify-center text-neon shadow-[0_0_10px_rgba(0,243,255,0.5)]">
+            <div class="w-10 h-10 rounded-full border-2 border-[#00f3ff] flex items-center justify-center text-neon shadow-[0_0_10px_rgba(0,243,255,0.5)] shrink-0">
                 <i class="ph ph-cpu text-2xl"></i>
             </div>
             <div>
-                <h1 class="font-bold text-lg md:text-xl tracking-wider">THE COMPUTER POINT</h1>
+                <h1 class="font-bold text-base md:text-xl tracking-wider truncate">THE COMPUTER POINT</h1>
                 <p class="text-[10px] md:text-xs text-cyan-400 opacity-80 uppercase tracking-widest">Agartala, Tripura</p>
             </div>
         </div>
-        <div id="header-actions" class="flex gap-2">
+        <div id="header-actions" class="flex gap-2 shrink-0">
             <!-- Dynamic buttons will appear here -->
         </div>
     </header>
@@ -164,13 +166,13 @@
     <!-- Main Content Area -->
     <main id="main-container" class="flex-grow w-full max-w-7xl mx-auto p-4 flex flex-col items-center justify-center relative relative">
         
-        <!-- VIEW 0: MODE SELECTOR (Auto-detects usually, but good for testing) -->
-        <section id="view-selector" class="w-full max-w-md glass rounded-3xl p-8 slide-up flex flex-col gap-6 text-center">
+        <!-- VIEW 0: MODE SELECTOR -->
+        <section id="view-selector" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up flex flex-col gap-6 text-center">
             <h2 class="text-2xl font-bold text-neon mb-2">Select Operation Mode</h2>
             <p class="text-gray-400 text-sm mb-4">Choose how this device will be used in the attendance system.</p>
             
             <button onclick="app.switchView('terminal')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
-                <i class="ph ph-desktop text-2xl"></i> PC Terminal (QR Generator)
+                <i class="ph ph-desktop text-2xl"></i> PC Terminal (Admin)
             </button>
             <button onclick="app.switchView('mobile-role')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
                 <i class="ph ph-device-mobile-camera text-2xl"></i> Mobile Scanner
@@ -178,26 +180,26 @@
         </section>
 
         <!-- VIEW 1: PC TERMINAL (QR GENERATOR) -->
-        <section id="view-terminal" class="w-full max-w-4xl slide-up hidden-view flex flex-col lg:flex-row items-center justify-center gap-10">
+        <section id="view-terminal" class="w-full max-w-5xl slide-up hidden-view flex flex-col lg:flex-row items-center justify-center gap-8">
             <!-- Left: QR Code -->
-            <div class="glass p-10 rounded-3xl flex flex-col items-center justify-center gap-6 relative border-neon pulse-qr">
-                <h2 class="text-2xl font-bold text-white tracking-widest uppercase">Scan to Mark Attendance</h2>
-                
-                <div class="bg-white p-4 rounded-xl">
-                    <div id="qrcode" class="w-64 h-64"></div>
+            <div class="glass p-8 md:p-12 rounded-3xl flex flex-col items-center justify-center gap-8 relative border-neon pulse-qr w-full lg:w-auto">
+                <div class="text-center">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-widest uppercase mb-2">Attendance Terminal</h2>
+                    <p class="text-gray-400 text-sm">Scan using your mobile device</p>
                 </div>
                 
-                <div class="flex items-center gap-4 text-gray-300">
-                    <i class="ph ph-clock text-2xl text-neon"></i>
-                    <div>
-                        <p class="text-xs uppercase tracking-wider">QR Refreshes In</p>
-                        <p id="qr-timer" class="text-xl font-bold text-neon">30s</p>
-                    </div>
+                <div class="bg-white p-4 rounded-2xl shadow-[0_0_30px_rgba(0,243,255,0.2)]">
+                    <div id="qrcode" class="w-64 h-64 md:w-72 md:h-72 flex justify-center items-center"></div>
+                </div>
+                
+                <div class="flex items-center gap-2 text-cyan-400 bg-cyan-900/30 px-4 py-2 rounded-full border border-cyan-500/30">
+                    <i class="ph ph-shield-check text-xl"></i>
+                    <span class="text-xs uppercase tracking-wider font-semibold">Secure Static QR Active</span>
                 </div>
             </div>
 
             <!-- Right: Live Feed -->
-            <div class="glass p-6 rounded-3xl w-full lg:w-96 min-h-[400px] flex flex-col">
+            <div class="glass p-6 rounded-3xl w-full lg:w-[400px] min-h-[450px] flex flex-col">
                 <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-4">
                     <h3 class="font-bold text-lg flex items-center gap-2"><i class="ph ph-activity text-neon"></i> Live Feed</h3>
                     <span class="relative flex h-3 w-3">
@@ -206,14 +208,14 @@
                     </span>
                 </div>
                 
-                <div id="live-feed" class="flex-grow flex flex-col gap-3 overflow-y-auto max-h-[350px] pr-2">
+                <div id="live-feed" class="flex-grow flex flex-col gap-3 overflow-y-auto max-h-[400px] pr-2">
                     <div class="text-center text-gray-500 mt-10 italic">Waiting for scans...</div>
                 </div>
             </div>
         </section>
 
         <!-- VIEW 2: ADMIN LOGIN -->
-        <section id="view-admin-login" class="w-full max-w-md glass rounded-3xl p-8 slide-up hidden-view flex flex-col gap-6">
+        <section id="view-admin-login" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6">
             <h2 class="text-2xl font-bold text-center text-neon">Admin Portal</h2>
             <form id="admin-login-form" class="flex flex-col gap-4">
                 <div>
@@ -237,19 +239,19 @@
 
         <!-- VIEW 3: ADMIN DASHBOARD -->
         <section id="view-admin-dashboard" class="w-full slide-up hidden-view flex flex-col gap-6">
-            <div class="glass rounded-2xl p-4 flex gap-4 overflow-x-auto">
-                <button onclick="app.adminTab('approvals')" class="admin-tab px-4 py-2 rounded-lg bg-cyan-900/50 text-cyan-400 border border-cyan-400/50">Pending Approvals</button>
-                <button onclick="app.adminTab('users')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white">All Users</button>
-                <button onclick="app.adminTab('logs')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white">Attendance Logs</button>
-                <button onclick="app.adminTab('settings')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white">API Settings</button>
+            <div class="glass rounded-2xl p-4 flex gap-2 md:gap-4 overflow-x-auto whitespace-nowrap">
+                <button onclick="app.adminTab('approvals')" class="admin-tab px-4 py-2 rounded-lg bg-cyan-900/50 text-cyan-400 border border-cyan-400/50 text-sm">Pending Approvals</button>
+                <button onclick="app.adminTab('users')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm">All Users</button>
+                <button onclick="app.adminTab('logs')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm">Attendance Logs</button>
+                <button onclick="app.adminTab('settings')" class="admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm">API Settings</button>
             </div>
 
-            <div class="glass rounded-3xl p-6 min-h-[400px]">
+            <div class="glass rounded-3xl p-4 md:p-6 min-h-[400px]">
                 <!-- Tab: Approvals -->
                 <div id="tab-approvals" class="admin-content">
                     <h3 class="text-xl font-bold mb-4 text-neon">Pending Registrations</h3>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                        <table class="w-full text-left border-collapse min-w-[500px]">
                             <thead>
                                 <tr class="border-b border-gray-700 text-gray-400 text-sm">
                                     <th class="p-3">Role</th>
@@ -267,7 +269,7 @@
                 <div id="tab-users" class="admin-content hidden-view">
                     <h3 class="text-xl font-bold mb-4 text-neon">Manage Users</h3>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                        <table class="w-full text-left border-collapse min-w-[500px]">
                             <thead>
                                 <tr class="border-b border-gray-700 text-gray-400 text-sm">
                                     <th class="p-3">Role</th>
@@ -288,7 +290,7 @@
                         <button onclick="app.clearLogs()" class="text-xs text-red-400 hover:text-red-300 border border-red-500/30 px-3 py-1 rounded">Clear Logs</button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                        <table class="w-full text-left border-collapse min-w-[500px]">
                             <thead>
                                 <tr class="border-b border-gray-700 text-gray-400 text-sm">
                                     <th class="p-3">Time</th>
@@ -308,12 +310,8 @@
                     <div class="flex flex-col gap-5">
                         <p class="text-sm text-gray-400 mb-2">Paste your Google Apps Script Web App URLs below to enable automatic data saving to Google Sheets.</p>
                         <div>
-                            <label class="text-xs text-gray-400 uppercase mb-1 block">Student Sheet Web App URL</label>
+                            <label class="text-xs text-gray-400 uppercase mb-1 block">Student & Teacher Web App URL</label>
                             <input type="text" id="setting-student-url" class="glass-input w-full px-4 py-3 rounded-xl" placeholder="https://script.google.com/macros/s/.../exec">
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-400 uppercase mb-1 block">Teacher Sheet Web App URL</label>
-                            <input type="text" id="setting-teacher-url" class="glass-input w-full px-4 py-3 rounded-xl" placeholder="https://script.google.com/macros/s/.../exec">
                         </div>
                         <button onclick="app.saveSettings()" class="btn-neon w-full py-3 rounded-xl font-bold mt-4">Save Settings</button>
                     </div>
@@ -322,7 +320,7 @@
         </section>
 
         <!-- VIEW 4: MOBILE ROLE SELECTOR -->
-        <section id="view-mobile-role" class="w-full max-w-md glass rounded-3xl p-8 slide-up hidden-view flex flex-col gap-6 text-center">
+        <section id="view-mobile-role" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6 text-center">
             <h2 class="text-2xl font-bold text-neon mb-2">Identify Yourself</h2>
             <p class="text-gray-400 text-sm mb-6">Are you a student or a teacher at The Computer Point?</p>
             
@@ -338,7 +336,7 @@
         </section>
 
         <!-- VIEW 5: REGISTRATION FORM -->
-        <section id="view-register" class="w-full max-w-md glass rounded-3xl p-8 slide-up hidden-view flex flex-col gap-6">
+        <section id="view-register" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6">
             <h2 class="text-2xl font-bold text-center text-neon" id="reg-title">Registration</h2>
             <form id="register-form" class="flex flex-col gap-4">
                 <div id="reg-no-group">
@@ -360,41 +358,52 @@
 
         <!-- ADMIN APPROVAL MODAL (Triggered during scan if unapproved) -->
         <div id="approval-modal" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm">
-            <div class="glass rounded-3xl p-8 w-full max-w-sm flex flex-col gap-4 relative slide-up border border-cyan-400/50">
+            <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative slide-up border border-cyan-400/50 shadow-[0_0_30px_rgba(0,243,255,0.2)]">
                 <div class="w-16 h-16 rounded-full border-4 border-yellow-500 flex items-center justify-center text-yellow-500 mx-auto mb-2">
                     <i class="ph ph-shield-warning text-3xl"></i>
                 </div>
-                <h3 class="text-xl font-bold text-neon text-center mb-2">Admin Approval</h3>
-                <p class="text-xs text-gray-400 text-center mb-4">This device is not yet approved. Admin must enter credentials to authorize this scan.</p>
+                <h3 class="text-xl font-bold text-neon text-center mb-2">Admin Approval Required</h3>
+                <p class="text-xs text-gray-400 text-center mb-4">Admin must enter credentials on this device to authorize it for attendance.</p>
                 
                 <input type="text" id="modal-admin-user" class="glass-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Admin Username">
                 <input type="password" id="modal-admin-pass" class="glass-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Admin Password">
                 
                 <div class="flex gap-2 mt-4">
-                    <button onclick="app.closeApprovalModal()" class="flex-1 py-3 rounded-xl font-bold text-sm bg-gray-800 text-gray-300 hover:bg-gray-700">Cancel</button>
-                    <button onclick="app.submitApprovalModal()" class="btn-neon flex-1 py-3 rounded-xl font-bold text-sm">Approve Device</button>
+                    <button onclick="app.closeApprovalModal()" class="flex-1 py-3 rounded-xl font-bold text-sm bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 transition-colors">Cancel</button>
+                    <button onclick="app.submitApprovalModal()" class="btn-neon flex-1 py-3 rounded-xl font-bold text-sm">Approve</button>
                 </div>
             </div>
         </div>
 
         <!-- VIEW 7: SCANNER -->
-        <section id="view-scanner" class="w-full max-w-md slide-up hidden-view flex flex-col gap-6">
-            <div class="glass rounded-3xl p-4 flex flex-col items-center gap-4">
-                <div class="w-full flex justify-between items-center px-2">
+        <section id="view-scanner" class="w-full max-w-md slide-up hidden-view flex flex-col gap-4">
+            <div class="glass rounded-3xl p-5 md:p-6 flex flex-col items-center gap-4">
+                <div class="w-full flex justify-between items-center px-1">
                     <div class="text-left">
-                        <p class="text-xs text-gray-400 uppercase">Welcome back,</p>
-                        <p class="font-bold text-neon truncate max-w-[200px]" id="scanner-user-name">User</p>
+                        <p class="text-xs text-gray-400 uppercase tracking-wider">Welcome back,</p>
+                        <p class="font-bold text-neon truncate max-w-[200px] text-lg" id="scanner-user-name">User</p>
                     </div>
-                    <button onclick="app.clearLocalUser()" class="text-xs bg-red-500/20 text-red-400 px-3 py-1 rounded-lg border border-red-500/50 hover:bg-red-500/40">Logout</button>
+                    <button onclick="app.clearLocalUser()" class="text-xs bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg border border-red-500/50 hover:bg-red-500/40 transition-colors flex items-center gap-1">
+                        <i class="ph ph-sign-out"></i> Logout
+                    </button>
                 </div>
                 
-                <div class="w-full aspect-square relative rounded-2xl overflow-hidden border-2 border-neon box-shadow-[0_0_15px_rgba(0,243,255,0.3)] bg-black" id="reader"></div>
+                <!-- Scanner Viewport Container -->
+                <div class="w-full aspect-square relative rounded-2xl border-2 border-neon bg-black shadow-[0_0_20px_rgba(0,243,255,0.2)] flex items-center justify-center overflow-hidden">
+                    <div id="reader" class="w-full h-full flex items-center justify-center text-gray-500 text-sm">
+                        Initializing Camera...
+                    </div>
+                </div>
                 
-                <p class="text-sm text-center text-gray-300">Point your camera at the Terminal QR code to mark your attendance.</p>
+                <p class="text-xs md:text-sm text-center text-gray-300 mt-2 px-2">Point your camera at the Terminal QR code to mark your attendance.</p>
                 
-                <div class="flex gap-2 w-full">
-                    <button onclick="app.startScanner()" class="btn-neon flex-1 py-3 rounded-xl font-bold text-sm">Start Camera</button>
-                    <button onclick="app.stopScanner()" class="bg-gray-800 border border-gray-600 flex-1 py-3 rounded-xl font-bold text-sm hover:bg-gray-700">Stop</button>
+                <div class="flex gap-2 w-full mt-2">
+                    <button onclick="app.startScanner()" class="btn-neon flex-1 py-3 rounded-xl font-bold text-sm flex justify-center items-center gap-2">
+                        <i class="ph ph-camera"></i> Start Scan
+                    </button>
+                    <button onclick="app.stopScanner()" class="bg-gray-800 border border-gray-600 flex-1 py-3 rounded-xl font-bold text-sm text-gray-300 hover:bg-gray-700 transition-colors">
+                        Stop
+                    </button>
                 </div>
             </div>
         </section>
@@ -407,7 +416,7 @@
     </footer>
 
     <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3"></div>
+    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[200] flex flex-col gap-3 w-[90%] max-w-sm pointer-events-none"></div>
 
     <!-- Application Logic -->
     <script>
@@ -416,15 +425,17 @@
          * Architecture: Pure Frontend (HTML/CSS/JS)
          * Storage: LocalStorage (Simulated Backend) + Google Apps Script integration
          */
+        
+        // Static secure token for reliable scanning (No timeouts)
+        const STATIC_QR_TOKEN = "TCP_ATTENDANCE_VALID";
+        
         const app = {
             state: {
                 currentView: 'selector',
-                terminalRole: false,
-                qrInterval: null,
-                qrToken: null,
                 html5QrcodeScanner: null,
+                isProcessingScan: false,
                 localUser: JSON.parse(localStorage.getItem('tcp_user')) || null,
-                adminSettings: JSON.parse(localStorage.getItem('tcp_settings')) || { studentUrl: '', teacherUrl: '' },
+                adminSettings: JSON.parse(localStorage.getItem('tcp_settings')) || { studentUrl: '' },
                 users: JSON.parse(localStorage.getItem('tcp_all_users')) || [],
                 logs: JSON.parse(localStorage.getItem('tcp_logs')) || []
             },
@@ -436,16 +447,12 @@
                 document.getElementById(`view-${viewId}`).classList.remove('hidden-view');
                 app.state.currentView = viewId;
 
-                // View specific initializations
                 app.updateHeaderActions();
                 
                 if (viewId === 'terminal') {
-                    app.state.terminalRole = true;
                     app.generateQR();
                     app.renderLiveFeed();
-                } else {
-                    app.stopQR();
-                }
+                } 
 
                 if (viewId === 'scanner') {
                     document.getElementById('scanner-user-name').innerText = app.state.localUser.name;
@@ -466,23 +473,22 @@
                 if (['terminal', 'admin-login', 'admin-dashboard'].includes(app.state.currentView)) {
                     if (app.state.currentView !== 'admin-dashboard') {
                         const btn = document.createElement('button');
-                        btn.className = 'text-xs md:text-sm px-3 py-1.5 rounded border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-darkBg transition-all flex items-center gap-1';
-                        btn.innerHTML = '<i class="ph ph-shield-check"></i> Admin';
+                        btn.className = 'text-xs md:text-sm px-3 py-1.5 rounded border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-darkBg transition-all flex items-center gap-1 font-medium';
+                        btn.innerHTML = '<i class="ph ph-shield-check text-lg"></i> Admin';
                         btn.onclick = () => app.switchView('admin-login');
                         container.appendChild(btn);
                     } else {
                         const btn = document.createElement('button');
-                        btn.className = 'text-xs md:text-sm px-3 py-1.5 rounded bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500/40 transition-all flex items-center gap-1';
-                        btn.innerHTML = '<i class="ph ph-sign-out"></i> Logout';
+                        btn.className = 'text-xs md:text-sm px-3 py-1.5 rounded bg-red-500/20 text-red-400 border border-red-500/50 hover:bg-red-500/40 transition-all flex items-center gap-1 font-medium';
+                        btn.innerHTML = '<i class="ph ph-sign-out text-lg"></i> Logout';
                         btn.onclick = () => app.switchView('terminal');
                         container.appendChild(btn);
                     }
                 }
                 
-                // Dev/Test mode switch
                 const switchBtn = document.createElement('button');
-                switchBtn.className = 'text-xs px-2 py-1 rounded bg-gray-800 text-gray-400 border border-gray-600 hover:bg-gray-700 ml-2';
-                switchBtn.innerHTML = '<i class="ph ph-swap"></i> Mode';
+                switchBtn.className = 'text-xs md:text-sm px-2 py-1.5 rounded bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 transition-colors ml-2 flex items-center gap-1';
+                switchBtn.innerHTML = '<i class="ph ph-arrows-left-right text-lg"></i> Mode';
                 switchBtn.onclick = () => {
                     app.stopScanner();
                     app.switchView('selector');
@@ -494,9 +500,9 @@
                 const container = document.getElementById('toast-container');
                 const toast = document.createElement('div');
                 const colors = {
-                    success: 'border-cyan-400 bg-cyan-900/40 text-cyan-100 shadow-[0_0_10px_rgba(0,243,255,0.2)]',
-                    error: 'border-red-500 bg-red-900/40 text-red-100 shadow-[0_0_10px_rgba(255,0,0,0.2)]',
-                    warning: 'border-yellow-500 bg-yellow-900/40 text-yellow-100 shadow-[0_0_10px_rgba(255,255,0,0.2)]'
+                    success: 'border-cyan-400 bg-cyan-900/90 text-cyan-100 shadow-[0_5px_15px_rgba(0,243,255,0.3)]',
+                    error: 'border-red-500 bg-red-900/90 text-red-100 shadow-[0_5px_15px_rgba(255,0,0,0.3)]',
+                    warning: 'border-yellow-500 bg-yellow-900/90 text-yellow-100 shadow-[0_5px_15px_rgba(255,255,0,0.3)]'
                 };
                 const icons = {
                     success: 'ph-check-circle',
@@ -504,12 +510,12 @@
                     warning: 'ph-warning'
                 };
 
-                toast.className = `glass flex items-center gap-3 px-4 py-3 rounded-xl border-l-4 ${colors[type]} fade-in translate-y-0 opacity-100 transition-all duration-300 max-w-sm`;
-                toast.innerHTML = `<i class="ph ${icons[type]} text-2xl"></i><p class="text-sm font-medium">${message}</p>`;
+                toast.className = `glass flex items-center gap-3 px-4 py-3 rounded-xl border-l-4 ${colors[type]} slide-up transition-all duration-300 pointer-events-auto backdrop-blur-xl`;
+                toast.innerHTML = `<i class="ph ${icons[type]} text-2xl shrink-0"></i><p class="text-sm font-medium">${message}</p>`;
                 
                 container.appendChild(toast);
                 setTimeout(() => {
-                    toast.classList.add('opacity-0', 'translate-y-2');
+                    toast.classList.add('opacity-0', '-translate-y-4');
                     setTimeout(() => toast.remove(), 300);
                 }, 4000);
             },
@@ -517,39 +523,22 @@
             // --- Terminal & QR Logic ---
             generateQR: () => {
                 const qrcodeContainer = document.getElementById("qrcode");
-                let timeLeft = 30;
+                qrcodeContainer.innerHTML = ''; // Clear existing
                 
-                const updateQR = () => {
-                    qrcodeContainer.innerHTML = '';
-                    app.state.qrToken = `TCP_${Date.now()}`;
-                    new QRCode(qrcodeContainer, {
-                        text: app.state.qrToken,
-                        width: 256,
-                        height: 256,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.H
-                    });
-                    timeLeft = 30;
-                    document.getElementById('qr-timer').innerText = `${timeLeft}s`;
-                };
-
-                updateQR();
-                app.state.qrInterval = setInterval(() => {
-                    timeLeft--;
-                    document.getElementById('qr-timer').innerText = `${timeLeft}s`;
-                    if (timeLeft <= 0) updateQR();
-                }, 1000);
-            },
-
-            stopQR: () => {
-                if (app.state.qrInterval) clearInterval(app.state.qrInterval);
+                new QRCode(qrcodeContainer, {
+                    text: STATIC_QR_TOKEN,
+                    width: 288, // Slightly larger
+                    height: 288,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
             },
 
             renderLiveFeed: () => {
                 const feed = document.getElementById('live-feed');
                 const today = new Date().toDateString();
-                const todayLogs = app.state.logs.filter(l => new Date(l.timestamp).toDateString() === today).reverse().slice(0, 10);
+                const todayLogs = app.state.logs.filter(l => new Date(l.timestamp).toDateString() === today).reverse().slice(0, 15);
                 
                 if (todayLogs.length === 0) {
                     feed.innerHTML = '<div class="text-center text-gray-500 mt-10 italic">Waiting for scans...</div>';
@@ -559,15 +548,15 @@
                 feed.innerHTML = todayLogs.map(log => `
                     <div class="glass p-3 rounded-xl flex items-center justify-between border-l-4 ${log.type === 'Arrival' ? 'border-green-400' : 'border-red-400'} slide-up">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center shrink-0">
                                 <i class="ph ${log.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl text-gray-300"></i>
                             </div>
-                            <div>
-                                <p class="font-bold text-white text-sm">${log.name}</p>
-                                <p class="text-xs text-gray-400">${log.type} • ${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                            <div class="overflow-hidden">
+                                <p class="font-bold text-white text-sm truncate w-[130px] sm:w-[160px]">${log.name}</p>
+                                <p class="text-[11px] text-gray-400">${log.type} • ${new Date(log.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                             </div>
                         </div>
-                        <span class="text-xs px-2 py-1 rounded bg-gray-800 border ${log.type === 'Arrival' ? 'border-green-400/30 text-green-400' : 'border-red-400/30 text-red-400'}">
+                        <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-gray-800 border ${log.type === 'Arrival' ? 'border-green-400/30 text-green-400' : 'border-red-400/30 text-red-400'} shrink-0">
                             ${log.type}
                         </span>
                     </div>
@@ -610,7 +599,7 @@
                 app.state.users.push(newUser);
                 app.saveGlobalData();
                 
-                app.showToast('Registration complete. Please scan to verify.', 'success');
+                app.showToast('Registration complete. Scan QR on Terminal to verify.', 'success');
                 app.switchView('scanner');
             },
 
@@ -623,55 +612,52 @@
 
             // --- Scanner Logic ---
             startScanner: () => {
-                const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
-                
                 if (!app.state.html5QrcodeScanner) {
                     app.state.html5QrcodeScanner = new Html5Qrcode("reader");
                 }
 
                 if (app.state.html5QrcodeScanner.isScanning) return;
 
+                // Adjust config for reliable mobile scanning
+                const config = { 
+                    fps: 10, 
+                    qrbox: { width: 250, height: 250 },
+                    aspectRatio: 1.0 // Force square ratio for UI consistency
+                };
+
                 app.state.html5QrcodeScanner.start(
                     { facingMode: "environment" },
                     config,
-                    (decodedText, decodedResult) => app.handleScan(decodedText),
-                    (errorMessage) => { /* Ignore standard scan errors */ }
+                    (decodedText) => app.handleScan(decodedText),
+                    (errorMessage) => { /* Ignore harmless scanning logs */ }
                 ).catch((err) => {
-                    console.error(err);
-                    app.showToast("Camera access denied or unavailable.", "error");
+                    console.error("Camera Error:", err);
+                    app.showToast("Camera access required. Please grant permissions.", "error");
                 });
             },
 
             stopScanner: () => {
                 if (app.state.html5QrcodeScanner && app.state.html5QrcodeScanner.isScanning) {
-                    app.state.html5QrcodeScanner.stop().catch(err => console.error(err));
+                    app.state.html5QrcodeScanner.stop().catch(err => console.error("Error stopping scanner:", err));
                 }
             },
 
             handleScan: (text) => {
-                // Throttle scans to prevent multi-fires
+                // Prevent duplicate rapid scans
                 if (app.state.isProcessingScan) return;
                 app.state.isProcessingScan = true;
-                setTimeout(() => app.state.isProcessingScan = false, 3000);
+                setTimeout(() => app.state.isProcessingScan = false, 3000); // 3 sec cooldown
 
                 app.stopScanner();
 
-                // Validate QR Format
-                if (!text.startsWith('TCP_')) {
-                    app.showToast("Invalid QR Code.", "error");
+                // Validate Static QR Format
+                if (text !== STATIC_QR_TOKEN) {
+                    app.showToast("Invalid QR Code recognized.", "error");
                     setTimeout(app.startScanner, 2000);
                     return;
                 }
 
-                // Validate Expiry (30s window + 5s buffer)
-                const qrTime = parseInt(text.split('_')[1]);
-                if (Date.now() - qrTime > 35000) {
-                    app.showToast("QR Code Expired. Please scan the latest one.", "error");
-                    setTimeout(app.startScanner, 2000);
-                    return;
-                }
-
-                // Check if user is approved
+                // Check if user needs Admin Approval
                 if (app.state.localUser.status === 'pending') {
                     document.getElementById('approval-modal').classList.remove('hidden');
                     document.getElementById('approval-modal').classList.add('flex');
@@ -684,7 +670,7 @@
             closeApprovalModal: () => {
                 document.getElementById('approval-modal').classList.add('hidden');
                 document.getElementById('approval-modal').classList.remove('flex');
-                app.showToast('Scan cancelled. Approval required to mark attendance.', 'warning');
+                app.showToast('Scan cancelled. Admin approval required.', 'warning');
                 setTimeout(app.startScanner, 2000);
             },
 
@@ -697,7 +683,7 @@
                     app.state.localUser.status = 'approved';
                     localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
                     
-                    // Update Global User
+                    // Update Global User Array
                     const globalUser = app.state.users.find(user => user.id === app.state.localUser.id);
                     if (globalUser) {
                         globalUser.status = 'approved';
@@ -723,7 +709,7 @@
                 const user = app.state.localUser;
                 const today = new Date().toDateString();
                 
-                // Determine Arrival vs Departure
+                // Determine Arrival vs Departure based on today's logs for this user
                 const userTodayLogs = app.state.logs.filter(l => l.userId === user.id && new Date(l.timestamp).toDateString() === today);
                 const isArrival = userTodayLogs.length === 0 || userTodayLogs.length % 2 === 0;
                 const type = isArrival ? 'Arrival' : 'Departure';
@@ -731,12 +717,12 @@
 
                 const logEntry = { userId: user.id, name: user.name, role: user.role, type, timestamp, regNo: user.regNo, course: user.course };
                 
-                // 1. Save to simulated backend (LocalStorage)
+                // Save to simulated backend (LocalStorage)
                 app.state.logs.push(logEntry);
                 app.saveGlobalData();
 
-                // 2. Try pushing to Google Sheets if URL is configured
-                const url = user.role === 'student' ? app.state.adminSettings.studentUrl : app.state.adminSettings.teacherUrl;
+                // Google Sheets Web App Push
+                const url = app.state.adminSettings.studentUrl; // Shared URL for both sheets
                 if (url) {
                     try {
                         const payload = {
@@ -748,27 +734,26 @@
                             timestamp: new Date(timestamp).toLocaleString()
                         };
                         
-                        // Async push (don't wait for it to finish UI)
                         fetch(url, {
                             method: 'POST',
-                            mode: 'no-cors', // Needed for simple App Script calls
+                            mode: 'no-cors',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(payload)
-                        }).catch(e => console.warn("Google Sheet Sync Error:", e));
+                        }).catch(e => console.warn("Google Sheet Sync Note:", e));
                     } catch (err) {}
                 }
 
-                // Success UI
+                // Show Feedback UI
                 if (isArrival) {
                     app.showToast(`Welcome, ${user.name}! Arrival recorded.`, "success");
                 } else {
                     app.showToast(`Take Care, ${user.name}! Departure recorded.`, "warning");
                 }
 
-                // Restart scanner after delay
+                // Auto-restart scanner after a delay
                 setTimeout(() => {
-                    app.startScanner();
-                }, 3000);
+                    if(app.state.currentView === 'scanner') app.startScanner();
+                }, 3500);
             },
 
             // --- Admin Logic ---
@@ -791,9 +776,9 @@
                 document.getElementById(`tab-${tabId}`).classList.remove('hidden-view');
                 
                 document.querySelectorAll('.admin-tab').forEach(btn => {
-                    btn.className = 'admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white';
+                    btn.className = 'admin-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white text-sm';
                 });
-                event.target.className = 'admin-tab px-4 py-2 rounded-lg bg-cyan-900/50 text-cyan-400 border border-cyan-400/50';
+                event.target.className = 'admin-tab px-4 py-2 rounded-lg bg-cyan-900/50 text-cyan-400 border border-cyan-400/50 text-sm';
             },
 
             renderAdminDashboard: () => {
@@ -819,7 +804,7 @@
                         <td class="p-3 font-medium text-white">${u.name}</td>
                         <td class="p-3"><span class="text-green-400 text-xs flex items-center gap-1"><i class="ph-fill ph-check-circle"></i> Active</span></td>
                         <td class="p-3 text-right">
-                            <button onclick="app.rejectUser('${u.id}')" class="text-red-400 hover:text-red-300 text-xs">Remove</button>
+                            <button onclick="app.rejectUser('${u.id}')" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded border border-transparent hover:border-red-500/30">Remove</button>
                         </td>
                     </tr>
                 `).join('') : `<tr><td colspan="4" class="text-center p-6 text-gray-500 italic">No active users.</td></tr>`;
@@ -831,7 +816,7 @@
                         <td class="p-3 text-xs text-gray-400">${new Date(l.timestamp).toLocaleString()}</td>
                         <td class="p-3 font-medium text-white">${l.name}</td>
                         <td class="p-3">
-                            <span class="text-xs px-2 py-1 rounded bg-gray-800 border ${l.type === 'Arrival' ? 'border-green-400/30 text-green-400' : 'border-red-400/30 text-red-400'}">
+                            <span class="text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded bg-gray-800 border ${l.type === 'Arrival' ? 'border-green-400/30 text-green-400' : 'border-red-400/30 text-red-400'}">
                                 ${l.type}
                             </span>
                         </td>
@@ -840,8 +825,7 @@
                 `).join('') : `<tr><td colspan="4" class="text-center p-6 text-gray-500 italic">No attendance logs yet.</td></tr>`;
 
                 // Settings
-                document.getElementById('setting-student-url').value = app.state.adminSettings.studentUrl;
-                document.getElementById('setting-teacher-url').value = app.state.adminSettings.teacherUrl;
+                document.getElementById('setting-student-url').value = app.state.adminSettings.studentUrl || '';
             },
 
             approveUser: (id) => {
@@ -855,10 +839,12 @@
             },
 
             rejectUser: (id) => {
-                app.state.users = app.state.users.filter(u => u.id !== id);
-                app.saveGlobalData();
-                app.renderAdminDashboard();
-                app.showToast(`User removed.`, 'warning');
+                if(confirm("Are you sure you want to remove this user?")) {
+                    app.state.users = app.state.users.filter(u => u.id !== id);
+                    app.saveGlobalData();
+                    app.renderAdminDashboard();
+                    app.showToast(`User removed.`, 'warning');
+                }
             },
 
             clearLogs: () => {
@@ -872,26 +858,22 @@
 
             saveSettings: () => {
                 app.state.adminSettings.studentUrl = document.getElementById('setting-student-url').value;
-                app.state.adminSettings.teacherUrl = document.getElementById('setting-teacher-url').value;
                 localStorage.setItem('tcp_settings', JSON.stringify(app.state.adminSettings));
-                app.showToast("API URLs Saved.", "success");
+                app.showToast("API URL Saved.", "success");
             },
 
             // --- Cross-Tab Sync (Simulating Realtime) ---
             saveGlobalData: () => {
                 localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
                 localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
-                // Dispatch event for other tabs
                 window.dispatchEvent(new Event('storage'));
             },
 
             initSyncListener: () => {
                 window.addEventListener('storage', () => {
-                    // Update internal state from localStorage
                     app.state.users = JSON.parse(localStorage.getItem('tcp_all_users')) || [];
                     app.state.logs = JSON.parse(localStorage.getItem('tcp_logs')) || [];
                     
-                    // Update UI based on current view
                     if (app.state.currentView === 'terminal') {
                         app.renderLiveFeed();
                     } else if (app.state.currentView === 'admin-dashboard') {
@@ -902,63 +884,21 @@
 
             // --- Initialization ---
             init: () => {
-                // Event Listeners
                 document.getElementById('register-form').addEventListener('submit', app.registerUser);
                 document.getElementById('admin-login-form').addEventListener('submit', app.adminLogin);
                 app.initSyncListener();
 
-                // Auto-routing based on device width (Responsive UX approach)
-                if (window.innerWidth > 768) {
+                // Responsive default view routing
+                if (window.innerWidth > 1024) {
                     app.switchView('terminal');
                 } else {
-                    app.switchView('selector'); // Let mobile users pick explicitly for safety
+                    app.switchView('selector');
                 }
             }
         };
 
         // Boot App
         window.onload = app.init;
-
-        /**
-         * ==========================================
-         * 🌍 DEPLOYMENT & GOOGLE SHEETS SETUP GUIDE
-         * ==========================================
-         * * HOW TO DEPLOY TO GITHUB PAGES:
-         * 1. Create a GitHub account and a new repository (e.g., "tcp-attendance").
-         * 2. Upload this `index.html` file to the repository.
-         * 3. Go to Repository Settings -> Pages.
-         * 4. Select "main" branch as source and save.
-         * 5. Your site is live at https://[your-username].github.io/tcp-attendance
-         * * HOW TO CONNECT GOOGLE SHEETS:
-         * 1. Go to Google Sheets, create a new spreadsheet. Name tabs "Students" and "Teachers".
-         * 2. In Sheets menu, click Extensions -> Apps Script.
-         * 3. Paste the following Code.gs inside:
-         * * function doPost(e) {
-         * var sheet = SpreadsheetApp.getActiveSpreadsheet();
-         * try {
-         * var data = JSON.parse(e.postData.contents);
-         * var targetSheet = data.role === 'student' ? sheet.getSheetByName("Students") : sheet.getSheetByName("Teachers");
-         * * if (!targetSheet) {
-         * targetSheet = sheet.insertSheet(data.role === 'student' ? "Students" : "Teachers");
-         * if (data.role === 'student') targetSheet.appendRow(["Timestamp", "Type", "Name", "Reg No", "Course"]);
-         * else targetSheet.appendRow(["Timestamp", "Type", "Name"]);
-         * }
-         * * if (data.role === 'student') {
-         * targetSheet.appendRow([data.timestamp, data.type, data.name, data.reg_no, data.course]);
-         * } else {
-         * targetSheet.appendRow([data.timestamp, data.type, data.name]);
-         * }
-         * * return ContentService.createTextOutput(JSON.stringify({"result":"success"})).setMimeType(ContentService.MimeType.JSON);
-         * } catch(error) {
-         * return ContentService.createTextOutput(JSON.stringify({"error": error.toString()})).setMimeType(ContentService.MimeType.JSON);
-         * }
-         * }
-         * * 4. Click Deploy -> New Deployment. 
-         * 5. Select type: "Web App". Execute as: "Me". Who has access: "Anyone".
-         * 6. Copy the "Web App URL" provided.
-         * 7. Open the Admin Panel in this Web App -> API Settings -> Paste the URL.
-         * ==========================================
-         */
     </script>
 </body>
 </html>
