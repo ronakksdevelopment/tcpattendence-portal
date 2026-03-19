@@ -358,16 +358,24 @@
             <button onclick="app.clearLocalUser()" class="text-xs text-gray-500 hover:text-white text-center mt-2">Reset / Start Over</button>
         </section>
 
-        <!-- VIEW 6: AWAITING APPROVAL -->
-        <section id="view-pending" class="w-full max-w-md glass rounded-3xl p-8 slide-up hidden-view flex flex-col items-center gap-6 text-center">
-            <div class="w-20 h-20 rounded-full border-4 border-yellow-500 flex items-center justify-center text-yellow-500 mb-2">
-                <i class="ph ph-hourglass-high text-4xl animate-spin-slow"></i>
+        <!-- ADMIN APPROVAL MODAL (Triggered during scan if unapproved) -->
+        <div id="approval-modal" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm">
+            <div class="glass rounded-3xl p-8 w-full max-w-sm flex flex-col gap-4 relative slide-up border border-cyan-400/50">
+                <div class="w-16 h-16 rounded-full border-4 border-yellow-500 flex items-center justify-center text-yellow-500 mx-auto mb-2">
+                    <i class="ph ph-shield-warning text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-neon text-center mb-2">Admin Approval</h3>
+                <p class="text-xs text-gray-400 text-center mb-4">This device is not yet approved. Admin must enter credentials to authorize this scan.</p>
+                
+                <input type="text" id="modal-admin-user" class="glass-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Admin Username">
+                <input type="password" id="modal-admin-pass" class="glass-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Admin Password">
+                
+                <div class="flex gap-2 mt-4">
+                    <button onclick="app.closeApprovalModal()" class="flex-1 py-3 rounded-xl font-bold text-sm bg-gray-800 text-gray-300 hover:bg-gray-700">Cancel</button>
+                    <button onclick="app.submitApprovalModal()" class="btn-neon flex-1 py-3 rounded-xl font-bold text-sm">Approve Device</button>
+                </div>
             </div>
-            <h2 class="text-2xl font-bold text-white">Awaiting Approval</h2>
-            <p class="text-gray-400 text-sm">Your registration has been sent to the admin. Please wait for approval to access the scanner.</p>
-            <button onclick="app.checkStatus()" class="btn-neon w-full py-3 rounded-xl font-bold mt-4">Refresh Status</button>
-            <button onclick="app.clearLocalUser()" class="text-xs text-gray-500 hover:text-white mt-2">Reset Account</button>
-        </section>
+        </div>
 
         <!-- VIEW 7: SCANNER -->
         <section id="view-scanner" class="w-full max-w-md slide-up hidden-view flex flex-col gap-6">
@@ -423,7 +431,7 @@
 
             // --- UI Management ---
             switchView: (viewId) => {
-                const views = ['selector', 'terminal', 'admin-login', 'admin-dashboard', 'mobile-role', 'register', 'pending', 'scanner'];
+                const views = ['selector', 'terminal', 'admin-login', 'admin-dashboard', 'mobile-role', 'register', 'scanner'];
                 views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden-view'));
                 document.getElementById(`view-${viewId}`).classList.remove('hidden-view');
                 app.state.currentView = viewId;
@@ -571,7 +579,7 @@
                 app.state.selectedRole = role;
                 
                 if (app.state.localUser && app.state.localUser.role === role) {
-                    app.checkStatus();
+                    app.switchView('scanner');
                 } else {
                     document.getElementById('reg-title').innerText = role === 'student' ? 'Student Registration' : 'Teacher Registration';
                     document.getElementById('reg-no-group').style.display = role === 'student' ? 'block' : 'none';
@@ -602,26 +610,8 @@
                 app.state.users.push(newUser);
                 app.saveGlobalData();
                 
-                app.showToast('Registration submitted for approval.', 'success');
-                app.switchView('pending');
-            },
-
-            checkStatus: () => {
-                // Refresh local user from global DB
-                const dbUser = app.state.users.find(u => u.id === app.state.localUser.id);
-                if (dbUser) {
-                    app.state.localUser = dbUser;
-                    localStorage.setItem('tcp_user', JSON.stringify(dbUser));
-                    
-                    if (dbUser.status === 'approved') {
-                        app.showToast('Account Approved!', 'success');
-                        app.switchView('scanner');
-                    } else {
-                        app.switchView('pending');
-                    }
-                } else {
-                    app.clearLocalUser();
-                }
+                app.showToast('Registration complete. Please scan to verify.', 'success');
+                app.switchView('scanner');
             },
 
             clearLocalUser: () => {
@@ -681,7 +671,52 @@
                     return;
                 }
 
+                // Check if user is approved
+                if (app.state.localUser.status === 'pending') {
+                    document.getElementById('approval-modal').classList.remove('hidden');
+                    document.getElementById('approval-modal').classList.add('flex');
+                    return;
+                }
+
                 app.submitAttendance();
+            },
+
+            closeApprovalModal: () => {
+                document.getElementById('approval-modal').classList.add('hidden');
+                document.getElementById('approval-modal').classList.remove('flex');
+                app.showToast('Scan cancelled. Approval required to mark attendance.', 'warning');
+                setTimeout(app.startScanner, 2000);
+            },
+
+            submitApprovalModal: () => {
+                const u = document.getElementById('modal-admin-user').value;
+                const p = document.getElementById('modal-admin-pass').value;
+                
+                if (u === 'thecomputerpoint' && p === 'tcplogin1997') {
+                    // Update Local User
+                    app.state.localUser.status = 'approved';
+                    localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
+                    
+                    // Update Global User
+                    const globalUser = app.state.users.find(user => user.id === app.state.localUser.id);
+                    if (globalUser) {
+                        globalUser.status = 'approved';
+                    } else {
+                        app.state.users.push(app.state.localUser);
+                    }
+                    app.saveGlobalData();
+                    
+                    // Close Modal & Clear Fields
+                    document.getElementById('approval-modal').classList.add('hidden');
+                    document.getElementById('approval-modal').classList.remove('flex');
+                    document.getElementById('modal-admin-user').value = '';
+                    document.getElementById('modal-admin-pass').value = '';
+
+                    app.showToast('Device Approved Successfully!', 'success');
+                    app.submitAttendance();
+                } else {
+                    app.showToast('Invalid admin credentials.', 'error');
+                }
             },
 
             submitAttendance: async () => {
@@ -861,8 +896,6 @@
                         app.renderLiveFeed();
                     } else if (app.state.currentView === 'admin-dashboard') {
                         app.renderAdminDashboard();
-                    } else if (app.state.currentView === 'pending') {
-                        app.checkStatus();
                     }
                 });
             },
