@@ -106,8 +106,8 @@
         /* Animations */
         .fade-in { animation: fadeIn 0.4s ease forwards; }
         .slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .pulse-qr { animation: pulseQR 3s infinite; }
         .pop-in { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .pulse-border { animation: pulseBorder 3s infinite; }
         
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -119,25 +119,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulseQR {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            50% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
-
         @keyframes popIn {
             0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* Timer Bar */
-        .timer-bar {
-            height: 4px;
-            background: linear-gradient(90deg, #3b82f6, #93c5fd);
-            width: 100%;
-            transition: width 1s linear;
-            border-radius: 2px;
-            box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+        @keyframes pulseBorder {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
 
         /* QR Scanner customization for mobile */
@@ -197,39 +187,30 @@
             <p class="text-blue-200/60 text-sm mb-4">Select the operational role for this device.</p>
             
             <button onclick="window.app.switchView('terminal')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
-                <i class="ph ph-desktop text-2xl"></i> PC Terminal
+                <i class="ph ph-desktop text-2xl"></i> PC Terminal / Print QR
             </button>
             <button onclick="window.app.switchView('mobile-role')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
                 <i class="ph ph-device-mobile-camera text-2xl"></i> Mobile Scanner
             </button>
         </section>
 
-        <!-- VIEW 1: PC TERMINAL (QR GENERATOR) -->
+        <!-- VIEW 1: PC TERMINAL (STATIC QR) -->
         <section id="view-terminal" class="w-full max-w-6xl slide-up hidden-view flex flex-col lg:flex-row items-center justify-center gap-8">
-            <!-- Left: QR Code & Pin -->
-            <div class="glass p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center gap-6 relative border-neon pulse-qr w-full lg:w-auto">
+            <!-- Left: QR Code -->
+            <div class="glass p-8 md:p-12 rounded-3xl flex flex-col items-center justify-center gap-6 relative border-neon pulse-border w-full lg:w-auto">
                 <div class="text-center w-full">
                     <h2 class="text-3xl font-bold text-white tracking-widest uppercase mb-1">Live Attendance</h2>
-                    <p class="text-blue-300/70 text-sm">Scan QR or enter PIN on mobile</p>
+                    <p class="text-blue-300/70 text-sm">Point mobile scanner at this QR code</p>
                 </div>
                 
-                <div class="bg-white p-4 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                    <div id="qrcode" class="w-64 h-64 md:w-72 md:h-72 flex justify-center items-center"></div>
+                <div class="bg-white p-5 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+                    <!-- The generated Static QR will go here -->
+                    <div id="qrcode" class="w-64 h-64 md:w-80 md:h-80 flex justify-center items-center"></div>
                 </div>
                 
-                <div class="w-full bg-blue-950/50 border border-blue-500/30 rounded-2xl p-4 text-center">
-                    <p class="text-xs uppercase tracking-widest text-blue-400 font-bold mb-1">Session PIN</p>
-                    <p id="session-pin" class="text-5xl font-black text-white tracking-[0.2em] font-mono">-----</p>
-                </div>
-
-                <div class="w-full">
-                    <div class="flex justify-between text-[10px] text-blue-300 uppercase font-bold mb-1">
-                        <span>Code Refreshes in</span>
-                        <span id="timer-text">30s</span>
-                    </div>
-                    <div class="w-full bg-blue-950 rounded-full h-1.5 overflow-hidden">
-                        <div id="timer-bar" class="timer-bar"></div>
-                    </div>
+                <div class="flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-full text-green-400 mt-2">
+                    <i class="ph ph-check-circle text-lg"></i>
+                    <span class="text-xs uppercase font-bold tracking-wider">Static Secure Mode Active</span>
                 </div>
             </div>
 
@@ -242,7 +223,7 @@
                           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                           <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                         </span>
-                        <span class="text-[10px] uppercase font-bold text-green-400 tracking-wider">Live Sync Active</span>
+                        <span class="text-[10px] uppercase font-bold text-green-400 tracking-wider">Live Sync</span>
                     </div>
                 </div>
                 
@@ -403,7 +384,7 @@
         <section id="view-scanner" class="w-full max-w-md slide-up hidden-view flex flex-col gap-4">
             <div class="glass rounded-3xl p-5 md:p-6 flex flex-col items-center gap-5">
                 <!-- User Info Header -->
-                <div class="w-full flex justify-between items-center bg-blue-950/40 p-3 rounded-xl border border-blue-500/20">
+                <div class="w-full flex justify-between items-center bg-blue-950/40 p-3 rounded-xl border border-blue-500/20 mb-2">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-400/50 flex items-center justify-center text-blue-400">
                             <i id="scanner-role-icon" class="ph ph-user text-xl"></i>
@@ -418,19 +399,7 @@
                     </button>
                 </div>
                 
-                <!-- Dynamic PIN Entry OR Scanner -->
                 <div class="w-full relative">
-                    <!-- Manual PIN Entry -->
-                    <div id="manual-pin-entry" class="w-full flex flex-col gap-3 mb-4">
-                        <label class="text-xs text-blue-300 uppercase tracking-wider text-center font-bold">Enter 5-Digit Terminal PIN</label>
-                        <div class="flex gap-2 justify-center">
-                            <input type="text" id="pin-input" maxlength="5" class="glass-input w-full text-center text-3xl tracking-[0.5em] font-mono py-4 rounded-xl font-black uppercase" placeholder="-----">
-                        </div>
-                        <button onclick="window.app.submitPin()" class="btn-neon w-full py-3 rounded-xl font-bold text-sm">Submit PIN</button>
-                    </div>
-
-                    <div class="text-center text-xs text-blue-400/50 uppercase tracking-widest font-bold mb-4">- OR -</div>
-                    
                     <!-- Scanner Viewport Container -->
                     <div id="reader-container" class="hidden">
                         <div id="reader" class="w-full h-full flex items-center justify-center text-blue-400 font-mono text-sm bg-black">
@@ -439,11 +408,11 @@
                     </div>
                 </div>
                 
-                <div class="flex gap-2 w-full mt-2">
-                    <button id="btn-start-scan" onclick="window.app.startScanner()" class="btn-neon flex-1 py-4 rounded-xl font-bold text-sm flex justify-center items-center gap-2">
-                        <i class="ph ph-qr-code text-xl"></i> Scan QR Instead
+                <div class="flex flex-col gap-3 w-full">
+                    <button id="btn-start-scan" onclick="window.app.startScanner()" class="btn-neon w-full py-5 rounded-xl font-bold text-lg flex justify-center items-center gap-2">
+                        <i class="ph ph-qr-code text-2xl"></i> Scan QR to Mark Attendance
                     </button>
-                    <button id="btn-stop-scan" onclick="window.app.stopScannerUI()" class="hidden bg-gray-800 border border-gray-600 flex-1 py-4 rounded-xl font-bold text-sm text-gray-300 hover:bg-gray-700 transition-colors items-center justify-center gap-2">
+                    <button id="btn-stop-scan" onclick="window.app.stopScannerUI()" class="hidden bg-gray-800 border border-gray-600 w-full py-4 rounded-xl font-bold text-sm text-gray-300 hover:bg-gray-700 transition-colors items-center justify-center gap-2">
                         <i class="ph ph-x-circle text-xl"></i> Cancel Scan
                     </button>
                 </div>
@@ -503,6 +472,9 @@
 
         // Global System Constant for Sheet API
         const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUigyp8uWMdH3-YzOvURtoNuCFEKLuwXWvVgiJg39DOaWGWtn00-w8qujlsR1_JTQ_/exec";
+        
+        // Static secure token. This never changes. You can print the QR.
+        const STATIC_QR_TOKEN = "TCP_SECURE_ATTENDANCE_V1";
 
         // Firebase / P2P Setup
         let db, auth, appId;
@@ -530,11 +502,8 @@
                 adminSettings: JSON.parse(localStorage.getItem('tcp_settings')) || { studentUrl: DEFAULT_SHEET_URL },
                 users: [],
                 logs: [],
-                activeSessionCode: '-----',
-                qrInterval: null,
                 fbUnsubLogs: null,
-                fbUnsubUsers: null,
-                fbUnsubSession: null
+                fbUnsubUsers: null
             },
 
             // --- Database Sync (Optimistic UI approach) ---
@@ -603,14 +572,6 @@
                         if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
                     }
                 }, (error) => console.error("Users Snapshot Error:", error));
-
-                // 3. Active Session Code
-                const sessionRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_session');
-                app.state.fbUnsubSession = onSnapshot(sessionRef, (snapshot) => {
-                    snapshot.forEach(doc => {
-                        if(doc.id === 'current') app.state.activeSessionCode = doc.data().code;
-                    });
-                }, (error) => console.error("Session Snapshot Error:", error));
             },
 
             // Updates instantly locally first, THEN syncs to cloud
@@ -640,8 +601,6 @@
                             await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', data.id), data);
                         } else if (type === 'log') {
                             await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs'), data);
-                        } else if (type === 'session') {
-                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_session', 'current'), { code: data });
                         }
                     } catch(e) {
                         console.error("Firebase background write error:", e);
@@ -666,10 +625,8 @@
                 app.updateHeaderActions();
                 
                 if (viewId === 'terminal') {
-                    app.startTerminalSession();
+                    app.generateStaticQR();
                     app.renderLiveFeed();
-                } else {
-                    app.stopTerminalSession();
                 }
 
                 if (viewId === 'scanner') {
@@ -733,46 +690,14 @@
                 }, 4000);
             },
 
-            // --- Terminal Generator ---
-            startTerminalSession: () => {
-                app.generateNewSessionCode();
-                let timeLeft = 30;
-                
-                app.state.qrInterval = setInterval(() => {
-                    timeLeft--;
-                    document.getElementById('timer-text').innerText = `${timeLeft}s`;
-                    document.getElementById('timer-bar').style.width = `${(timeLeft/30)*100}%`;
-                    
-                    if (timeLeft <= 0) {
-                        app.generateNewSessionCode();
-                        timeLeft = 30;
-                        document.getElementById('timer-bar').style.transition = 'none';
-                        document.getElementById('timer-bar').style.width = '100%';
-                        setTimeout(() => document.getElementById('timer-bar').style.transition = 'width 1s linear', 50);
-                    }
-                }, 1000);
-            },
-
-            stopTerminalSession: () => {
-                if (app.state.qrInterval) clearInterval(app.state.qrInterval);
-            },
-
-            generateNewSessionCode: () => {
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                let code = '';
-                for(let i=0; i<5; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-                
-                document.getElementById("session-pin").innerText = code;
-                app.state.activeSessionCode = code;
-                
-                app.saveGlobalData('session', code);
-
+            // --- Terminal Generator (STATIC) ---
+            generateStaticQR: () => {
                 const qrcodeContainer = document.getElementById("qrcode");
                 qrcodeContainer.innerHTML = ''; 
                 new QRCode(qrcodeContainer, {
-                    text: `TCP_ATTENDANCE_${code}`,
-                    width: 256,
-                    height: 256,
+                    text: STATIC_QR_TOKEN,
+                    width: 300,
+                    height: 300,
                     colorDark : "#020617",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
@@ -789,11 +714,19 @@
                     return;
                 }
 
-                feed.innerHTML = todayLogs.map(log => `
-                    <div class="glass p-3 rounded-xl flex items-center justify-between border-l-4 ${log.type === 'Arrival' ? 'border-green-400 bg-green-900/10' : 'border-blue-400 bg-blue-900/10'} pop-in">
+                const now = Date.now();
+
+                feed.innerHTML = todayLogs.map((log, index) => {
+                    // Highlight the newest item if it arrived in the last 5 seconds
+                    const isNew = (now - log.timestamp < 5000) && index === 0;
+                    const highlightClass = isNew ? 'ring-2 ring-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.5)] scale-[1.02]' : '';
+
+                    return `
+                    <div class="glass p-3 rounded-xl flex items-center justify-between border-l-4 ${log.type === 'Arrival' ? 'border-green-400 bg-green-900/10' : 'border-blue-400 bg-blue-900/10'} pop-in transition-all duration-300 ${highlightClass}">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-950 flex items-center justify-center shrink-0 border border-blue-500/30">
+                            <div class="w-10 h-10 rounded-full bg-blue-950 flex items-center justify-center shrink-0 border border-blue-500/30 relative">
                                 <i class="ph ${log.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl text-blue-300"></i>
+                                ${isNew ? '<span class="absolute -top-1 -right-1 flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span></span>' : ''}
                             </div>
                             <div class="overflow-hidden">
                                 <p class="font-bold text-white text-sm truncate w-[130px] sm:w-[180px]">${log.name}</p>
@@ -804,7 +737,7 @@
                             ${log.type}
                         </span>
                     </div>
-                `).join('');
+                `}).join('');
             },
 
             // --- Mobile Role & Reg Logic ---
@@ -836,7 +769,7 @@
                 app.state.localUser = newUser;
                 app.saveGlobalData('user', newUser);
                 
-                app.showToast('Registration complete. Scan or enter PIN to verify.', 'success');
+                app.showToast('Registration complete. Scan QR to verify.', 'success');
                 app.switchView('scanner');
             },
 
@@ -848,14 +781,7 @@
             },
 
             // --- Scanner / Attendance Logic ---
-            submitPin: () => {
-                const pin = document.getElementById('pin-input').value.toUpperCase();
-                if(pin.length !== 5) return app.showToast("Enter a valid 5-digit PIN", "warning");
-                app.processAttendanceAttempt(pin);
-            },
-
             startScanner: () => {
-                document.getElementById('manual-pin-entry').classList.add('hidden');
                 document.getElementById('reader-container').classList.remove('hidden');
                 document.getElementById('btn-start-scan').classList.add('hidden');
                 document.getElementById('btn-stop-scan').classList.remove('hidden');
@@ -871,11 +797,7 @@
                 app.state.html5QrcodeScanner.start(
                     { facingMode: "environment" }, config,
                     (decodedText) => {
-                        if (decodedText.startsWith("TCP_ATTENDANCE_")) {
-                            app.processAttendanceAttempt(decodedText.split("_")[2]);
-                        } else {
-                            app.showToast("Invalid QR Format", "error");
-                        }
+                        app.processAttendanceAttempt(decodedText);
                     },
                     (err) => { /* ignore logs */ }
                 ).catch((err) => {
@@ -887,7 +809,6 @@
 
             stopScannerUI: () => {
                 app.stopScanner();
-                document.getElementById('manual-pin-entry').classList.remove('hidden');
                 document.getElementById('reader-container').classList.add('hidden');
                 document.getElementById('btn-start-scan').classList.remove('hidden');
                 document.getElementById('btn-stop-scan').classList.add('hidden');
@@ -907,17 +828,9 @@
 
                 // Instantly stop camera UI
                 app.stopScannerUI();
-                document.getElementById('pin-input').value = '';
 
-                let isValid = false;
-                if (isFirebaseActive && app.state.activeSessionCode !== '-----') {
-                    isValid = (submittedCode === app.state.activeSessionCode);
-                } else {
-                    isValid = (submittedCode.length === 5);
-                }
-
-                if (!isValid) {
-                    return app.showToast("Invalid or Expired Session PIN.", "error");
+                if (submittedCode !== STATIC_QR_TOKEN) {
+                    return app.showToast("Invalid QR Code.", "error");
                 }
 
                 // Check Admin Approval
@@ -1146,5 +1059,101 @@
         window.app = app;
         window.addEventListener('DOMContentLoaded', app.init);
     </script>
+    
+    <!--
+      *** PROFESSIONAL GOOGLE SHEETS DEPLOYMENT SCRIPT ***
+      
+      Copy and paste this ENTIRE block into your Apps Script (Extensions -> Apps Script).
+      This code automatically creates beautifully formatted dashboards for Students & Teachers,
+      auto-resizes columns, color-codes arrivals vs departures, and adds borders!
+      
+        function doPost(e) {
+            var sheet = SpreadsheetApp.getActiveSpreadsheet();
+            try {
+                // Safe check to prevent errors on empty requests
+                if (!e || !e.postData || !e.postData.contents) {
+                    return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": "No payload received"})).setMimeType(ContentService.MimeType.JSON);
+                }
+                
+                var data = JSON.parse(e.postData.contents);
+                var isStudent = data.role === 'student';
+                var sheetName = isStudent ? "🎓 Students Log" : "👨‍🏫 Teachers Log";
+                var targetSheet = sheet.getSheetByName(sheetName);
+                
+                // 1. Create and Format Sheet if it doesn't exist
+                if (!targetSheet) {
+                    targetSheet = sheet.insertSheet(sheetName);
+                    var headers = isStudent ? 
+                        ["Date & Time", "Event Type", "Full Name", "Registration No.", "Course / Department"] : 
+                        ["Date & Time", "Event Type", "Full Name", "Role / Designation"];
+                    
+                    targetSheet.appendRow(headers);
+                    
+                    // Premium Header Formatting
+                    var headerRange = targetSheet.getRange(1, 1, 1, headers.length);
+                    headerRange.setFontWeight("bold")
+                               .setBackground("#0f172a") // Deep Blue theme
+                               .setFontColor("#60a5fa")  // Neon Blue text
+                               .setHorizontalAlignment("center")
+                               .setVerticalAlignment("middle")
+                               .setBorder(true, true, true, true, true, true, "#333333", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
+                    
+                    targetSheet.setRowHeight(1, 40); // Taller header
+                    targetSheet.setFrozenRows(1);    // Freeze header
+                }
+                
+                // 2. Prepare Data Row with Fallbacks
+                var rowData = [];
+                var timestamp = data.timestamp || new Date().toLocaleString();
+                var eventType = data.type || "Unknown";
+                var fullName = data.name || "Unknown User";
+                
+                if (isStudent) {
+                    rowData = [timestamp, eventType, fullName, data.reg_no || "N/A", data.course || "N/A"];
+                } else {
+                    rowData = [timestamp, eventType, fullName, "Teacher"];
+                }
+                
+                // 3. Append Data
+                targetSheet.appendRow(rowData);
+                var lastRow = targetSheet.getLastRow();
+                var numCols = targetSheet.getLastColumn();
+                var newRowRange = targetSheet.getRange(lastRow, 1, 1, numCols);
+                
+                // 4. Professional Styling for the New Row
+                newRowRange.setHorizontalAlignment("center")
+                           .setVerticalAlignment("middle")
+                           .setBorder(true, true, true, true, true, true, "#cccccc", SpreadsheetApp.BorderStyle.SOLID);
+                
+                // Colorful Event Type (Arrival = Green, Departure = Red)
+                var typeCell = targetSheet.getRange(lastRow, 2);
+                typeCell.setFontWeight("bold");
+                if (eventType === "Arrival") {
+                    typeCell.setFontColor("#166534").setBackground("#dcfce7"); // Green highlight
+                } else if (eventType === "Departure") {
+                    typeCell.setFontColor("#991b1b").setBackground("#fee2e2"); // Red highlight
+                } else {
+                    typeCell.setFontColor("#4b5563").setBackground("#f3f4f6"); // Gray fallback
+                }
+                
+                // 5. Auto-Resize Columns (Box Auto Scale) safely
+                try {
+                    targetSheet.autoResizeColumns(1, numCols);
+                    // Add padding to resized columns for better readability
+                    for (var i = 1; i <= numCols; i++) {
+                        var currentWidth = targetSheet.getColumnWidth(i);
+                        targetSheet.setColumnWidth(i, currentWidth + 25);
+                    }
+                } catch (resizeError) {
+                    // Fail gracefully on resize limits so data still saves
+                    console.warn("Resize skipped: " + resizeError);
+                }
+                
+                return ContentService.createTextOutput(JSON.stringify({"status":"success"})).setMimeType(ContentService.MimeType.JSON);
+            } catch(error) {
+                return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": error.toString()})).setMimeType(ContentService.MimeType.JSON);
+            }
+        }
+    -->
 </body>
 </html>
