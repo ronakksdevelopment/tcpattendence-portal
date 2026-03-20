@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Computer Point | Smart Attendance</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22><rect width=%22256%22 height=%22256%22 fill=%22none%22/><path d=%22M64,64H192V192H64Z%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2296%22 y1=%2232%22 x2=%2296%22 y2=%2264%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22160%22 y1=%2232%22 x2=%22160%22 y2=%2264%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2296%22 y1=%22192%22 x2=%2296%22 y2=%22224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22160%22 y1=%22192%22 x2=%22160%22 y2=%22224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2232%22 y1=%2296%22 x2=%2264%22 y2=%2296%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2232%22 y1=%22160%22 x2=%2264%22 y2=%22160%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22192%22 y1=%2296%22 x2=%22224%22 y2=%2296%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22192%22 y1=%22160%22 x2=%22224%22 y2=%22160%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/></svg>" type="image/svg+xml">
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,7 +25,6 @@
                     colors: {
                         deepBlue: '#0f172a',
                         neonBlue: '#3b82f6',
-                        glowBlue: '#60a5fa',
                         darkBg: '#020617',
                         glassPanel: 'rgba(15, 23, 42, 0.7)'
                     }
@@ -37,16 +37,17 @@
         /* CSS Variables & Deep Blue Base Styles */
         :root {
             --neon-glow: 0 0 15px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4);
-            --neon-glow-red: 0 0 15px rgba(239, 68, 68, 0.6), 0 0 30px rgba(239, 68, 68, 0.4);
         }
         
-        body {
+        body, html {
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
             background-color: #020617;
             background-image: 
                 radial-gradient(circle at 20% 40%, rgba(59, 130, 246, 0.1), transparent 30%),
                 radial-gradient(circle at 80% 60%, rgba(96, 165, 250, 0.08), transparent 30%);
             color: white;
-            overflow-x: hidden;
+            overflow: hidden; /* STRICT NO SCROLLING */
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -74,11 +75,7 @@
         }
 
         /* Deep Blue Neon Styles */
-        .text-neon {
-            color: #60a5fa;
-            text-shadow: var(--neon-glow);
-        }
-        
+        .text-neon { color: #60a5fa; text-shadow: var(--neon-glow); }
         .border-neon {
             border-color: #3b82f6;
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) inset, 0 0 15px rgba(59, 130, 246, 0.3);
@@ -109,22 +106,13 @@
         .pop-in { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .pulse-border { animation: pulseBorder 3s infinite; }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulseBorder {
             0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
             50% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
             100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
-
         @keyframes popIn {
             0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
@@ -139,13 +127,12 @@
             border-radius: 3px;
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
         }
-        
         .timer-bar.low-time {
             background: linear-gradient(90deg, #ef4444, #f87171);
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
         }
 
-        /* QR Scanner customization for mobile */
+        /* Mobile QR Scanner Setup */
         #reader-container {
             width: 100%;
             aspect-ratio: 1;
@@ -156,78 +143,77 @@
             border: 2px solid #3b82f6;
             box-shadow: var(--neon-glow);
         }
-        #reader { width: 100% !important; border: none !important; }
-        #reader video {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover;
-            display: block;
-        }
+        #reader { width: 100% !important; height: 100% !important; border: none !important; }
+        #reader video { width: 100% !important; height: 100% !important; object-fit: cover; display: block; }
         #reader img, #reader span, #reader select, #reader a { display: none !important; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
-        
-        /* Utility */
+        /* General Utilities */
         .hidden-view { display: none !important; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-between font-sans antialiased text-sm md:text-base">
+<body class="flex flex-col font-sans antialiased text-sm md:text-base">
 
-    <!-- Header -->
-    <header class="w-full p-4 flex justify-between items-center glass rounded-b-2xl sticky top-0 z-50 max-w-7xl mx-auto border-t-0">
+    <!-- Header (Compact & Absolute No-Scroll) -->
+    <header class="w-full px-4 py-3 flex justify-between items-center glass rounded-b-2xl z-50 shrink-0 border-t-0 shadow-md">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-400 flex items-center justify-center text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)] shrink-0">
                 <i class="ph ph-cpu text-2xl"></i>
             </div>
-            <div>
-                <h1 class="font-bold text-base md:text-xl tracking-wider truncate text-white">THE COMPUTER POINT</h1>
-                <p class="text-[10px] md:text-xs text-blue-400 opacity-80 uppercase tracking-widest font-medium">Agartala, Tripura</p>
+            <div class="flex flex-col justify-center">
+                <h1 class="font-bold text-base md:text-xl tracking-wider truncate text-white leading-tight">THE COMPUTER POINT</h1>
+                <p class="text-[9px] md:text-[11px] text-blue-400 opacity-80 uppercase tracking-widest font-semibold leading-tight">Agartala, Tripura</p>
             </div>
         </div>
         <div id="header-actions" class="flex gap-2 shrink-0"></div>
     </header>
 
-    <!-- Main Content Area -->
-    <main id="main-container" class="flex-grow w-full max-w-7xl mx-auto p-4 flex flex-col items-center justify-center relative">
+    <!-- Main Content Area (Flex constraints prevent scrolling) -->
+    <main id="main-container" class="flex-1 w-full flex items-center justify-center p-4 relative h-full">
         
         <!-- VIEW 0: MODE SELECTOR -->
-        <section id="view-selector" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up flex flex-col gap-6 text-center">
-            <div class="w-16 h-16 bg-blue-500/10 border-2 border-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+        <section id="view-selector" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up flex flex-col gap-6 text-center shadow-xl">
+            <div class="w-16 h-16 bg-blue-500/10 border-2 border-blue-500 rounded-full flex items-center justify-center mx-auto mb-1 shadow-[0_0_20px_rgba(59,130,246,0.3)] shrink-0">
                 <i class="ph ph-fingerprint text-3xl text-blue-400"></i>
             </div>
-            <h2 class="text-2xl font-bold text-white">System Initialization</h2>
-            <p class="text-blue-200/60 text-sm mb-4">Select the operational role for this device.</p>
+            <div class="shrink-0">
+                <h2 class="text-2xl font-bold text-white truncate">System Initialization</h2>
+                <p class="text-blue-200/60 text-xs md:text-sm mt-1 truncate md:whitespace-normal md:line-clamp-2">Select the operational role for this device.</p>
+            </div>
             
-            <button onclick="window.app.openTerminalAuth()" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
-                <i class="ph ph-desktop text-2xl"></i> PC Terminal
+            <button onclick="window.app.openTerminalAuth()" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-base md:text-lg font-bold shrink-0">
+                <i class="ph ph-desktop text-2xl"></i> Attendance Terminal
             </button>
-            <button onclick="window.app.switchView('mobile-role')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-lg font-semibold">
-                <i class="ph ph-device-mobile-camera text-2xl"></i> Mobile Scanner
+            <button onclick="window.app.switchView('mobile-role')" class="btn-neon w-full py-4 rounded-xl flex items-center justify-center gap-3 text-base md:text-lg font-bold shrink-0">
+                <i class="ph ph-device-mobile-camera text-2xl"></i> Self-Service Scanner
             </button>
+
+            <!-- Reset Database Feature -->
+            <div class="mt-2 pt-4 border-t border-blue-500/20 w-full shrink-0">
+                <button onclick="window.app.openResetAuth()" class="text-[10px] md:text-xs text-red-400 hover:text-red-300 font-bold flex items-center justify-center gap-1.5 w-full p-2 uppercase tracking-widest transition-colors">
+                    <i class="ph ph-warning-circle text-sm md:text-base"></i> Factory Reset Database Logs
+                </button>
+            </div>
         </section>
 
-        <!-- VIEW 1: PC TERMINAL (DYNAMIC QR & PIN) -->
-        <section id="view-terminal" class="w-full max-w-4xl slide-up hidden-view flex flex-col items-center justify-center gap-8">
-            <div class="glass p-8 md:p-12 rounded-3xl flex flex-col items-center justify-center gap-6 relative border-neon pulse-border w-full">
-                <div class="text-center w-full">
-                    <h2 class="text-3xl md:text-4xl font-black text-white tracking-widest uppercase mb-2 text-neon">Live Attendance</h2>
-                    <p class="text-blue-300/70 text-sm">Scan the QR code or enter the session PIN on your mobile</p>
+        <!-- VIEW 1: ATTENDANCE TERMINAL (QR & PIN) -->
+        <section id="view-terminal" class="w-full max-w-4xl slide-up hidden-view flex flex-col items-center justify-center gap-4 h-full max-h-full">
+            <div class="glass p-6 md:p-10 rounded-3xl flex flex-col items-center justify-center gap-4 md:gap-6 relative border-neon pulse-border w-full max-h-[90vh]">
+                <div class="text-center w-full shrink-0">
+                    <h2 class="text-2xl md:text-4xl font-black text-white tracking-widest uppercase mb-1 text-neon">Live Attendance</h2>
+                    <p class="text-blue-300/70 text-xs md:text-sm truncate md:whitespace-normal md:line-clamp-2">Scan the QR code or enter the session PIN on your mobile</p>
                 </div>
                 
-                <div class="bg-white p-5 rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.2)]">
-                    <div id="qrcode" class="w-64 h-64 md:w-80 md:h-80 flex justify-center items-center"></div>
+                <div class="bg-white p-3 md:p-5 rounded-2xl md:rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.2)] shrink-0">
+                    <div id="qrcode" class="w-48 h-48 md:w-80 md:h-80 flex justify-center items-center"></div>
                 </div>
                 
-                <div class="w-full max-w-sm bg-blue-950/50 border border-blue-500/30 rounded-2xl p-4 text-center mt-2 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                    <p class="text-xs uppercase tracking-widest text-blue-400 font-bold mb-1">Session PIN</p>
-                    <p id="session-pin" class="text-5xl font-black text-white tracking-[0.2em] font-mono">-----</p>
+                <div class="w-full max-w-xs md:max-w-sm bg-blue-950/50 border border-blue-500/30 rounded-xl md:rounded-2xl p-3 md:p-4 text-center mt-1 shadow-[0_0_20px_rgba(0,0,0,0.5)] shrink-0">
+                    <p class="text-[10px] md:text-xs uppercase tracking-widest text-blue-400 font-bold mb-1">Session PIN</p>
+                    <p id="session-pin" class="text-4xl md:text-5xl font-black text-white tracking-[0.2em] font-mono leading-none">-----</p>
                 </div>
 
-                <div class="w-full max-w-sm mt-2">
-                    <div class="flex justify-between text-[10px] text-blue-300 uppercase font-bold mb-1">
+                <div class="w-full max-w-xs md:max-w-sm mt-1 shrink-0">
+                    <div class="flex justify-between text-[9px] md:text-[10px] text-blue-300 uppercase font-bold mb-1">
                         <span>Code Refreshes in</span>
                         <span id="timer-text">30s</span>
                     </div>
@@ -238,197 +224,91 @@
             </div>
         </section>
 
-        <!-- VIEW 2: ADMIN LOGIN -->
-        <section id="view-admin-login" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6">
-            <h2 class="text-2xl font-bold text-center text-white">Admin Authentication</h2>
-            <form id="admin-login-form" class="flex flex-col gap-4">
-                <div>
-                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-1 block font-semibold">Username</label>
-                    <div class="relative">
-                        <i class="ph ph-shield absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-lg"></i>
-                        <input type="text" id="admin-user" class="glass-input w-full pl-12 pr-4 py-4 rounded-xl" placeholder="Admin Username" required>
-                    </div>
-                </div>
-                <div>
-                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-1 block font-semibold">Password</label>
-                    <div class="relative">
-                        <i class="ph ph-lock-key absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-lg"></i>
-                        <input type="password" id="admin-pass" class="glass-input w-full pl-12 pr-4 py-4 rounded-xl" placeholder="••••••••" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn-neon w-full py-4 rounded-xl font-bold mt-2 text-lg">Access Dashboard</button>
-            </form>
-            <button onclick="window.app.switchView('terminal')" class="text-blue-400 hover:text-white text-sm text-center transition-colors">Return to Terminal</button>
-        </section>
-
-        <!-- VIEW 3: ADMIN DASHBOARD -->
-        <section id="view-admin-dashboard" class="w-full max-w-6xl slide-up hidden-view flex flex-col gap-6">
-            <div class="glass rounded-2xl p-4 flex gap-2 md:gap-4 overflow-x-auto whitespace-nowrap border border-blue-500/30">
-                <button onclick="window.app.adminTab('settings')" class="admin-tab px-4 py-2 rounded-lg bg-blue-600/30 text-white border border-blue-400/50 text-sm font-semibold transition-all">Sheets API Setup</button>
-                <button onclick="window.app.adminTab('approvals')" class="admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all">Pending Approvals</button>
-                <button onclick="window.app.adminTab('users')" class="admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all">All Users</button>
-                <button onclick="window.app.adminTab('logs')" class="admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all">Attendance Logs</button>
+        <!-- VIEW 2: MOBILE ROLE SELECTOR -->
+        <section id="view-mobile-role" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-5 text-center">
+            <div class="shrink-0 mb-2">
+                <h2 class="text-2xl font-bold text-white truncate">Identify Yourself</h2>
+                <p class="text-blue-200/70 text-xs md:text-sm mt-1 truncate md:whitespace-normal md:line-clamp-2">Select your role at The Computer Point to proceed.</p>
             </div>
-
-            <div class="glass rounded-3xl p-4 md:p-8 min-h-[500px] border border-blue-500/20">
-                
-                <!-- Tab: Settings -->
-                <div id="tab-settings" class="admin-content max-w-2xl mx-auto py-8">
-                    <div class="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
-                        <i class="ph ph-google-logo text-3xl text-blue-400"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-2 text-white text-center">Google Sheets Integration</h3>
-                    <p class="text-sm text-blue-200/60 text-center mb-8">Link your Google Apps Script Web App URL to enable automatic cloud backup of all attendance logs.</p>
-                    
-                    <div class="flex flex-col gap-5">
-                        <div>
-                            <label class="text-xs text-blue-300 uppercase font-bold mb-2 block">Google Sheets Web App URL</label>
-                            <input type="text" id="setting-student-url" class="glass-input w-full px-5 py-4 rounded-xl font-mono text-sm" placeholder="https://script.google.com/macros/s/.../exec">
-                        </div>
-                        <button onclick="window.app.saveSettings()" class="btn-neon w-full py-4 rounded-xl font-bold mt-4 shadow-[0_0_20px_rgba(59,130,246,0.3)]">Save Configuration</button>
-                    </div>
-                </div>
-
-                <!-- Tab: Approvals -->
-                <div id="tab-approvals" class="admin-content hidden-view">
-                    <h3 class="text-xl font-bold mb-6 text-white border-b border-blue-500/20 pb-4">Pending Registrations</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[500px]">
-                            <thead>
-                                <tr class="text-blue-300 text-xs uppercase tracking-wider bg-blue-950/50">
-                                    <th class="p-4 rounded-l-lg">Role</th>
-                                    <th class="p-4">Name</th>
-                                    <th class="p-4">Details</th>
-                                    <th class="p-4 text-right rounded-r-lg">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-approvals-list" class="divide-y divide-blue-500/10"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Tab: Users -->
-                <div id="tab-users" class="admin-content hidden-view">
-                    <h3 class="text-xl font-bold mb-6 text-white border-b border-blue-500/20 pb-4">Manage Users</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[500px]">
-                            <thead>
-                                <tr class="text-blue-300 text-xs uppercase tracking-wider bg-blue-950/50">
-                                    <th class="p-4 rounded-l-lg">Role</th>
-                                    <th class="p-4">Name</th>
-                                    <th class="p-4">Status</th>
-                                    <th class="p-4 text-right rounded-r-lg">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-users-list" class="divide-y divide-blue-500/10"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Tab: Logs -->
-                <div id="tab-logs" class="admin-content hidden-view">
-                    <div class="flex justify-between items-center mb-6 border-b border-blue-500/20 pb-4">
-                        <h3 class="text-xl font-bold text-white">Attendance Logs</h3>
-                        <button onclick="window.app.clearLogs()" class="text-xs bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30 px-4 py-2 rounded-lg transition-colors font-bold uppercase">Clear Logs</button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[500px]">
-                            <thead>
-                                <tr class="text-blue-300 text-xs uppercase tracking-wider bg-blue-950/50">
-                                    <th class="p-4 rounded-l-lg">Time</th>
-                                    <th class="p-4">Name</th>
-                                    <th class="p-4">Event</th>
-                                    <th class="p-4 rounded-r-lg">Role</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-logs-list" class="divide-y divide-blue-500/10"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- VIEW 4: MOBILE ROLE SELECTOR -->
-        <section id="view-mobile-role" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6 text-center">
-            <h2 class="text-2xl font-bold text-white mb-2">Identify Yourself</h2>
-            <p class="text-blue-200/70 text-sm mb-4">Select your role at The Computer Point to proceed.</p>
             
-            <button onclick="window.app.selectRole('student')" class="glass p-8 rounded-2xl border-blue-500/20 hover:border-blue-400 hover:bg-blue-600/10 transition-all group flex flex-col items-center gap-4">
-                <i class="ph ph-student text-5xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all"></i>
-                <span class="text-xl font-bold text-white tracking-wide">Student</span>
+            <button onclick="window.app.selectRole('student')" class="glass p-6 md:p-8 rounded-2xl border-blue-500/20 hover:border-blue-400 hover:bg-blue-600/10 transition-all group flex flex-col items-center gap-3 shrink-0">
+                <i class="ph ph-student text-4xl md:text-5xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all"></i>
+                <span class="text-lg md:text-xl font-bold text-white tracking-wide">Student</span>
             </button>
             
-            <button onclick="window.app.selectRole('teacher')" class="glass p-8 rounded-2xl border-blue-500/20 hover:border-blue-400 hover:bg-blue-600/10 transition-all group flex flex-col items-center gap-4">
-                <i class="ph ph-chalkboard-teacher text-5xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all"></i>
-                <span class="text-xl font-bold text-white tracking-wide">Teacher</span>
+            <button onclick="window.app.selectRole('teacher')" class="glass p-6 md:p-8 rounded-2xl border-blue-500/20 hover:border-blue-400 hover:bg-blue-600/10 transition-all group flex flex-col items-center gap-3 shrink-0">
+                <i class="ph ph-chalkboard-teacher text-4xl md:text-5xl text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all"></i>
+                <span class="text-lg md:text-xl font-bold text-white tracking-wide">Teacher</span>
             </button>
         </section>
 
-        <!-- VIEW 5: REGISTRATION FORM -->
-        <section id="view-register" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-6">
-            <h2 class="text-2xl font-bold text-center text-white" id="reg-title">Registration</h2>
-            <form id="register-form" class="flex flex-col gap-5">
+        <!-- VIEW 3: REGISTRATION FORM -->
+        <section id="view-register" class="w-full max-w-md glass rounded-3xl p-6 md:p-8 slide-up hidden-view flex flex-col gap-4">
+            <h2 class="text-xl md:text-2xl font-bold text-center text-white shrink-0 truncate" id="reg-title">Registration</h2>
+            <form id="register-form" class="flex flex-col gap-4 shrink-0">
                 <div id="reg-no-group">
-                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-2 block font-bold">Registration No.</label>
-                    <input type="text" id="reg-no" class="glass-input w-full px-5 py-4 rounded-xl" placeholder="e.g. TCP-2023-001">
+                    <label class="text-[10px] md:text-xs text-blue-300 uppercase tracking-wider mb-1 block font-bold">Registration No.</label>
+                    <input type="text" id="reg-no" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm" placeholder="e.g. TCP-2023-001">
                 </div>
                 <div>
-                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-2 block font-bold">Full Name</label>
-                    <input type="text" id="reg-name" class="glass-input w-full px-5 py-4 rounded-xl" placeholder="Enter full name" required>
+                    <label class="text-[10px] md:text-xs text-blue-300 uppercase tracking-wider mb-1 block font-bold">Full Name (Exact Match)</label>
+                    <input type="text" id="reg-name" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm" placeholder="Enter full name exactly as enrolled" required>
                 </div>
                 <div id="reg-course-group">
-                    <label class="text-xs text-blue-300 uppercase tracking-wider mb-2 block font-bold">Course Name</label>
-                    <input type="text" id="reg-course" class="glass-input w-full px-5 py-4 rounded-xl" placeholder="e.g. Web Development">
+                    <label class="text-[10px] md:text-xs text-blue-300 uppercase tracking-wider mb-1 block font-bold">Course / Department</label>
+                    <input type="text" id="reg-course" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm" placeholder="e.g. Web Development">
                 </div>
-                <button type="submit" class="btn-neon w-full py-4 rounded-xl font-bold mt-2 text-lg">Register Device</button>
+                <button type="submit" class="btn-neon w-full py-3 md:py-4 rounded-xl font-bold mt-2 text-sm md:text-base">Save Details</button>
             </form>
-            <button onclick="window.app.clearLocalUser()" class="text-xs text-blue-400 hover:text-white text-center transition-colors mt-2">← Change Role / Back</button>
+            <button onclick="window.app.clearLocalUser()" class="text-xs text-blue-400 hover:text-white text-center transition-colors mt-1 shrink-0">← Change Role / Back</button>
         </section>
 
-        <!-- VIEW 6: SCANNER -->
-        <section id="view-scanner" class="w-full max-w-md slide-up hidden-view flex flex-col gap-4">
-            <div class="glass rounded-3xl p-5 md:p-6 flex flex-col items-center gap-5">
+        <!-- VIEW 4: SELF-SERVICE SCANNER -->
+        <section id="view-scanner" class="w-full max-w-md slide-up hidden-view flex flex-col gap-3 h-full max-h-full justify-center">
+            <div class="glass rounded-3xl p-4 md:p-6 flex flex-col items-center gap-3 md:gap-4 shrink-0 w-full max-h-[95vh] overflow-hidden">
                 <!-- User Info Header -->
-                <div class="w-full flex justify-between items-center bg-blue-950/40 p-3 rounded-xl border border-blue-500/20 mb-2">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-400/50 flex items-center justify-center text-blue-400">
+                <div class="w-full flex justify-between items-center bg-blue-950/40 p-3 rounded-xl border border-blue-500/20 shrink-0">
+                    <div class="flex items-center gap-3 overflow-hidden pr-2">
+                        <div class="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-400/50 flex items-center justify-center text-blue-400 shrink-0">
                             <i id="scanner-role-icon" class="ph ph-user text-xl"></i>
                         </div>
-                        <div class="text-left">
-                            <p class="text-[10px] text-blue-300 uppercase tracking-widest font-bold">Welcome Back</p>
-                            <p class="font-bold text-white truncate max-w-[150px] text-sm" id="scanner-user-name">User Name</p>
+                        <div class="flex flex-col justify-center overflow-hidden">
+                            <p class="text-[9px] md:text-[10px] text-blue-300 uppercase tracking-widest font-bold leading-none mb-1">Welcome Back</p>
+                            <p class="font-bold text-white truncate text-sm leading-none" id="scanner-user-name">User Name</p>
                         </div>
                     </div>
-                    <button onclick="window.app.clearLocalUser()" class="text-xs bg-red-500/10 text-red-400 px-3 py-2 rounded-lg border border-red-500/30 hover:bg-red-500/20 transition-colors">
+                    <button onclick="window.app.clearLocalUser()" class="text-xs bg-red-500/10 text-red-400 px-3 py-2 rounded-lg border border-red-500/30 hover:bg-red-500/20 transition-colors shrink-0">
                         Logout
                     </button>
                 </div>
                 
-                <div class="w-full relative">
+                <div class="w-full relative shrink-0">
                     <!-- Manual PIN Entry -->
-                    <div id="manual-pin-entry" class="w-full flex flex-col gap-3 mb-4">
-                        <label class="text-xs text-blue-300 uppercase tracking-wider text-center font-bold">Enter 5-Digit Terminal PIN</label>
+                    <div id="manual-pin-entry" class="w-full flex flex-col gap-2 md:gap-3 mb-2">
+                        <label class="text-[10px] md:text-xs text-blue-300 uppercase tracking-wider text-center font-bold">Enter 5-Digit Terminal PIN</label>
                         <div class="flex gap-2 justify-center">
-                            <input type="text" id="pin-input" maxlength="5" class="glass-input w-full text-center text-3xl tracking-[0.5em] font-mono py-4 rounded-xl font-black uppercase" placeholder="-----">
+                            <input type="text" id="pin-input" maxlength="5" class="glass-input w-full text-center text-3xl md:text-4xl tracking-[0.4em] font-mono py-3 md:py-4 rounded-xl font-black uppercase" placeholder="-----">
                         </div>
                         <button onclick="window.app.submitPin()" class="btn-neon w-full py-3 rounded-xl font-bold text-sm">Submit PIN</button>
-                        <div class="text-center text-xs text-blue-400/50 uppercase tracking-widest font-bold mt-2 mb-2">- OR -</div>
+                        <div class="text-center text-[10px] md:text-xs text-blue-400/50 uppercase tracking-widest font-bold mt-1 mb-1">- OR -</div>
                     </div>
 
                     <!-- Scanner Viewport Container -->
                     <div id="reader-container" class="hidden">
-                        <div id="reader" class="w-full h-full flex items-center justify-center text-blue-400 font-mono text-sm bg-black">
-                            <i class="ph ph-spinner-gap animate-spin text-2xl mb-2"></i><br>Activating Camera...
+                        <div id="reader" class="w-full h-full flex items-center justify-center text-blue-400 font-mono text-xs md:text-sm bg-black">
+                            <div class="text-center">
+                                <i class="ph ph-spinner-gap animate-spin text-2xl mb-2"></i><br>Activating Camera...
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="flex flex-col gap-3 w-full">
-                    <button id="btn-start-scan" onclick="window.app.startScanner()" class="btn-neon w-full py-5 rounded-xl font-bold text-lg flex justify-center items-center gap-2">
-                        <i class="ph ph-qr-code text-2xl"></i> Scan QR to Mark Attendance
+                <div class="flex flex-col gap-2 w-full shrink-0">
+                    <button id="btn-start-scan" onclick="window.app.startScanner()" class="btn-neon w-full py-4 rounded-xl font-bold text-sm md:text-base flex justify-center items-center gap-2">
+                        <i class="ph ph-qr-code text-xl md:text-2xl"></i> Scan QR to Mark Attendance
                     </button>
-                    <button id="btn-stop-scan" onclick="window.app.stopScannerUI()" class="hidden bg-gray-800 border border-gray-600 w-full py-4 rounded-xl font-bold text-sm text-gray-300 hover:bg-gray-700 transition-colors items-center justify-center gap-2">
-                        <i class="ph ph-x-circle text-xl"></i> Cancel Scan
+                    <button id="btn-stop-scan" onclick="window.app.stopScannerUI()" class="hidden bg-gray-800 border border-gray-600 w-full py-3 md:py-4 rounded-xl font-bold text-sm text-gray-300 hover:bg-gray-700 transition-colors items-center justify-center gap-2">
+                        <i class="ph ph-x-circle text-lg md:text-xl"></i> Cancel Scan
                     </button>
                 </div>
             </div>
@@ -438,90 +318,92 @@
 
     <!-- FULL SCREEN ATTENDANCE POPUP -->
     <div id="attendance-popup" class="fixed inset-0 bg-black/90 z-[200] hidden items-center justify-center p-4 backdrop-blur-md">
-        <div class="glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-6 relative pop-in border-2 border-green-500 shadow-[0_0_50px_rgba(34,197,94,0.3)] bg-gradient-to-b from-green-900/20 to-transparent">
+        <div class="glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-5 md:gap-6 relative pop-in border-2 border-green-500 shadow-[0_0_50px_rgba(34,197,94,0.3)] bg-gradient-to-b from-green-900/20 to-transparent">
             
-            <div id="popup-icon-container" class="w-24 h-24 rounded-full border-4 border-green-500 flex items-center justify-center text-green-500 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.5)]">
-                <i id="popup-icon" class="ph ph-check-circle text-5xl"></i>
+            <div id="popup-icon-container" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-green-500 flex items-center justify-center text-green-500 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.5)] shrink-0">
+                <i id="popup-icon" class="ph ph-check-circle text-4xl md:text-5xl"></i>
             </div>
             
-            <div class="text-center w-full">
-                <p id="popup-status" class="text-green-400 font-bold uppercase tracking-widest text-sm mb-2">Access Granted</p>
-                <h3 id="popup-name" class="text-3xl font-black text-white mb-1 truncate">John Doe</h3>
-                <p id="popup-action" class="text-lg text-blue-200">Arrival Recorded</p>
-                <p id="popup-time" class="text-sm text-blue-400/60 font-mono mt-4 border-t border-blue-500/20 pt-4">10:45 AM</p>
+            <div class="text-center w-full shrink-0 overflow-hidden">
+                <p id="popup-status" class="text-green-400 font-bold uppercase tracking-widest text-xs md:text-sm mb-1 md:mb-2 truncate">Access Granted</p>
+                <h3 id="popup-name" class="text-2xl md:text-3xl font-black text-white mb-1 truncate">John Doe</h3>
+                <p id="popup-action" class="text-base md:text-lg text-blue-200 truncate">Arrival Recorded</p>
+                <p id="popup-time" class="text-xs md:text-sm text-blue-400/60 font-mono mt-3 md:mt-4 border-t border-blue-500/20 pt-3 md:pt-4 truncate">10:45 AM</p>
             </div>
             
-            <button onclick="window.app.closePopup()" class="w-full py-4 rounded-xl font-bold text-sm bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20 mt-2">
+            <button onclick="window.app.closePopup()" class="w-full py-3 md:py-4 rounded-xl font-bold text-sm bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/20 mt-1 md:mt-2 shrink-0">
                 Continue
             </button>
-        </div>
-    </div>
-
-    <!-- ADMIN APPROVAL MODAL -->
-    <div id="approval-modal" class="fixed inset-0 bg-black/80 z-[150] hidden items-center justify-center p-4 backdrop-blur-md">
-        <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative pop-in border border-yellow-500/50 shadow-[0_0_40px_rgba(234,179,8,0.2)] bg-gradient-to-b from-yellow-900/20 to-transparent">
-            <div class="w-20 h-20 rounded-full border-4 border-yellow-500 flex items-center justify-center text-yellow-500 mx-auto mb-2 bg-yellow-500/10 shadow-[0_0_20px_rgba(234,179,8,0.4)]">
-                <i class="ph ph-shield-warning text-4xl"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white text-center mb-1">Authorization Required</h3>
-            <p class="text-xs text-blue-200/70 text-center mb-4 leading-relaxed">Admin must enter credentials on this device to approve it for attendance scanning.</p>
-            
-            <input type="text" id="modal-admin-user" class="glass-input w-full px-5 py-4 rounded-xl text-sm" placeholder="Admin Username">
-            <input type="password" id="modal-admin-pass" class="glass-input w-full px-5 py-4 rounded-xl text-sm" placeholder="Admin Password">
-            
-            <div class="flex gap-3 mt-4">
-                <button onclick="window.app.closeApprovalModal()" class="flex-1 py-4 rounded-xl font-bold text-sm bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors">Cancel</button>
-                <button onclick="window.app.submitApprovalModal()" class="btn-neon flex-1 py-4 rounded-xl font-bold text-sm">Authorize</button>
-            </div>
         </div>
     </div>
 
     <!-- TERMINAL AUTH MODAL -->
     <div id="terminal-auth-modal" class="fixed inset-0 bg-black/90 z-[150] hidden items-center justify-center p-4 backdrop-blur-md">
         <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative pop-in border border-blue-500/50 shadow-[0_0_40px_rgba(59,130,246,0.2)] bg-gradient-to-b from-blue-900/20 to-transparent">
-            <div class="w-20 h-20 rounded-full border-4 border-blue-500 flex items-center justify-center text-blue-500 mx-auto mb-2 bg-blue-500/10 shadow-[0_0_20px_rgba(59,130,246,0.4)]">
-                <i class="ph ph-lock-key text-4xl"></i>
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-blue-500 flex items-center justify-center text-blue-500 mx-auto mb-1 md:mb-2 bg-blue-500/10 shadow-[0_0_20px_rgba(59,130,246,0.4)] shrink-0">
+                <i class="ph ph-lock-key text-3xl md:text-4xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-white text-center mb-1">Terminal Locked</h3>
-            <p class="text-xs text-blue-200/70 text-center mb-4 leading-relaxed">Admin credentials required to activate the PC Terminal mode.</p>
+            <div class="shrink-0 text-center">
+                <h3 class="text-lg md:text-xl font-bold text-white truncate">Terminal Locked</h3>
+                <p class="text-[10px] md:text-xs text-blue-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">Admin credentials required to activate the Attendance Terminal.</p>
+            </div>
             
-            <input type="text" id="term-admin-user" class="glass-input w-full px-5 py-4 rounded-xl text-sm" placeholder="Admin Username">
-            <input type="password" id="term-admin-pass" class="glass-input w-full px-5 py-4 rounded-xl text-sm" placeholder="Admin Password">
+            <input type="text" id="term-admin-user" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Username">
+            <input type="password" id="term-admin-pass" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Password">
             
-            <div class="flex gap-3 mt-4">
-                <button onclick="window.app.closeTerminalAuth()" class="flex-1 py-4 rounded-xl font-bold text-sm bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors">Cancel</button>
-                <button onclick="window.app.submitTerminalAuth()" class="btn-neon flex-1 py-4 rounded-xl font-bold text-sm">Unlock</button>
+            <div class="flex gap-2 md:gap-3 mt-2 md:mt-4 shrink-0">
+                <button onclick="window.app.closeTerminalAuth()" class="flex-1 py-3 md:py-4 rounded-xl font-bold text-xs md:text-sm bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors">Cancel</button>
+                <button onclick="window.app.submitTerminalAuth()" class="btn-neon flex-1 py-3 md:py-4 rounded-xl font-bold text-xs md:text-sm">Unlock</button>
             </div>
         </div>
     </div>
 
+    <!-- RESET DATABASE AUTH MODAL -->
+    <div id="reset-auth-modal" class="fixed inset-0 bg-black/90 z-[150] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative pop-in border border-red-500/50 shadow-[0_0_40px_rgba(239,68,68,0.2)] bg-gradient-to-b from-red-900/20 to-transparent">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-red-500 flex items-center justify-center text-red-500 mx-auto mb-1 md:mb-2 bg-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.4)] shrink-0">
+                <i class="ph ph-warning-octagon text-3xl md:text-4xl"></i>
+            </div>
+            <div class="shrink-0 text-center">
+                <h3 class="text-lg md:text-xl font-bold text-white truncate text-red-400">Factory Reset Logs</h3>
+                <p class="text-[10px] md:text-xs text-red-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">This will permanently delete all attendance logs in the database. Approved user data will be kept safe.</p>
+            </div>
+            
+            <input type="text" id="reset-admin-user" class="glass-input border-red-500/30 focus:border-red-500 w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Username">
+            <input type="password" id="reset-admin-pass" class="glass-input border-red-500/30 focus:border-red-500 w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Password">
+            
+            <div class="flex gap-2 md:gap-3 mt-2 md:mt-4 shrink-0">
+                <button onclick="window.app.closeResetAuth()" class="flex-1 py-3 md:py-4 rounded-xl font-bold text-xs md:text-sm bg-gray-800 text-gray-300 border border-gray-600 hover:bg-gray-700 transition-colors">Cancel</button>
+                <button onclick="window.app.submitResetAuth()" class="btn-neon bg-red-600/20 border-red-500 flex-1 py-3 md:py-4 rounded-xl font-bold text-xs md:text-sm hover:bg-red-600/40 text-red-100 shadow-[0_0_15px_rgba(239,68,68,0.4)]">Wipe Data</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Modal -->
+    <div id="processing-modal" class="fixed inset-0 bg-black/80 z-[250] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="glass px-8 py-6 rounded-2xl flex flex-col items-center gap-4 border border-blue-500/30">
+            <i class="ph ph-circle-notch animate-spin text-4xl text-blue-400"></i>
+            <p id="processing-text" class="text-sm font-bold text-white tracking-wider animate-pulse">Validating Identity...</p>
+        </div>
+    </div>
+
     <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[300] flex flex-col gap-3 w-[90%] max-w-sm pointer-events-none"></div>
+    <div id="toast-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[300] flex flex-col gap-2 md:gap-3 w-[90%] max-w-sm pointer-events-none"></div>
 
-    <!-- Firebase SDK & Application Logic -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, onSnapshot, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Global System Constant for Sheet API
+    <!-- Application Logic -->
+    <script>
+        // System Config with the Official Web App URL
         const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUigyp8uWMdH3-YzOvURtoNuCFEKLuwXWvVgiJg39DOaWGWtn00-w8qujlsR1_JTQ_/exec";
-
-        // Firebase / P2P Setup
-        let db, auth, appId;
-        let isFirebaseActive = false;
         
-        try {
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-            if (firebaseConfig) {
-                const firebaseApp = initializeApp(firebaseConfig);
-                auth = getAuth(firebaseApp);
-                db = getFirestore(firebaseApp);
-                appId = typeof __app_id !== 'undefined' ? __app_id : 'tcp-attendance';
-                isFirebaseActive = true;
-            }
-        } catch (e) {
-            console.warn("Firebase config not found. Using powerful local-first synchronization.", e);
+        // Custom Timestamp Generator
+        function getCustomDateString() {
+            const d = new Date();
+            const pad = (n) => n.toString().padStart(2, '0');
+            const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+            let h = d.getHours();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return `${pad(d.getMonth()+1)}:${pad(d.getDate())}:${d.getFullYear()} ${days[d.getDay()]} II ${pad(h)}:${pad(d.getMinutes())}:${pad(d.getSeconds())} ${ampm}`;
         }
 
         const app = {
@@ -529,139 +411,23 @@
                 currentView: 'selector',
                 html5QrcodeScanner: null,
                 isProcessingScan: false,
-                localUser: JSON.parse(localStorage.getItem('tcp_user')) || null,
-                adminSettings: JSON.parse(localStorage.getItem('tcp_settings')) || { studentUrl: DEFAULT_SHEET_URL },
-                users: [],
-                logs: [],
+                localUser: null,
                 activeSessionCode: '-----',
-                qrInterval: null,
-                fbUnsubLogs: null,
-                fbUnsubUsers: null,
-                fbUnsubSession: null
-            },
-
-            // --- Database Sync (Optimistic UI approach) ---
-            initDatabase: async () => {
-                // Instantly load local data so UI feels immediate
-                app.syncLocalData();
-
-                if (!isFirebaseActive) {
-                    window.addEventListener('storage', app.syncLocalData);
-                    return;
-                }
-
-                // Authenticate before querying remote db
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    
-                    onAuthStateChanged(auth, (user) => {
-                        if (user) {
-                            app.startRealtimeListeners();
-                        }
-                    });
-                } catch(e) {
-                    console.error("Auth error:", e);
-                }
-            },
-
-            startRealtimeListeners: () => {
-                if(!isFirebaseActive || !auth.currentUser) return;
-                
-                // 1. Logs Collection
-                const logsRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs');
-                app.state.fbUnsubLogs = onSnapshot(logsRef, (snapshot) => {
-                    const fetchedLogs = [];
-                    snapshot.forEach(doc => fetchedLogs.push({ id: doc.id, ...doc.data() }));
-                    
-                    if (fetchedLogs.length > 0) {
-                        app.state.logs = fetchedLogs.sort((a,b) => a.timestamp - b.timestamp);
-                        localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
-                        if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
-                    }
-                }, (error) => console.error("Logs Snapshot Error:", error));
-
-                // 2. Users Collection
-                const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_users');
-                app.state.fbUnsubUsers = onSnapshot(usersRef, (snapshot) => {
-                    const fetchedUsers = [];
-                    snapshot.forEach(doc => fetchedUsers.push({ id: doc.id, ...doc.data() }));
-                    
-                    if (fetchedUsers.length > 0) {
-                        app.state.users = fetchedUsers;
-                        // Sync local user status dynamically
-                        if (app.state.localUser) {
-                            const globalUser = fetchedUsers.find(u => u.id === app.state.localUser.id);
-                            if (globalUser && globalUser.status !== app.state.localUser.status) {
-                                app.state.localUser.status = globalUser.status;
-                                localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
-                            }
-                        }
-                        localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
-                        if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
-                    }
-                }, (error) => console.error("Users Snapshot Error:", error));
-
-                // 3. Active Session Code sync for mobile scanners
-                const sessionRef = collection(db, 'artifacts', appId, 'public', 'data', 'tcp_session');
-                app.state.fbUnsubSession = onSnapshot(sessionRef, (snapshot) => {
-                    snapshot.forEach(doc => {
-                        if(doc.id === 'current') app.state.activeSessionCode = doc.data().code;
-                    });
-                }, (error) => console.error("Session Snapshot Error:", error));
-            },
-
-            // Updates instantly locally first, THEN syncs to cloud
-            saveGlobalData: async (type, data) => {
-                // --- Optimistic Local Updates ---
-                if (type === 'user') app.state.users.push(data);
-                if (type === 'log') app.state.logs.push(data);
-                if (type === 'updateUser') {
-                    const idx = app.state.users.findIndex(u => u.id === data.id);
-                    if(idx > -1) app.state.users[idx] = data;
-                }
-                
-                localStorage.setItem('tcp_all_users', JSON.stringify(app.state.users));
-                localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
-                
-                // Triggers immediate UI feedback
-                if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
-                
-                // Triggers update for other active windows/tabs instantly in non-firebase modes
-                window.dispatchEvent(new Event('storage'));
-
-                // --- Background Firebase Write ---
-                if (isFirebaseActive && auth && auth.currentUser) {
-                    try {
-                        if (type === 'user' || type === 'updateUser') {
-                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', data.id), data);
-                        } else if (type === 'log') {
-                            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tcp_logs'), data);
-                        } else if (type === 'session') {
-                            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_session', 'current'), { code: data });
-                        }
-                    } catch(e) {
-                        console.error("Firebase background write error:", e);
-                    }
-                }
-            },
-
-            syncLocalData: () => {
-                app.state.users = JSON.parse(localStorage.getItem('tcp_all_users')) || [];
-                app.state.logs = JSON.parse(localStorage.getItem('tcp_logs')) || [];
-                if (app.state.currentView === 'admin-dashboard') app.renderAdminDashboard();
+                qrInterval: null
             },
 
             // --- UI Management ---
             switchView: (viewId) => {
-                const views = ['selector', 'terminal', 'admin-login', 'admin-dashboard', 'mobile-role', 'register', 'scanner'];
-                views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden-view'));
-                document.getElementById(`view-${viewId}`).classList.remove('hidden-view');
+                const views = ['selector', 'terminal', 'mobile-role', 'register', 'scanner'];
+                views.forEach(v => {
+                    const el = document.getElementById(`view-${v}`);
+                    if(el) el.classList.add('hidden-view');
+                });
+                
+                const target = document.getElementById(`view-${viewId}`);
+                if(target) target.classList.remove('hidden-view');
+                
                 app.state.currentView = viewId;
-
                 app.updateHeaderActions();
                 
                 if (viewId === 'terminal') {
@@ -675,42 +441,26 @@
                         document.getElementById('scanner-user-name').innerText = app.state.localUser.name;
                         document.getElementById('scanner-role-icon').className = `ph ${app.state.localUser.role === 'student' ? 'ph-student' : 'ph-chalkboard-teacher'} text-xl`;
                     }
-                    app.stopScannerUI(); // Make sure camera is reset
+                    app.stopScannerUI(); 
                 } else {
                     app.stopScanner();
                 }
-
-                if (viewId === 'admin-dashboard') app.renderAdminDashboard();
             },
 
             updateHeaderActions: () => {
                 const container = document.getElementById('header-actions');
                 container.innerHTML = '';
                 
-                if (['terminal', 'admin-login', 'admin-dashboard'].includes(app.state.currentView)) {
-                    if (app.state.currentView !== 'admin-dashboard') {
-                        const btn = document.createElement('button');
-                        btn.className = 'text-xs md:text-sm px-4 py-2 rounded-lg border border-blue-500/50 text-blue-400 hover:bg-blue-600/20 transition-all flex items-center gap-2 font-bold';
-                        btn.innerHTML = '<i class="ph ph-shield-check text-lg"></i> Admin';
-                        btn.onclick = () => app.switchView('admin-login');
-                        container.appendChild(btn);
-                    } else {
-                        const btn = document.createElement('button');
-                        btn.className = 'text-xs md:text-sm px-4 py-2 rounded-lg bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500/20 transition-all flex items-center gap-2 font-bold';
-                        btn.innerHTML = '<i class="ph ph-sign-out text-lg"></i> Logout';
-                        btn.onclick = () => app.switchView('terminal');
-                        container.appendChild(btn);
-                    }
+                if (app.state.currentView !== 'selector') {
+                    const switchBtn = document.createElement('button');
+                    switchBtn.className = 'text-[10px] md:text-xs px-3 py-2 rounded-lg bg-blue-900/30 text-blue-300 border border-blue-500/30 hover:bg-blue-800/50 transition-colors flex items-center gap-1 font-bold shrink-0';
+                    switchBtn.innerHTML = '<i class="ph ph-arrows-left-right text-base md:text-lg"></i> Mode';
+                    switchBtn.onclick = () => {
+                        app.stopScanner();
+                        app.switchView('selector');
+                    };
+                    container.appendChild(switchBtn);
                 }
-                
-                const switchBtn = document.createElement('button');
-                switchBtn.className = 'text-xs md:text-sm px-3 py-2 rounded-lg bg-blue-900/30 text-blue-300 border border-blue-500/30 hover:bg-blue-800/50 transition-colors ml-2 flex items-center gap-1 font-bold';
-                switchBtn.innerHTML = '<i class="ph ph-arrows-left-right text-lg"></i> Mode';
-                switchBtn.onclick = () => {
-                    app.stopScanner();
-                    app.switchView('selector');
-                };
-                container.appendChild(switchBtn);
             },
 
             showToast: (message, type = 'success') => {
@@ -723,8 +473,8 @@
                 };
                 const icons = { success: 'ph-check-circle', error: 'ph-x-circle', warning: 'ph-warning' };
 
-                toast.className = `glass flex items-center gap-3 px-5 py-4 rounded-2xl border-l-4 ${colors[type]} slide-up transition-all duration-300 pointer-events-auto backdrop-blur-xl font-medium`;
-                toast.innerHTML = `<i class="ph ${icons[type]} text-2xl shrink-0"></i><p class="text-sm">${message}</p>`;
+                toast.className = `glass flex items-center gap-2 md:gap-3 px-4 py-3 md:py-4 rounded-xl md:rounded-2xl border-l-4 ${colors[type]} slide-up transition-all duration-300 pointer-events-auto backdrop-blur-xl font-medium shrink-0`;
+                toast.innerHTML = `<i class="ph ${icons[type]} text-xl md:text-2xl shrink-0"></i><p class="text-[10px] md:text-sm truncate md:whitespace-normal md:line-clamp-2 leading-tight">${message}</p>`;
                 
                 container.appendChild(toast);
                 setTimeout(() => {
@@ -739,11 +489,10 @@
                 let timeLeft = 30;
                 const timerBar = document.getElementById('timer-bar');
                 
-                // Initial reset for smooth animation
                 timerBar.classList.remove('low-time');
                 timerBar.style.transition = 'none';
                 timerBar.style.width = '100%';
-                void timerBar.offsetWidth; // Force browser reflow
+                void timerBar.offsetWidth; 
                 timerBar.style.transition = 'width 1s linear';
                 
                 app.state.qrInterval = setInterval(() => {
@@ -751,19 +500,15 @@
                     document.getElementById('timer-text').innerText = `${timeLeft}s`;
                     timerBar.style.width = `${(timeLeft/30)*100}%`;
                     
-                    if (timeLeft <= 10) {
-                        timerBar.classList.add('low-time');
-                    }
+                    if (timeLeft <= 10) timerBar.classList.add('low-time');
                     
                     if (timeLeft <= 0) {
                         app.generateNewSessionCode();
                         timeLeft = 30;
-                        
-                        // Reset bar instantly
                         timerBar.classList.remove('low-time');
                         timerBar.style.transition = 'none';
                         timerBar.style.width = '100%';
-                        void timerBar.offsetWidth; // Force browser reflow
+                        void timerBar.offsetWidth;
                         timerBar.style.transition = 'width 1s linear';
                     }
                 }, 1000);
@@ -780,17 +525,17 @@
                 
                 document.getElementById("session-pin").innerText = code;
                 app.state.activeSessionCode = code;
-                
-                // Write to DB for Sync
-                app.saveGlobalData('session', code);
+                localStorage.setItem('tcp_active_session', code); 
 
-                // Update QR
                 const qrcodeContainer = document.getElementById("qrcode");
                 qrcodeContainer.innerHTML = ''; 
+                
+                const size = window.innerWidth < 768 ? 192 : 320; 
+                
                 new QRCode(qrcodeContainer, {
                     text: `TCP_ATTENDANCE_${code}`,
-                    width: 300,
-                    height: 300,
+                    width: size,
+                    height: size,
                     colorDark : "#020617",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
@@ -803,7 +548,7 @@
                 if (app.state.localUser && app.state.localUser.role === role) {
                     app.switchView('scanner');
                 } else {
-                    document.getElementById('reg-title').innerText = role === 'student' ? 'Student Registration' : 'Teacher Registration';
+                    document.getElementById('reg-title').innerText = role === 'student' ? 'Student Details' : 'Teacher Details';
                     document.getElementById('reg-no-group').style.display = role === 'student' ? 'block' : 'none';
                     document.getElementById('reg-course-group').style.display = role === 'student' ? 'block' : 'none';
                     document.getElementById('reg-no').required = role === 'student';
@@ -815,18 +560,15 @@
             registerUser: (e) => {
                 e.preventDefault();
                 const role = app.state.selectedRole;
-                const name = document.getElementById('reg-name').value;
-                const regNo = role === 'student' ? document.getElementById('reg-no').value : null;
-                const course = role === 'student' ? document.getElementById('reg-course').value : null;
-                const userId = `USR_${Date.now()}`;
+                const name = document.getElementById('reg-name').value.trim();
+                const regNo = role === 'student' ? document.getElementById('reg-no').value.trim() : null;
+                const course = role === 'student' ? document.getElementById('reg-course').value.trim() : null;
                 
-                const newUser = { id: userId, role, name, regNo, course, status: 'pending' };
-                
+                const newUser = { role, name, regNo, course };
                 localStorage.setItem('tcp_user', JSON.stringify(newUser));
                 app.state.localUser = newUser;
-                app.saveGlobalData('user', newUser);
                 
-                app.showToast('Registration complete. Scan or enter PIN to verify.', 'success');
+                app.showToast('Profile Saved. You may scan now.', 'success');
                 app.switchView('scanner');
             },
 
@@ -854,18 +596,14 @@
                 if (!app.state.html5QrcodeScanner) {
                     app.state.html5QrcodeScanner = new Html5Qrcode("reader");
                 }
-                
                 if (app.state.html5QrcodeScanner.isScanning) return;
 
                 const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
                 app.state.html5QrcodeScanner.start(
                     { facingMode: "environment" }, config,
-                    (decodedText) => {
-                        app.processAttendanceAttempt(decodedText);
-                    },
-                    (err) => { /* ignore logs */ }
+                    (decodedText) => { app.processAttendanceAttempt(decodedText); },
+                    (err) => { /* ignore */ }
                 ).catch((err) => {
-                    console.error("Camera Error:", err);
                     app.showToast("Camera access denied.", "error");
                     app.stopScannerUI();
                 });
@@ -873,16 +611,22 @@
 
             stopScannerUI: () => {
                 app.stopScanner();
-                document.getElementById('reader-container').classList.add('hidden');
-                document.getElementById('manual-pin-entry').classList.remove('hidden');
-                document.getElementById('btn-start-scan').classList.remove('hidden');
-                document.getElementById('btn-stop-scan').classList.add('hidden');
-                document.getElementById('btn-stop-scan').classList.remove('flex');
+                const container = document.getElementById('reader-container');
+                if(container) container.classList.add('hidden');
+                const manual = document.getElementById('manual-pin-entry');
+                if(manual) manual.classList.remove('hidden');
+                const startBtn = document.getElementById('btn-start-scan');
+                if(startBtn) startBtn.classList.remove('hidden');
+                const stopBtn = document.getElementById('btn-stop-scan');
+                if(stopBtn) {
+                    stopBtn.classList.add('hidden');
+                    stopBtn.classList.remove('flex');
+                }
             },
 
             stopScanner: () => {
                 if (app.state.html5QrcodeScanner && app.state.html5QrcodeScanner.isScanning) {
-                    app.state.html5QrcodeScanner.stop().catch(err => console.error(err));
+                    app.state.html5QrcodeScanner.stop().catch(e => console.warn(e));
                 }
             },
 
@@ -890,66 +634,27 @@
                 if (app.state.isProcessingScan) return;
                 app.state.isProcessingScan = true;
 
-                // Instantly stop camera UI
                 app.stopScannerUI();
                 document.getElementById('pin-input').value = '';
 
-                // Clean string if scanned via QR
                 let codeToCheck = submittedCode;
                 if (codeToCheck.startsWith("TCP_ATTENDANCE_")) {
                     codeToCheck = codeToCheck.replace("TCP_ATTENDANCE_", "");
                 }
 
-                let isValid = false;
-                if (isFirebaseActive && app.state.activeSessionCode !== '-----') {
-                    isValid = (codeToCheck === app.state.activeSessionCode);
-                } else {
-                    // Fallback to accepting any 5-length code if P2P sync is offline/delayed
-                    isValid = (codeToCheck.length === 5);
-                }
+                const activeCode = localStorage.getItem('tcp_active_session');
+                const isValid = activeCode ? (codeToCheck === activeCode) : (codeToCheck.length === 5);
 
                 if (!isValid) {
                     app.state.isProcessingScan = false;
                     return app.showToast("Invalid or Expired Session PIN.", "error");
                 }
 
-                // Check Admin Approval
-                if (app.state.localUser.status === 'pending') {
-                    app.state.isProcessingScan = false;
-                    document.getElementById('approval-modal').classList.remove('hidden');
-                    document.getElementById('approval-modal').classList.add('flex');
-                    return;
-                }
+                document.getElementById('processing-text').innerText = "Validating Identity...";
+                document.getElementById('processing-modal').classList.remove('hidden');
+                document.getElementById('processing-modal').classList.add('flex');
 
                 await app.submitAttendance();
-                
-                // Release lock securely
-                setTimeout(() => app.state.isProcessingScan = false, 2000); 
-            },
-
-            submitApprovalModal: () => {
-                const u = document.getElementById('modal-admin-user').value;
-                const p = document.getElementById('modal-admin-pass').value;
-                
-                if (u === 'thecomputerpoint' && p === 'tcplogin1997') {
-                    app.state.localUser.status = 'approved';
-                    localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
-                    
-                    app.saveGlobalData('updateUser', app.state.localUser);
-                    
-                    app.closeApprovalModal();
-                    app.showToast('Device Authorized Successfully!', 'success');
-                    app.submitAttendance();
-                } else {
-                    app.showToast('Invalid admin credentials.', 'error');
-                }
-            },
-
-            closeApprovalModal: () => {
-                document.getElementById('approval-modal').classList.add('hidden');
-                document.getElementById('approval-modal').classList.remove('flex');
-                document.getElementById('modal-admin-user').value = '';
-                document.getElementById('modal-admin-pass').value = '';
             },
 
             // --- Terminal Auth Logic ---
@@ -976,106 +681,136 @@
                 }
             },
 
-            // --- Geofencing & Location Logic ---
-            deg2rad: (deg) => deg * (Math.PI/180),
+            // --- Database Reset Auth Logic ---
+            openResetAuth: () => {
+                document.getElementById('reset-auth-modal').classList.remove('hidden');
+                document.getElementById('reset-auth-modal').classList.add('flex');
+            },
 
+            closeResetAuth: () => {
+                document.getElementById('reset-auth-modal').classList.add('hidden');
+                document.getElementById('reset-auth-modal').classList.remove('flex');
+                document.getElementById('reset-admin-user').value = '';
+                document.getElementById('reset-admin-pass').value = '';
+            },
+
+            submitResetAuth: () => {
+                const u = document.getElementById('reset-admin-user').value;
+                const p = document.getElementById('reset-admin-pass').value;
+                if (u === 'thecomputerpoint' && p === 'tcplogin1997') {
+                    app.closeResetAuth();
+                    app.clearDatabase();
+                } else {
+                    app.showToast("Invalid admin credentials.", "error");
+                }
+            },
+
+            clearDatabase: async () => {
+                document.getElementById('processing-text').innerText = "Wiping Database...";
+                document.getElementById('processing-modal').classList.remove('hidden');
+                document.getElementById('processing-modal').classList.add('flex');
+
+                try {
+                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=clear`, { method: 'GET' });
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        app.showToast("Database successfully factory reset.", "success");
+                    } else {
+                        app.showToast(result.message || "Reset failed.", "error");
+                    }
+                } catch (err) {
+                    console.error("API Error", err);
+                    app.showToast("Network error connecting to the Master Database.", "error");
+                }
+                
+                app.hideProcessing();
+            },
+
+            // --- Geofencing ---
+            deg2rad: (deg) => deg * (Math.PI/180),
             calculateDistance: (lat1, lon1, lat2, lon2) => {
-                const R = 6371; // Earth radius in km
+                const R = 6371; 
                 const dLat = app.deg2rad(lat2 - lat1);
                 const dLon = app.deg2rad(lon2 - lon1); 
-                const a = 
-                  Math.sin(dLat/2) * Math.sin(dLat/2) +
+                const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                   Math.cos(app.deg2rad(lat1)) * Math.cos(app.deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
                 const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-                return R * c; // Distance in km
+                return R * c; 
             },
 
             getLocation: () => {
                 return new Promise((resolve) => {
-                    if (!navigator.geolocation) {
-                        resolve({ error: "Not Supported" });
-                        return;
-                    }
+                    if (!navigator.geolocation) return resolve({ error: "Not Supported" });
                     navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            resolve({
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                                string: `${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`
-                            });
-                        },
-                        (error) => {
-                            console.warn("Geolocation error:", error);
-                            resolve({ error: "Location Unavailable" });
-                        },
+                        (pos) => resolve({ lat: position.coords.latitude, lng: position.coords.longitude, string: `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}` }),
+                        (err) => resolve({ error: "Location Unavailable" }),
                         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                     );
                 });
             },
 
+            // --- API Communication ---
             submitAttendance: async () => {
                 const user = app.state.localUser;
-                const today = new Date().toDateString();
-                
-                // Determine Arrival/Departure
-                const userTodayLogs = app.state.logs.filter(l => l.userId === user.id && new Date(l.timestamp).toDateString() === today);
-                const isArrival = userTodayLogs.length === 0 || userTodayLogs.length % 2 === 0;
-                const type = isArrival ? 'Arrival' : 'Departure';
-                const timestamp = Date.now();
+                const customTimestamp = getCustomDateString();
 
-                // Fetch Geolocation & Verify Geofence
-                app.showToast("📍 Verifying Institute Location... Please wait.", "warning");
+                // 1. Geofence Verification
                 const locationData = await app.getLocation();
-
                 if (locationData.error) {
-                    app.state.isProcessingScan = false; // Release lock so user can retry immediately
-                    app.showToast("Location access is required to mark attendance.", "error");
-                    return; // Block attendance
+                    app.cancelProcessing("Location access is required to mark attendance.");
+                    return;
                 }
 
-                // Institute Coordinates: N 23.842692, 91.272324 E
-                const INSTITUTE_LAT = 23.842692;
-                const INSTITUTE_LNG = 91.272324;
-                const distanceKm = app.calculateDistance(INSTITUTE_LAT, INSTITUTE_LNG, locationData.lat, locationData.lng);
-
+                // Institute Target: N 23.842694, 91.272333 E
+                const distanceKm = app.calculateDistance(23.842694, 91.272333, locationData.lat, locationData.lng);
                 if (distanceKm > 1.0) {
-                    app.state.isProcessingScan = false; // Release lock
-                    app.showToast(`Access Denied: You are ${distanceKm.toFixed(2)}km away from the institute. Must be within 1km.`, "error");
-                    return; // Block attendance
+                    app.cancelProcessing(`Access Denied: You are ${distanceKm.toFixed(2)}km away. Must be within 1km.`);
+                    return;
                 }
 
-                const userLocationStr = locationData.string;
+                // 2. Master DB Verification (Google Sheets) via GET 
+                const payload = {
+                    name: user.name,
+                    role: user.role,
+                    reg_no: user.regNo || 'N/A',
+                    course: user.course || 'N/A',
+                    timestamp: customTimestamp,
+                    location: locationData.string
+                };
 
-                const logEntry = { userId: user.id, name: user.name, role: user.role, type, timestamp, regNo: user.regNo, course: user.course, location: userLocationStr };
+                try {
+                    const params = encodeURIComponent(JSON.stringify(payload));
+                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=log&payload=${params}`, { method: 'GET' });
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        app.hideProcessing();
+                        app.showSuccessPopup(user.name, result.eventType, customTimestamp);
+                    } else {
+                        app.cancelProcessing(result.message || "Identity validation failed.");
+                    }
+                } catch (err) {
+                    console.error("API Error", err);
+                    app.cancelProcessing("Network error connecting to the Master Database.");
+                }
                 
-                // Save locally & trigger UI update instantly
-                app.saveGlobalData('log', logEntry);
+                setTimeout(() => app.state.isProcessingScan = false, 1000); 
+            },
 
-                // Sync to Google Sheets Web App Background
-                const url = app.state.adminSettings.studentUrl;
-                if (url && url.length > 10) {
-                    const payload = {
-                        name: user.name,
-                        role: user.role,
-                        reg_no: user.regNo || 'N/A',
-                        course: user.course || 'N/A',
-                        type: type,
-                        timestamp: new Date(timestamp).toLocaleString('en-US', { hour12: true }), // Explicit AM/PM formatting
-                        location: userLocationStr
-                    };
-                    try {
-                        // no-cors mode sends request blindly ignoring response to prevent CORS blockage
-                        fetch(url, {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        }).catch(e => console.warn("Sheets Push Note:", e));
-                    } catch (err) {}
+            cancelProcessing: (errorMsg) => {
+                app.hideProcessing();
+                app.showToast(errorMsg, "error");
+                app.state.isProcessingScan = false;
+            },
+
+            hideProcessing: () => {
+                const modal = document.getElementById('processing-modal');
+                if(modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
                 }
-
-                // Show Success Popup (Mobile User Feedback)
-                app.showSuccessPopup(user.name, type, timestamp);
+                document.getElementById('processing-text').innerText = "Validating Identity...";
             },
 
             showSuccessPopup: (name, type, timestamp) => {
@@ -1085,144 +820,43 @@
                 
                 document.getElementById('popup-name').innerText = name;
                 document.getElementById('popup-action').innerText = `${type} Recorded`;
-                
-                // Standard 12-Hour format with AM/PM explicitly defined
-                document.getElementById('popup-time').innerText = new Date(timestamp).toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit', hour12: true});
+                document.getElementById('popup-time').innerText = timestamp;
                 
                 if (type === 'Arrival') {
-                    popup.className = "fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-4 backdrop-blur-md";
-                    popup.firstElementChild.className = "glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-6 relative pop-in border-2 border-green-500 shadow-[0_0_50px_rgba(34,197,94,0.3)] bg-gradient-to-b from-green-900/20 to-transparent";
-                    iconContainer.className = "w-24 h-24 rounded-full border-4 border-green-500 flex items-center justify-center text-green-500 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.5)]";
-                    icon.className = "ph ph-check-circle text-5xl";
+                    popup.firstElementChild.className = "glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-5 md:gap-6 relative pop-in border-2 border-green-500 shadow-[0_0_50px_rgba(34,197,94,0.3)] bg-gradient-to-b from-green-900/20 to-transparent max-h-[90vh] overflow-y-auto";
+                    iconContainer.className = "w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-green-500 flex items-center justify-center text-green-500 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.5)] shrink-0";
+                    icon.className = "ph ph-check-circle text-4xl md:text-5xl";
                     document.getElementById('popup-status').innerText = "Access Granted";
-                    document.getElementById('popup-status').className = "text-green-400 font-bold uppercase tracking-widest text-sm mb-2";
+                    document.getElementById('popup-status').className = "text-green-400 font-bold uppercase tracking-widest text-xs md:text-sm mb-1 md:mb-2 truncate";
                 } else {
-                    popup.className = "fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-4 backdrop-blur-md";
-                    popup.firstElementChild.className = "glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-6 relative pop-in border-2 border-blue-500 shadow-[0_0_50px_rgba(59,130,246,0.3)] bg-gradient-to-b from-blue-900/20 to-transparent";
-                    iconContainer.className = "w-24 h-24 rounded-full border-4 border-blue-500 flex items-center justify-center text-blue-500 bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.5)]";
-                    icon.className = "ph ph-sign-out text-5xl";
+                    popup.firstElementChild.className = "glass rounded-[2rem] p-8 md:p-12 w-full max-w-sm flex flex-col items-center gap-5 md:gap-6 relative pop-in border-2 border-blue-500 shadow-[0_0_50px_rgba(59,130,246,0.3)] bg-gradient-to-b from-blue-900/20 to-transparent max-h-[90vh] overflow-y-auto";
+                    iconContainer.className = "w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-blue-500 flex items-center justify-center text-blue-500 bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.5)] shrink-0";
+                    icon.className = "ph ph-sign-out text-4xl md:text-5xl";
                     document.getElementById('popup-status').innerText = "Session Ended";
-                    document.getElementById('popup-status').className = "text-blue-400 font-bold uppercase tracking-widest text-sm mb-2";
+                    document.getElementById('popup-status').className = "text-blue-400 font-bold uppercase tracking-widest text-xs md:text-sm mb-1 md:mb-2 truncate";
                 }
+                
+                popup.classList.remove('hidden');
+                popup.classList.add('flex');
             },
 
             closePopup: () => {
-                document.getElementById('attendance-popup').classList.add('hidden');
-                document.getElementById('attendance-popup').classList.remove('flex');
-            },
-
-            // --- Admin Dash Logic ---
-            adminLogin: (e) => {
-                e.preventDefault();
-                const u = document.getElementById('admin-user').value;
-                const p = document.getElementById('admin-pass').value;
-                
-                if (u === 'thecomputerpoint' && p === 'tcplogin1997') {
-                    app.showToast("Admin access granted.", "success");
-                    app.switchView('admin-dashboard');
-                } else {
-                    app.showToast("Invalid credentials.", "error");
+                const popup = document.getElementById('attendance-popup');
+                if(popup) {
+                    popup.classList.add('hidden');
+                    popup.classList.remove('flex');
                 }
-            },
-
-            adminTab: (tabId) => {
-                const tabs = ['approvals', 'users', 'logs', 'settings'];
-                tabs.forEach(t => document.getElementById(`tab-${t}`).classList.add('hidden-view'));
-                document.getElementById(`tab-${tabId}`).classList.remove('hidden-view');
-                
-                document.querySelectorAll('.admin-tab').forEach(btn => {
-                    btn.className = 'admin-tab px-4 py-2 rounded-lg text-blue-300 hover:text-white text-sm font-semibold transition-all';
-                });
-                event.target.className = 'admin-tab px-4 py-2 rounded-lg bg-blue-600/30 text-white border border-blue-400/50 text-sm font-semibold transition-all';
-            },
-
-            renderAdminDashboard: () => {
-                const pending = app.state.users.filter(u => u.status === 'pending');
-                document.getElementById('admin-approvals-list').innerHTML = pending.length ? pending.map(u => `
-                    <tr class="hover:bg-blue-600/10 transition-colors">
-                        <td class="p-4 capitalize text-blue-300"><span class="px-2 py-1 rounded-md text-xs bg-blue-900/50 font-bold border border-blue-500/30">${u.role}</span></td>
-                        <td class="p-4 font-bold text-white">${u.name}</td>
-                        <td class="p-4 text-xs text-blue-200">${u.role === 'student' ? `${u.regNo}<br>${u.course}` : 'N/A'}</td>
-                        <td class="p-4 text-right">
-                            <button onclick="window.app.approveUser('${u.id}')" class="bg-green-500/20 text-green-400 border border-green-500/50 px-3 py-1.5 rounded-lg text-xs hover:bg-green-500/30 font-bold">Approve</button>
-                            <button onclick="window.app.rejectUser('${u.id}')" class="bg-red-500/20 text-red-400 border border-red-500/50 px-3 py-1.5 rounded-lg text-xs hover:bg-red-500/30 font-bold ml-2">Reject</button>
-                        </td>
-                    </tr>
-                `).join('') : `<tr><td colspan="4" class="text-center p-8 text-blue-500/50 italic font-semibold">No pending registrations.</td></tr>`;
-
-                const approved = app.state.users.filter(u => u.status === 'approved');
-                document.getElementById('admin-users-list').innerHTML = approved.length ? approved.map(u => `
-                    <tr class="hover:bg-blue-600/10 transition-colors">
-                        <td class="p-4 capitalize text-blue-300"><span class="px-2 py-1 rounded-md text-xs bg-blue-900/50 font-bold border border-blue-500/30">${u.role}</span></td>
-                        <td class="p-4 font-bold text-white">${u.name}</td>
-                        <td class="p-4"><span class="text-green-400 text-xs flex items-center gap-1 font-bold"><i class="ph-fill ph-check-circle text-sm"></i> Active</span></td>
-                        <td class="p-4 text-right">
-                            <button onclick="window.app.rejectUser('${u.id}')" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded border border-transparent hover:border-red-500/30 font-bold">Remove</button>
-                        </td>
-                    </tr>
-                `).join('') : `<tr><td colspan="4" class="text-center p-8 text-blue-500/50 italic font-semibold">No active users.</td></tr>`;
-
-                const sortedLogs = [...app.state.logs].reverse();
-                document.getElementById('admin-logs-list').innerHTML = sortedLogs.length ? sortedLogs.map(l => `
-                    <tr class="hover:bg-blue-600/10 transition-colors">
-                        <td class="p-4 text-xs text-blue-300 font-mono">${new Date(l.timestamp).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short', hour12: true })}</td>
-                        <td class="p-4 font-bold text-white">${l.name}</td>
-                        <td class="p-4">
-                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded bg-blue-950 border ${l.type === 'Arrival' ? 'border-green-400/50 text-green-400' : 'border-blue-400/50 text-blue-400'}">
-                                ${l.type}
-                            </span>
-                        </td>
-                        <td class="p-4 capitalize text-blue-400 text-xs font-bold">${l.role}</td>
-                    </tr>
-                `).join('') : `<tr><td colspan="4" class="text-center p-8 text-blue-500/50 italic font-semibold">No attendance logs yet.</td></tr>`;
-
-                document.getElementById('setting-student-url').value = app.state.adminSettings.studentUrl || '';
-            },
-
-            approveUser: (id) => {
-                const user = app.state.users.find(u => u.id === id);
-                if (user) {
-                    user.status = 'approved';
-                    app.saveGlobalData('updateUser', user);
-                    app.showToast(`${user.name} approved!`, 'success');
-                }
-            },
-
-            rejectUser: async (id) => {
-                if(confirm("Are you sure you want to remove this user?")) {
-                    if (isFirebaseActive && auth && auth.currentUser) {
-                        try {
-                            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tcp_users', id));
-                        } catch(e) {}
-                    }
-                    app.state.users = app.state.users.filter(u => u.id !== id);
-                    app.saveGlobalData('sync', null); // Trigger Local Updates
-                    app.showToast(`User removed.`, 'warning');
-                }
-            },
-
-            clearLogs: async () => {
-                if(confirm("Are you sure you want to clear local logs view? (Note: Sheets data remains safe)")) {
-                    app.state.logs = [];
-                    app.saveGlobalData('sync', null); // Trigger Local Updates
-                    app.renderAdminDashboard();
-                    app.showToast("Logs cleared locally.", "success");
-                }
-            },
-
-            saveSettings: () => {
-                app.state.adminSettings.studentUrl = document.getElementById('setting-student-url').value;
-                localStorage.setItem('tcp_settings', JSON.stringify(app.state.adminSettings));
-                app.showToast("Google Sheets API URL Saved.", "success");
             },
 
             init: () => {
-                document.getElementById('register-form').addEventListener('submit', app.registerUser);
-                document.getElementById('admin-login-form').addEventListener('submit', app.adminLogin);
+                const regForm = document.getElementById('register-form');
+                if(regForm) regForm.addEventListener('submit', app.registerUser);
                 
-                app.initDatabase();
+                try {
+                    const stored = localStorage.getItem('tcp_user');
+                    if (stored) app.state.localUser = JSON.parse(stored);
+                } catch(e) {}
                 
-                // Always start at selector to enforce security locks on terminal
                 app.switchView('selector');
             }
         };
@@ -1230,109 +864,5 @@
         window.app = app;
         window.addEventListener('DOMContentLoaded', app.init);
     </script>
-    
-    <!--
-      *** PROFESSIONAL GOOGLE SHEETS DEPLOYMENT SCRIPT ***
-      
-      Copy and paste this ENTIRE block into your Apps Script (Extensions -> Apps Script).
-      This code automatically creates beautifully formatted dashboards for Students & Teachers,
-      auto-resizes columns, color-codes arrivals vs departures, adds borders, and turns 
-      the location coordinates into clickable Google Maps links!
-      
-        function doPost(e) {
-            var sheet = SpreadsheetApp.getActiveSpreadsheet();
-            try {
-                // Safe check to prevent errors on empty requests
-                if (!e || !e.postData || !e.postData.contents) {
-                    return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": "No payload received"})).setMimeType(ContentService.MimeType.JSON);
-                }
-                
-                var data = JSON.parse(e.postData.contents);
-                var isStudent = data.role === 'student';
-                var sheetName = isStudent ? "🎓 Students Log" : "👨‍🏫 Teachers Log";
-                var targetSheet = sheet.getSheetByName(sheetName);
-                
-                // 1. Create and Format Sheet if it doesn't exist
-                if (!targetSheet) {
-                    targetSheet = sheet.insertSheet(sheetName);
-                    var headers = isStudent ? 
-                        ["Date & Time", "Event Type", "Full Name", "Registration No.", "Course / Department", "Location (Lat, Lng)"] : 
-                        ["Date & Time", "Event Type", "Full Name", "Role / Designation", "Location (Lat, Lng)"];
-                    
-                    targetSheet.appendRow(headers);
-                    
-                    // Premium Header Formatting
-                    var headerRange = targetSheet.getRange(1, 1, 1, headers.length);
-                    headerRange.setFontWeight("bold")
-                               .setBackground("#0f172a") // Deep Blue theme
-                               .setFontColor("#60a5fa")  // Neon Blue text
-                               .setHorizontalAlignment("center")
-                               .setVerticalAlignment("middle")
-                               .setBorder(true, true, true, true, true, true, "#333333", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-                    
-                    targetSheet.setRowHeight(1, 40); // Taller header
-                    targetSheet.setFrozenRows(1);    // Freeze header
-                }
-                
-                // 2. Prepare Data Row with Fallbacks & Google Maps Link
-                var rowData = [];
-                var timestamp = data.timestamp || new Date().toLocaleString();
-                var eventType = data.type || "Unknown";
-                var fullName = data.name || "Unknown User";
-                var locationStr = data.location || "Location Unavailable";
-                
-                // Transform coordinates into a clickable Google Maps hyperlink
-                var locationCellContent = locationStr;
-                if (locationStr !== "Location Unavailable" && locationStr !== "Not Supported" && locationStr !== "N/A") {
-                    locationCellContent = '=HYPERLINK("https://www.google.com/maps/search/?api=1&query=' + locationStr + '", "📍 ' + locationStr + '")';
-                }
-                
-                if (isStudent) {
-                    rowData = [timestamp, eventType, fullName, data.reg_no || "N/A", data.course || "N/A", locationCellContent];
-                } else {
-                    rowData = [timestamp, eventType, fullName, "Teacher", locationCellContent];
-                }
-                
-                // 3. Append Data
-                targetSheet.appendRow(rowData);
-                var lastRow = targetSheet.getLastRow();
-                var numCols = targetSheet.getLastColumn();
-                var newRowRange = targetSheet.getRange(lastRow, 1, 1, numCols);
-                
-                // 4. Professional Styling for the New Row
-                newRowRange.setHorizontalAlignment("center")
-                           .setVerticalAlignment("middle")
-                           .setBorder(true, true, true, true, true, true, "#cccccc", SpreadsheetApp.BorderStyle.SOLID);
-                
-                // Colorful Event Type (Arrival = Green, Departure = Red)
-                var typeCell = targetSheet.getRange(lastRow, 2);
-                typeCell.setFontWeight("bold");
-                if (eventType === "Arrival") {
-                    typeCell.setFontColor("#166534").setBackground("#dcfce7"); // Green highlight
-                } else if (eventType === "Departure") {
-                    typeCell.setFontColor("#991b1b").setBackground("#fee2e2"); // Red highlight
-                } else {
-                    typeCell.setFontColor("#4b5563").setBackground("#f3f4f6"); // Gray fallback
-                }
-                
-                // 5. Auto-Resize Columns (Box Auto Scale) safely
-                try {
-                    targetSheet.autoResizeColumns(1, numCols);
-                    // Add padding to resized columns for better readability
-                    for (var i = 1; i <= numCols; i++) {
-                        var currentWidth = targetSheet.getColumnWidth(i);
-                        targetSheet.setColumnWidth(i, currentWidth + 25);
-                    }
-                } catch (resizeError) {
-                    // Fail gracefully on resize limits so data still saves
-                    console.warn("Resize skipped: " + resizeError);
-                }
-                
-                return ContentService.createTextOutput(JSON.stringify({"status":"success"})).setMimeType(ContentService.MimeType.JSON);
-            } catch(error) {
-                return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": error.toString()})).setMimeType(ContentService.MimeType.JSON);
-            }
-        }
-    -->
 </body>
 </html>
