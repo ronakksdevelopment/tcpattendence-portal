@@ -385,7 +385,7 @@
             </div>
             <div class="shrink-0 text-center">
                 <h3 class="text-lg md:text-xl font-bold text-white truncate text-red-400">Factory Reset Logs</h3>
-                <p class="text-[10px] md:text-xs text-red-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">This will permanently wipe ALL DATA across all sheets including Approved Users. The database will be wiped clean.</p>
+                <p class="text-[10px] md:text-xs text-red-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">This will permanently delete all attendance logs in the database.</p>
             </div>
             
             <input type="text" id="reset-admin-user" class="glass-input border-red-500/30 focus:border-red-500 w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Username">
@@ -412,7 +412,7 @@
     <!-- Application Logic -->
     <script>
         // System Config with the Official Web App URL
-        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUigyp8uWMdH3-YzOvURtoNuCFEKLuwXWvVgiJg39DOaWGWtn00-w8qujlsR1_JTQ_/exec";
+        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbwh62Pz_mnbDoBteerSa-uyyP-wvE7kP9juri3QYJ4iQERFYHeXSIHhj2uvfTXRvv84qw/exec";
         
         // Custom Timestamp Generator
         function getCustomDateString() {
@@ -848,7 +848,8 @@
                     reg_no: user.regNo || 'N/A',
                     course: user.course || 'N/A',
                     timestamp: customTimestamp,
-                    location: locationData.string
+                    location: locationData.string,
+                    type: type // send the type calculated locally
                 };
 
                 try {
@@ -938,126 +939,5 @@
         window.app = app;
         window.addEventListener('DOMContentLoaded', app.init);
     </script>
-    
-    <!--
-      *** 🚀 GOOGLE SHEETS MASTER DATABASE SCRIPT ***
-      
-      Copy the JavaScript code exactly as provided below 
-      to avoid "Invalid or unexpected token" HTML comment parsing errors!
-      
-      =========================================================
-      
-function doGet(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet();
-  
-  function initSheets() {
-    var logS = sheet.getSheetByName("🎓 Students Log");
-    if (!logS) {
-      logS = sheet.insertSheet("🎓 Students Log");
-      var hS = ["Date & Time", "Event Type", "Full Name", "Registration No.", "Course / Department", "Location"];
-      logS.appendRow(hS);
-      logS.getRange(1, 1, 1, hS.length).setFontWeight("bold").setBackground("#0f172a").setFontColor("#60a5fa").setHorizontalAlignment("center").setVerticalAlignment("middle").setBorder(true, true, true, true, true, true, "#333333", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-      logS.setRowHeight(1, 40);
-      logS.setFrozenRows(1);
-    }
-    
-    var logT = sheet.getSheetByName("👨‍🏫 Teachers Log");
-    if (!logT) {
-      logT = sheet.insertSheet("👨‍🏫 Teachers Log");
-      var hT = ["Date & Time", "Event Type", "Full Name", "Role / Designation", "Location"];
-      logT.appendRow(hT);
-      logT.getRange(1, 1, 1, hT.length).setFontWeight("bold").setBackground("#0f172a").setFontColor("#60a5fa").setHorizontalAlignment("center").setVerticalAlignment("middle").setBorder(true, true, true, true, true, true, "#333333", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-      logT.setRowHeight(1, 40);
-      logT.setFrozenRows(1);
-    }
-
-    var defaultSheet = sheet.getSheetByName("Sheet1");
-    if (defaultSheet && sheet.getSheets().length > 1) {
-      sheet.deleteSheet(defaultSheet);
-    }
-  }
-  
-  try {
-    initSheets();
-    
-    if (!e || !e.parameter || !e.parameter.action) {
-      return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": "Invalid API call."})).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // --- FACTORY RESET LOGIC ---
-    if (e.parameter.action === 'clear') {
-      var sheetsToClear = ["🎓 Students Log", "👨‍🏫 Teachers Log"];
-      sheetsToClear.forEach(function(name) {
-        var s = sheet.getSheetByName(name);
-        if (s && s.getMaxRows() > 1) {
-          var range = s.getRange(2, 1, s.getMaxRows(), s.getMaxColumns());
-          range.clearContent();
-          range.setBackground(null);
-          range.setBorder(false, false, false, false, false, false);
-        }
-      });
-      return ContentService.createTextOutput(JSON.stringify({"status":"success"})).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // --- APPEND TO EXCEL LOGIC ---
-    if (e.parameter.action === 'log') {
-      var payloadString = decodeURIComponent(e.parameter.payload);
-      var data = JSON.parse(payloadString);
-      var isStudent = data.role === 'student';
-      
-      var logSheetName = isStudent ? "🎓 Students Log" : "👨‍🏫 Teachers Log";
-      var logSheet = sheet.getSheetByName(logSheetName);
-      
-      var lastRow = logSheet.getLastRow();
-      var eventType = "Arrival"; 
-      var currentDateString = data.timestamp.split(" ")[0]; 
-      
-      if (lastRow > 1) {
-        var logData = logSheet.getDataRange().getValues();
-        var todayArrivals = 0;
-        
-        for(var j = lastRow - 1; j >= 1; j--) {
-          var logDate = String(logData[j][0]).split(" ")[0];
-          if(logDate === currentDateString && String(logData[j][2]).trim().toLowerCase() === String(data.name).trim().toLowerCase()) {
-            todayArrivals++;
-          }
-          if(logDate !== currentDateString) break; 
-        }
-        
-        if (todayArrivals % 2 !== 0) eventType = "Departure";
-        
-        // Dark Separator Line for New Day
-        var extremeLastDate = String(logData[lastRow-1][0]).split(" ")[0];
-        if (extremeLastDate && extremeLastDate !== currentDateString && extremeLastDate !== "---") {
-           var sep = isStudent ? ["---", "---", "--- NEW DAY ---", "---", "---", "---"] : ["---", "---", "--- NEW DAY ---", "---", "---"];
-           logSheet.appendRow(sep);
-           logSheet.getRange(logSheet.getLastRow(), 1, 1, logSheet.getLastColumn()).setBackground("#1e293b").setFontColor("#ffffff").setHorizontalAlignment("center").setFontWeight("bold");
-        }
-      }
-      
-      var locationCell = '=HYPERLINK("https://www.google.com/maps/search/?api=1&query=' + data.location + '", "📍 ' + data.location + '")';
-      var rowData = isStudent ? [data.timestamp, eventType, data.name, data.reg_no, data.course, locationCell] : [data.timestamp, eventType, data.name, "Teacher", locationCell];
-      
-      logSheet.appendRow(rowData);
-      var newLastRow = logSheet.getLastRow();
-      var newRowRange = logSheet.getRange(newLastRow, 1, 1, logSheet.getLastColumn());
-      
-      newRowRange.setHorizontalAlignment("center").setVerticalAlignment("middle").setBorder(true, true, true, true, true, true, "#cccccc", SpreadsheetApp.BorderStyle.SOLID);
-      
-      var typeCell = logSheet.getRange(newLastRow, 2);
-      typeCell.setFontWeight("bold");
-      if (eventType === "Arrival") typeCell.setFontColor("#166534").setBackground("#dcfce7");
-      else typeCell.setFontColor("#991b1b").setBackground("#fee2e2");
-      
-      try { logSheet.autoResizeColumns(1, logSheet.getLastColumn()); } catch(e){}
-      
-      return ContentService.createTextOutput(JSON.stringify({"status":"success", "eventType": eventType})).setMimeType(ContentService.MimeType.JSON);
-    }
-    
-  } catch(error) {
-    return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": error.toString()})).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-    -->
 </body>
 </html>
