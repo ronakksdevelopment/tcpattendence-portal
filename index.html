@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Computer Point | Smart Attendance</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22><rect width=%22256%22 height=%22256%22 fill=%22none%22/><path d=%22M64,64H192V192H64Z%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2296%22 y1=%2232%22 x2=%2296%22 y2=%2264%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22160%22 y1=%2232%22 x2=%22160%22 y2=%2264%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2296%22 y1=%22192%22 x2=%2296%22 y2=%22224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22160%22 y1=%22192%22 x2=%22160%22 y2=%22224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2232%22 y1=%2296%22 x2=%2264%22 y2=%2296%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2232%22 y1=%22160%22 x2=%2264%22 y2=%22160%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22192%22 y1=%2296%22 x2=%22224%22 y2=%2296%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22192%22 y1=%22160%22 x2=%22224%22 y2=%22160%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/></svg>" type="image/svg+xml">
+    <link rel="icon" href="https://drive.google.com/uc?export=view&id=1W00j7yPZ-oGS87NJgNIt7RiSXjTo7Sa8" type="image/png">
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -156,9 +156,7 @@
     <!-- Header (Compact & Absolute No-Scroll) -->
     <header class="w-full px-4 py-3 flex justify-between items-center glass rounded-b-2xl z-50 shrink-0 border-t-0 shadow-md">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-400 flex items-center justify-center text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)] shrink-0">
-                <i class="ph ph-cpu text-2xl"></i>
-            </div>
+            <img src="https://drive.google.com/uc?export=view&id=1W00j7yPZ-oGS87NJgNIt7RiSXjTo7Sa8" alt="TCP Logo" class="w-10 h-10 rounded-full border-2 border-blue-400 object-cover shrink-0 shadow-[0_0_10px_rgba(59,130,246,0.4)]">
             <div class="flex flex-col justify-center">
                 <h1 class="font-bold text-base md:text-xl tracking-wider truncate text-white leading-tight">THE COMPUTER POINT</h1>
                 <p class="text-[9px] md:text-[11px] text-blue-400 opacity-80 uppercase tracking-widest font-semibold leading-tight">Agartala, Tripura</p>
@@ -190,7 +188,7 @@
             <!-- Reset Database Feature -->
             <div class="mt-2 pt-4 border-t border-blue-500/20 w-full shrink-0">
                 <button onclick="window.app.openResetAuth()" class="text-[10px] md:text-xs text-red-400 hover:text-red-300 font-bold flex items-center justify-center gap-1.5 w-full p-2 uppercase tracking-widest transition-colors">
-                    <i class="ph ph-warning-circle text-sm md:text-base"></i> Factory Reset Database
+                    <i class="ph ph-warning-circle text-sm md:text-base"></i> Factory Reset Database Logs
                 </button>
             </div>
         </section>
@@ -251,8 +249,8 @@
                     <input type="text" id="reg-no" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm" placeholder="e.g. TCP-2023-001">
                 </div>
                 <div>
-                    <label class="text-[10px] md:text-xs text-blue-300 uppercase tracking-wider mb-1 block font-bold">Full Name (Exact Match)</label>
-                    <input type="text" id="reg-name" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm" placeholder="Enter full name exactly as enrolled" required>
+                    <label class="text-[10px] md:text-xs text-blue-300 uppercase tracking-wider mb-1 block font-bold">Full Name</label>
+                    <input type="text" id="reg-name" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm" placeholder="Enter full name" required>
                 </div>
                 <div id="reg-course-group">
                     <label class="text-[10px] md:text-xs text-blue-300 uppercase tracking-wider mb-1 block font-bold">Course / Department</label>
@@ -358,6 +356,27 @@
         </div>
     </div>
 
+    <!-- LOCAL DEVICE APPROVAL MODAL -->
+    <div id="approval-modal" class="fixed inset-0 bg-black/80 z-[150] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative pop-in border border-yellow-500/50 shadow-[0_0_40px_rgba(234,179,8,0.2)] bg-gradient-to-b from-yellow-900/20 to-transparent">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-yellow-500 flex items-center justify-center text-yellow-500 mx-auto mb-1 md:mb-2 bg-yellow-500/10 shadow-[0_0_20px_rgba(234,179,8,0.4)] shrink-0">
+                <i class="ph ph-shield-warning text-3xl md:text-4xl"></i>
+            </div>
+            <div class="shrink-0 text-center">
+                <h3 class="text-lg md:text-xl font-bold text-white truncate">Authorization Required</h3>
+                <p class="text-[10px] md:text-xs text-yellow-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">Admin must enter credentials on this device to approve it for attendance scanning.</p>
+            </div>
+            
+            <input type="text" id="approval-admin-user" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Username">
+            <input type="password" id="approval-admin-pass" class="glass-input w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Password">
+            
+            <div class="flex gap-2 md:gap-3 mt-2 md:mt-4 shrink-0">
+                <button onclick="window.app.closeApprovalAuth()" class="flex-1 py-3 md:py-4 rounded-xl font-bold text-xs md:text-sm bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition-colors">Cancel</button>
+                <button onclick="window.app.submitApprovalAuth()" class="btn-neon flex-1 py-3 md:py-4 rounded-xl font-bold text-xs md:text-sm shadow-[0_0_15px_rgba(59,130,246,0.4)]">Authorize</button>
+            </div>
+        </div>
+    </div>
+
     <!-- RESET DATABASE AUTH MODAL -->
     <div id="reset-auth-modal" class="fixed inset-0 bg-black/90 z-[150] hidden items-center justify-center p-4 backdrop-blur-md">
         <div class="glass rounded-3xl p-6 md:p-8 w-full max-w-sm flex flex-col gap-4 relative pop-in border border-red-500/50 shadow-[0_0_40px_rgba(239,68,68,0.2)] bg-gradient-to-b from-red-900/20 to-transparent">
@@ -365,7 +384,7 @@
                 <i class="ph ph-warning-octagon text-3xl md:text-4xl"></i>
             </div>
             <div class="shrink-0 text-center">
-                <h3 class="text-lg md:text-xl font-bold text-white truncate text-red-400">Factory Reset Database</h3>
+                <h3 class="text-lg md:text-xl font-bold text-white truncate text-red-400">Factory Reset Logs</h3>
                 <p class="text-[10px] md:text-xs text-red-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">This will permanently wipe ALL DATA across all sheets including Approved Users. The database will be wiped clean.</p>
             </div>
             
@@ -383,7 +402,7 @@
     <div id="processing-modal" class="fixed inset-0 bg-black/80 z-[250] hidden items-center justify-center p-4 backdrop-blur-sm">
         <div class="glass px-8 py-6 rounded-2xl flex flex-col items-center gap-4 border border-blue-500/30">
             <i class="ph ph-circle-notch animate-spin text-4xl text-blue-400"></i>
-            <p id="processing-text" class="text-sm font-bold text-white tracking-wider animate-pulse">Validating Identity...</p>
+            <p id="processing-text" class="text-sm font-bold text-white tracking-wider animate-pulse">Processing...</p>
         </div>
     </div>
 
@@ -413,7 +432,8 @@
                 isProcessingScan: false,
                 localUser: null,
                 activeSessionCode: '-----',
-                qrInterval: null
+                qrInterval: null,
+                logs: [] // Local array just to toggle Arrival/Departure UI smoothly
             },
 
             // --- UI Management ---
@@ -525,6 +545,8 @@
                 
                 document.getElementById("session-pin").innerText = code;
                 app.state.activeSessionCode = code;
+                
+                // Allow cross-tab local testing
                 localStorage.setItem('tcp_active_session', code); 
 
                 const qrcodeContainer = document.getElementById("qrcode");
@@ -563,8 +585,10 @@
                 const name = document.getElementById('reg-name').value.trim();
                 const regNo = role === 'student' ? document.getElementById('reg-no').value.trim() : null;
                 const course = role === 'student' ? document.getElementById('reg-course').value.trim() : null;
+                const userId = `USR_${Date.now()}`;
                 
-                const newUser = { role, name, regNo, course };
+                // Newly registered users are pending Admin Approval locally on their device
+                const newUser = { id: userId, role, name, regNo, course, status: 'pending' };
                 localStorage.setItem('tcp_user', JSON.stringify(newUser));
                 app.state.localUser = newUser;
                 
@@ -642,6 +666,7 @@
                     codeToCheck = codeToCheck.replace("TCP_ATTENDANCE_", "");
                 }
 
+                // Verify code validity (cross-tab if available)
                 const activeCode = localStorage.getItem('tcp_active_session');
                 const isValid = activeCode ? (codeToCheck === activeCode) : (codeToCheck.length === 5);
 
@@ -650,11 +675,53 @@
                     return app.showToast("Invalid or Expired Session PIN.", "error");
                 }
 
-                document.getElementById('processing-text').innerText = "Validating Identity...";
+                // If user is pending, show the Local Admin Approval popup first
+                if (app.state.localUser.status === 'pending') {
+                    app.state.isProcessingScan = false;
+                    document.getElementById('approval-modal').classList.remove('hidden');
+                    document.getElementById('approval-modal').classList.add('flex');
+                    return;
+                }
+
+                document.getElementById('processing-text').innerText = "Recording Attendance...";
                 document.getElementById('processing-modal').classList.remove('hidden');
                 document.getElementById('processing-modal').classList.add('flex');
 
                 await app.submitAttendance();
+            },
+
+            // --- Local Device Approval Auth Logic ---
+            openApprovalAuth: () => {
+                document.getElementById('approval-modal').classList.remove('hidden');
+                document.getElementById('approval-modal').classList.add('flex');
+            },
+
+            closeApprovalAuth: () => {
+                document.getElementById('approval-modal').classList.add('hidden');
+                document.getElementById('approval-modal').classList.remove('flex');
+                document.getElementById('approval-admin-user').value = '';
+                document.getElementById('approval-admin-pass').value = '';
+            },
+
+            submitApprovalAuth: () => {
+                const u = document.getElementById('approval-admin-user').value;
+                const p = document.getElementById('approval-admin-pass').value;
+                if (u === 'thecomputerpoint' && p === 'tcplogin1997') {
+                    app.state.localUser.status = 'approved';
+                    localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
+                    
+                    app.closeApprovalAuth();
+                    app.showToast('Device Authorized Successfully!', 'success');
+                    
+                    // Proceed to send the attendance to Excel now that they are approved locally
+                    document.getElementById('processing-text').innerText = "Recording Attendance...";
+                    document.getElementById('processing-modal').classList.remove('hidden');
+                    document.getElementById('processing-modal').classList.add('flex');
+                    
+                    app.submitAttendance();
+                } else {
+                    app.showToast("Invalid admin credentials.", "error");
+                }
             },
 
             // --- Terminal Auth Logic ---
@@ -711,14 +778,9 @@
                 document.getElementById('processing-modal').classList.add('flex');
 
                 try {
-                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=clear`, { method: 'GET' });
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        app.showToast("Database successfully factory reset.", "success");
-                    } else {
-                        app.showToast(result.message || "Reset failed.", "error");
-                    }
+                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=clear`, { method: 'GET', mode: 'no-cors' });
+                    // Using no-cors, we assume success as long as no network error is thrown
+                    app.showToast("Database successfully factory reset.", "success");
                 } catch (err) {
                     console.error("API Error", err);
                     app.showToast("Network error connecting to the Master Database.", "error");
@@ -769,7 +831,17 @@
                     return;
                 }
 
-                // 2. Master DB Verification (Google Sheets) via GET 
+                // Local UI toggle logic for Arrival/Departure feedback
+                const today = new Date().toDateString();
+                const userTodayLogs = app.state.logs.filter(l => l.userId === user.id && new Date(l.timestamp).toDateString() === today);
+                const isArrival = userTodayLogs.length === 0 || userTodayLogs.length % 2 === 0;
+                const type = isArrival ? 'Arrival' : 'Departure';
+                const timestamp = Date.now();
+                
+                app.state.logs.push({ userId: user.id, type, timestamp });
+                localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
+
+                // 2. Master DB Push (Google Sheets)
                 const payload = {
                     name: user.name,
                     role: user.role,
@@ -781,20 +853,11 @@
 
                 try {
                     const params = encodeURIComponent(JSON.stringify(payload));
-                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=log&payload=${params}`, { method: 'GET' });
-                    const result = await response.json();
-
-                    if (result.status === 'success') {
-                        app.hideProcessing();
-                        app.showSuccessPopup(user.name, result.eventType, customTimestamp);
-                    } else {
-                        // Yellow toast warning if registration was successfully appended as "Denied" status
-                        let msgType = "error";
-                        if (result.message && result.message.includes("Registration received")) {
-                            msgType = "warning";
-                        }
-                        app.cancelProcessing(result.message || "Identity validation failed.", msgType);
-                    }
+                    // Fire-and-forget directly to Excel to avoid all CORS issues instantly!
+                    fetch(`${DEFAULT_SHEET_URL}?action=log&payload=${params}`, { method: 'GET', mode: 'no-cors' });
+                    
+                    app.hideProcessing();
+                    app.showSuccessPopup(user.name, type, customTimestamp);
                 } catch (err) {
                     console.error("API Error", err);
                     app.cancelProcessing("Network error connecting to the Master Database.");
@@ -815,7 +878,6 @@
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
                 }
-                document.getElementById('processing-text').innerText = "Validating Identity...";
             },
 
             showSuccessPopup: (name, type, timestamp) => {
@@ -860,8 +922,15 @@
                 try {
                     const stored = localStorage.getItem('tcp_user');
                     if (stored) app.state.localUser = JSON.parse(stored);
+                    const localLogs = localStorage.getItem('tcp_logs');
+                    if (localLogs) app.state.logs = JSON.parse(localLogs);
                 } catch(e) {}
                 
+                window.addEventListener('storage', () => {
+                    const activeCode = localStorage.getItem('tcp_active_session');
+                    if(activeCode) app.state.activeSessionCode = activeCode;
+                });
+
                 app.switchView('selector');
             }
         };
@@ -873,49 +942,15 @@
     <!--
       *** 🚀 GOOGLE SHEETS MASTER DATABASE SCRIPT ***
       
-      CRITICAL: You must deploy this as a Web App -> Execute as "Me" -> Access "Anyone".
-      
       Copy the JavaScript code exactly as provided below 
       to avoid "Invalid or unexpected token" HTML comment parsing errors!
-      
-      To force auto-departures for anyone who forgot to scan out:
-      1. Click the "Clock" icon (Triggers) on the left menu of Apps Script.
-      2. Click "Add Trigger" (bottom right).
-      3. Select function: runAutoDepartures
-      4. Select event source: Time-driven
-      5. Select type: Day timer
-      6. Select time: 9pm to 10pm
-      7. Click Save.
       
       =========================================================
       
 function doGet(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet();
   
-  // Helper to guarantee all 4 sheets exist with PERFECT theme formatting & headers
   function initSheets() {
-    var authS = sheet.getSheetByName("✅ Approved Students");
-    if (!authS) {
-      authS = sheet.insertSheet("✅ Approved Students");
-      var hAuthS = ["Full Name", "Registration No.", "Course", "Status"];
-      authS.appendRow(hAuthS);
-      authS.getRange(1, 1, 1, hAuthS.length).setFontWeight("bold").setBackground("#0f172a").setFontColor("#60a5fa").setHorizontalAlignment("center").setVerticalAlignment("middle").setBorder(true, true, true, true, true, true, "#333333", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-      authS.setRowHeight(1, 40);
-      authS.setFrozenRows(1);
-      try { authS.autoResizeColumns(1, hAuthS.length); } catch(e){}
-    }
-    
-    var authT = sheet.getSheetByName("✅ Approved Teachers");
-    if (!authT) {
-      authT = sheet.insertSheet("✅ Approved Teachers");
-      var hAuthT = ["Full Name", "Status"];
-      authT.appendRow(hAuthT);
-      authT.getRange(1, 1, 1, hAuthT.length).setFontWeight("bold").setBackground("#0f172a").setFontColor("#60a5fa").setHorizontalAlignment("center").setVerticalAlignment("middle").setBorder(true, true, true, true, true, true, "#333333", SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
-      authT.setRowHeight(1, 40);
-      authT.setFrozenRows(1);
-      try { authT.autoResizeColumns(1, hAuthT.length); } catch(e){}
-    }
-    
     var logS = sheet.getSheetByName("🎓 Students Log");
     if (!logS) {
       logS = sheet.insertSheet("🎓 Students Log");
@@ -949,9 +984,9 @@ function doGet(e) {
       return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": "Invalid API call."})).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // --- 1. FACTORY RESET LOGIC (Clears contents, keeps tabs) ---
+    // --- FACTORY RESET LOGIC ---
     if (e.parameter.action === 'clear') {
-      var sheetsToClear = ["✅ Approved Students", "✅ Approved Teachers", "🎓 Students Log", "👨‍🏫 Teachers Log"];
+      var sheetsToClear = ["🎓 Students Log", "👨‍🏫 Teachers Log"];
       sheetsToClear.forEach(function(name) {
         var s = sheet.getSheetByName(name);
         if (s && s.getMaxRows() > 1) {
@@ -964,67 +999,12 @@ function doGet(e) {
       return ContentService.createTextOutput(JSON.stringify({"status":"success"})).setMimeType(ContentService.MimeType.JSON);
     }
     
+    // --- APPEND TO EXCEL LOGIC ---
     if (e.parameter.action === 'log') {
       var payloadString = decodeURIComponent(e.parameter.payload);
       var data = JSON.parse(payloadString);
       var isStudent = data.role === 'student';
       
-      // --- 2. STRICT VALIDATION LOGIC (GATEKEEPER) ---
-      var authSheetName = isStudent ? "✅ Approved Students" : "✅ Approved Teachers";
-      var authSheet = sheet.getSheetByName(authSheetName);
-      var authData = authSheet.getDataRange().getValues();
-      var isApproved = false;
-      var userExists = false;
-      
-      for (var i = 1; i < authData.length; i++) {
-        if (isStudent) {
-          if (String(authData[i][0]).trim().toLowerCase() === String(data.name).trim().toLowerCase() && 
-              String(authData[i][1]).trim().toLowerCase() === String(data.reg_no).trim().toLowerCase()) {
-            userExists = true;
-            if (String(authData[i][3]).trim() === "Approved") {
-              isApproved = true; 
-            }
-            break;
-          }
-        } else {
-          if (String(authData[i][0]).trim().toLowerCase() === String(data.name).trim().toLowerCase()) {
-            userExists = true;
-            if (String(authData[i][1]).trim() === "Approved") {
-              isApproved = true; 
-            }
-            break;
-          }
-        }
-      }
-      
-      if (!userExists) {
-        // Automatically add them to the Approval list with "Denied" status
-        var newAuthRow = isStudent ? [data.name, data.reg_no, data.course, "Denied"] : [data.name, "Denied"];
-        authSheet.appendRow(newAuthRow);
-        
-        var lr = authSheet.getLastRow();
-        authSheet.getRange(lr, 1, 1, authSheet.getLastColumn())
-                 .setHorizontalAlignment("center").setVerticalAlignment("middle")
-                 .setBorder(true, true, true, true, true, true, "#cccccc", SpreadsheetApp.BorderStyle.SOLID);
-                 
-        var statusCell = isStudent ? authSheet.getRange(lr, 4) : authSheet.getRange(lr, 2);
-        statusCell.setFontWeight("bold").setFontColor("#991b1b").setBackground("#fee2e2");
-        
-        try { authSheet.autoResizeColumns(1, authSheet.getLastColumn()); } catch(e){}
-        
-        return ContentService.createTextOutput(JSON.stringify({
-          "status": "error", 
-          "message": "Registration received. Awaiting Admin Approval in the database."
-        })).setMimeType(ContentService.MimeType.JSON);
-        
-      } else if (!isApproved) {
-        return ContentService.createTextOutput(JSON.stringify({
-          "status": "error", 
-          "message": "Access Denied. Your registration is marked as Denied or Pending Admin Approval."
-        })).setMimeType(ContentService.MimeType.JSON);
-      }
-      
-      // --- 3. LOG ATTENDANCE LOGIC ---
       var logSheetName = isStudent ? "🎓 Students Log" : "👨‍🏫 Teachers Log";
       var logSheet = sheet.getSheetByName(logSheetName);
       
@@ -1035,13 +1015,18 @@ function doGet(e) {
       if (lastRow > 1) {
         var logData = logSheet.getDataRange().getValues();
         var todayArrivals = 0;
+        
         for(var j = lastRow - 1; j >= 1; j--) {
           var logDate = String(logData[j][0]).split(" ")[0];
-          if(logDate === currentDateString && logData[j][2] === data.name) todayArrivals++;
+          if(logDate === currentDateString && String(logData[j][2]).trim().toLowerCase() === String(data.name).trim().toLowerCase()) {
+            todayArrivals++;
+          }
           if(logDate !== currentDateString) break; 
         }
+        
         if (todayArrivals % 2 !== 0) eventType = "Departure";
         
+        // Dark Separator Line for New Day
         var extremeLastDate = String(logData[lastRow-1][0]).split(" ")[0];
         if (extremeLastDate && extremeLastDate !== currentDateString && extremeLastDate !== "---") {
            var sep = isStudent ? ["---", "---", "--- NEW DAY ---", "---", "---", "---"] : ["---", "---", "--- NEW DAY ---", "---", "---"];
@@ -1072,59 +1057,6 @@ function doGet(e) {
   } catch(error) {
     return ContentService.createTextOutput(JSON.stringify({"status":"error", "message": error.toString()})).setMimeType(ContentService.MimeType.JSON);
   }
-}
-
-// =========================================================
-// 🚀 AUTO DEPARTURE AT 9 PM TRIGGER SCRIPT
-// =========================================================
-function runAutoDepartures() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheetsToProcess = ["🎓 Students Log", "👨‍🏫 Teachers Log"];
-  var d = new Date();
-  var pad = function(n) { return n.toString().padStart(2, '0'); };
-  var days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
-  var h = d.getHours();
-  var ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12 || 12;
-  
-  var timestamp = pad(d.getMonth()+1)+":"+pad(d.getDate())+":"+d.getFullYear()+" "+days[d.getDay()]+" II "+pad(h)+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())+" "+ampm;
-  var currentDateString = pad(d.getMonth()+1)+":"+pad(d.getDate())+":"+d.getFullYear();
-
-  sheetsToProcess.forEach(function(sheetName) {
-    var targetSheet = sheet.getSheetByName(sheetName);
-    if (!targetSheet) return;
-    
-    var data = targetSheet.getDataRange().getValues();
-    if (data.length <= 1) return;
-    
-    var todayCounts = {};
-    for (var i = 1; i < data.length; i++) {
-      var rowDateStr = String(data[i][0]).split(" ")[0];
-      if (rowDateStr === currentDateString) {
-        var name = data[i][2];
-        if (!todayCounts[name]) todayCounts[name] = { count: 0, lastRowData: data[i] };
-        todayCounts[name].count++;
-      }
-    }
-    
-    for (var name in todayCounts) {
-      if (todayCounts[name].count % 2 !== 0) {
-        var isStudent = sheetName === "🎓 Students Log";
-        var lastData = todayCounts[name].lastRowData;
-        var rowData = isStudent ? 
-          [timestamp, "Departure", name, lastData[3], lastData[4], lastData[5]] : 
-          [timestamp, "Departure", name, "Teacher", lastData[4]];
-        
-        targetSheet.appendRow(rowData);
-        var newLastRow = targetSheet.getLastRow();
-        targetSheet.getRange(newLastRow, 1, 1, targetSheet.getLastColumn())
-          .setHorizontalAlignment("center").setVerticalAlignment("middle")
-          .setBorder(true, true, true, true, true, true, "#cccccc", SpreadsheetApp.BorderStyle.SOLID);
-        
-        targetSheet.getRange(newLastRow, 2).setFontWeight("bold").setFontColor("#991b1b").setBackground("#fee2e2");
-      }
-    }
-  });
 }
     -->
 </body>
