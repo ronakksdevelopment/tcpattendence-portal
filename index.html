@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Computer Point | Smart Attendance</title>
-    <link rel="icon" href="https://drive.google.com/uc?export=view&id=1W00j7yPZ-oGS87NJgNIt7RiSXjTo7Sa8" type="image/png">
+    <!-- Phosphor CPU SVG Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 256 256%22><rect width=%22256%22 height=%22256%22 fill=%22none%22/><path d=%22M64,64H192V192H64Z%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2296%22 y1=%2232%22 x2=%2296%22 y2=%2264%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22160%22 y1=%2232%22 x2=%22160%22 y2=%2264%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2296%22 y1=%22192%22 x2=%2296%22 y2=%22224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22160%22 y1=%22192%22 x2=%22160%22 y2=%22224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2232%22 y1=%2296%22 x2=%2264%22 y2=%2296%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%2232%22 y1=%22160%22 x2=%2264%22 y2=%22160%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22192%22 y1=%2296%22 x2=%22224%22 y2=%2296%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/><line x1=%22192%22 y1=%22160%22 x2=%22224%22 y2=%22160%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%2216%22/></svg>" type="image/svg+xml">
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -156,7 +157,9 @@
     <!-- Header (Compact & Absolute No-Scroll) -->
     <header class="w-full px-4 py-3 flex justify-between items-center glass rounded-b-2xl z-50 shrink-0 border-t-0 shadow-md">
         <div class="flex items-center gap-3">
-            <img src="https://drive.google.com/uc?export=view&id=1W00j7yPZ-oGS87NJgNIt7RiSXjTo7Sa8" alt="TCP Logo" class="w-10 h-10 rounded-full border-2 border-blue-400 object-cover shrink-0 shadow-[0_0_10px_rgba(59,130,246,0.4)]">
+            <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-400 flex items-center justify-center text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)] shrink-0">
+                <i class="ph ph-cpu text-2xl"></i>
+            </div>
             <div class="flex flex-col justify-center">
                 <h1 class="font-bold text-base md:text-xl tracking-wider truncate text-white leading-tight">THE COMPUTER POINT</h1>
                 <p class="text-[9px] md:text-[11px] text-blue-400 opacity-80 uppercase tracking-widest font-semibold leading-tight">Agartala, Tripura</p>
@@ -188,7 +191,7 @@
             <!-- Reset Database Feature -->
             <div class="mt-2 pt-4 border-t border-blue-500/20 w-full shrink-0">
                 <button onclick="window.app.openResetAuth()" class="text-[10px] md:text-xs text-red-400 hover:text-red-300 font-bold flex items-center justify-center gap-1.5 w-full p-2 uppercase tracking-widest transition-colors">
-                    <i class="ph ph-warning-circle text-sm md:text-base"></i> Factory Reset Database Logs
+                    <i class="ph ph-warning-circle text-sm md:text-base"></i> Factory Reset Database
                 </button>
             </div>
         </section>
@@ -385,7 +388,7 @@
             </div>
             <div class="shrink-0 text-center">
                 <h3 class="text-lg md:text-xl font-bold text-white truncate text-red-400">Factory Reset Logs</h3>
-                <p class="text-[10px] md:text-xs text-red-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">This will permanently delete all attendance logs in the database.</p>
+                <p class="text-[10px] md:text-xs text-red-200/70 mt-1 truncate md:whitespace-normal md:line-clamp-2">This will permanently wipe ALL DATA across all sheets. The database will be wiped clean.</p>
             </div>
             
             <input type="text" id="reset-admin-user" class="glass-input border-red-500/30 focus:border-red-500 w-full px-4 py-3 md:py-4 rounded-xl text-sm shrink-0" placeholder="Admin Username">
@@ -412,7 +415,7 @@
     <!-- Application Logic -->
     <script>
         // System Config with the Official Web App URL
-        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbwh62Pz_mnbDoBteerSa-uyyP-wvE7kP9juri3QYJ4iQERFYHeXSIHhj2uvfTXRvv84qw/exec";
+        const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbxR1-63j8UAqnfOrc4HJUvs89gVzwwNFXhcNxGk6KQqRayFLJIWPt949qI_zj42urmiJQ/exec";
         
         // Custom Timestamp Generator
         function getCustomDateString() {
@@ -433,7 +436,7 @@
                 localUser: null,
                 activeSessionCode: '-----',
                 qrInterval: null,
-                logs: [] // Local array just to toggle Arrival/Departure UI smoothly
+                logs: []
             },
 
             // --- UI Management ---
@@ -503,7 +506,7 @@
                 }, 4000);
             },
 
-            // --- Terminal Generator (DYNAMIC Refresh 30s) ---
+            // --- Terminal Generator ---
             startTerminalSession: () => {
                 app.generateNewSessionCode();
                 let timeLeft = 30;
@@ -545,8 +548,6 @@
                 
                 document.getElementById("session-pin").innerText = code;
                 app.state.activeSessionCode = code;
-                
-                // Allow cross-tab local testing
                 localStorage.setItem('tcp_active_session', code); 
 
                 const qrcodeContainer = document.getElementById("qrcode");
@@ -675,17 +676,13 @@
                     return app.showToast("Invalid or Expired Session PIN.", "error");
                 }
 
-                // If user is pending, show the Local Admin Approval popup first
+                // Show Local Admin Approval modal if pending
                 if (app.state.localUser.status === 'pending') {
-                    app.state.isProcessingScan = false;
                     document.getElementById('approval-modal').classList.remove('hidden');
                     document.getElementById('approval-modal').classList.add('flex');
+                    // We DO NOT set isProcessingScan = false here, we wait for modal action.
                     return;
                 }
-
-                document.getElementById('processing-text').innerText = "Recording Attendance...";
-                document.getElementById('processing-modal').classList.remove('hidden');
-                document.getElementById('processing-modal').classList.add('flex');
 
                 await app.submitAttendance();
             },
@@ -701,6 +698,7 @@
                 document.getElementById('approval-modal').classList.remove('flex');
                 document.getElementById('approval-admin-user').value = '';
                 document.getElementById('approval-admin-pass').value = '';
+                app.state.isProcessingScan = false; // RELEASE LOCK if cancelled
             },
 
             submitApprovalAuth: () => {
@@ -710,14 +708,14 @@
                     app.state.localUser.status = 'approved';
                     localStorage.setItem('tcp_user', JSON.stringify(app.state.localUser));
                     
-                    app.closeApprovalAuth();
+                    document.getElementById('approval-modal').classList.add('hidden');
+                    document.getElementById('approval-modal').classList.remove('flex');
+                    document.getElementById('approval-admin-user').value = '';
+                    document.getElementById('approval-admin-pass').value = '';
+                    
                     app.showToast('Device Authorized Successfully!', 'success');
                     
                     // Proceed to send the attendance to Excel now that they are approved locally
-                    document.getElementById('processing-text').innerText = "Recording Attendance...";
-                    document.getElementById('processing-modal').classList.remove('hidden');
-                    document.getElementById('processing-modal').classList.add('flex');
-                    
                     app.submitAttendance();
                 } else {
                     app.showToast("Invalid admin credentials.", "error");
@@ -778,15 +776,20 @@
                 document.getElementById('processing-modal').classList.add('flex');
 
                 try {
-                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=clear`, { method: 'GET', mode: 'no-cors' });
-                    // Using no-cors, we assume success as long as no network error is thrown
-                    app.showToast("Database successfully factory reset.", "success");
+                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=clear`, { method: 'GET' });
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        app.showToast("Database successfully factory reset.", "success");
+                    } else {
+                        app.showToast("Reset failed.", "error");
+                    }
                 } catch (err) {
                     console.error("API Error", err);
                     app.showToast("Network error connecting to the Master Database.", "error");
                 }
                 
-                app.hideProcessing();
+                document.getElementById('processing-modal').classList.add('hidden');
+                document.getElementById('processing-modal').classList.remove('flex');
             },
 
             // --- Geofencing ---
@@ -805,7 +808,7 @@
                 return new Promise((resolve) => {
                     if (!navigator.geolocation) return resolve({ error: "Not Supported" });
                     navigator.geolocation.getCurrentPosition(
-                        (pos) => resolve({ lat: position.coords.latitude, lng: position.coords.longitude, string: `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}` }),
+                        (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude, string: `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}` }),
                         (err) => resolve({ error: "Location Unavailable" }),
                         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                     );
@@ -814,71 +817,82 @@
 
             // --- API Communication ---
             submitAttendance: async () => {
-                const user = app.state.localUser;
-                const customTimestamp = getCustomDateString();
-
-                // 1. Geofence Verification
-                const locationData = await app.getLocation();
-                if (locationData.error) {
-                    app.cancelProcessing("Location access is required to mark attendance.");
-                    return;
-                }
-
-                // Institute Target: N 23.842694, 91.272333 E
-                const distanceKm = app.calculateDistance(23.842694, 91.272333, locationData.lat, locationData.lng);
-                if (distanceKm > 1.0) {
-                    app.cancelProcessing(`Access Denied: You are ${distanceKm.toFixed(2)}km away. Must be within 1km.`);
-                    return;
-                }
-
-                // Local UI toggle logic for Arrival/Departure feedback
-                const today = new Date().toDateString();
-                const userTodayLogs = app.state.logs.filter(l => l.userId === user.id && new Date(l.timestamp).toDateString() === today);
-                const isArrival = userTodayLogs.length === 0 || userTodayLogs.length % 2 === 0;
-                const type = isArrival ? 'Arrival' : 'Departure';
-                const timestamp = Date.now();
-                
-                app.state.logs.push({ userId: user.id, type, timestamp });
-                localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
-
-                // 2. Master DB Push (Google Sheets)
-                const payload = {
-                    name: user.name,
-                    role: user.role,
-                    reg_no: user.regNo || 'N/A',
-                    course: user.course || 'N/A',
-                    timestamp: customTimestamp,
-                    location: locationData.string,
-                    type: type // send the type calculated locally
-                };
-
                 try {
-                    const params = encodeURIComponent(JSON.stringify(payload));
-                    // Fire-and-forget directly to Excel to avoid all CORS issues instantly!
-                    fetch(`${DEFAULT_SHEET_URL}?action=log&payload=${params}`, { method: 'GET', mode: 'no-cors' });
+                    document.getElementById('processing-text').innerText = "Recording Attendance...";
+                    document.getElementById('processing-modal').classList.remove('hidden');
+                    document.getElementById('processing-modal').classList.add('flex');
+
+                    const user = app.state.localUser;
+                    const customTimestamp = getCustomDateString();
+
+                    // 1. Geofence Verification
+                    const locationData = await app.getLocation();
+                    if (locationData.error) {
+                        app.cancelProcessing("Location access is required to mark attendance.");
+                        return;
+                    }
+
+                    // Institute Target: N 23.842694, 91.272333 E
+                    const distanceKm = app.calculateDistance(23.842694, 91.272333, locationData.lat, locationData.lng);
+                    if (distanceKm > 1.0) {
+                        app.cancelProcessing(`Access Denied: You are ${distanceKm.toFixed(2)}km away. Must be within 1km.`);
+                        return;
+                    }
+
+                    // Local UI toggle logic for Arrival/Departure feedback
+                    const today = new Date().toDateString();
+                    const userTodayLogs = app.state.logs.filter(l => l.userId === user.id && new Date(l.timestamp).toDateString() === today);
+                    const isArrival = userTodayLogs.length === 0 || userTodayLogs.length % 2 === 0;
+                    const type = isArrival ? 'Arrival' : 'Departure';
+                    const timestamp = Date.now();
                     
-                    app.hideProcessing();
-                    app.showSuccessPopup(user.name, type, customTimestamp);
+                    app.state.logs.push({ userId: user.id, type, timestamp });
+                    localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
+
+                    // 2. Master DB Push (Google Sheets)
+                    const payload = {
+                        name: user.name,
+                        role: user.role,
+                        reg_no: user.regNo || 'N/A',
+                        course: user.course || 'N/A',
+                        timestamp: customTimestamp,
+                        location: locationData.string,
+                        type: type 
+                    };
+
+                    const params = encodeURIComponent(JSON.stringify(payload));
+                    
+                    // Standard fetch to catch accurate success or errors securely
+                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=log&payload=${params}`, { method: 'GET' });
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        const modal = document.getElementById('processing-modal');
+                        if(modal) {
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                        }
+                        app.showSuccessPopup(user.name, type, customTimestamp);
+                    } else {
+                        app.cancelProcessing(result.message || "Database Error.");
+                    }
                 } catch (err) {
                     console.error("API Error", err);
                     app.cancelProcessing("Network error connecting to the Master Database.");
+                } finally {
+                    // CRITICAL: Guaranteed lock release!
+                    setTimeout(() => { app.state.isProcessingScan = false; }, 1000); 
                 }
-                
-                setTimeout(() => app.state.isProcessingScan = false, 1000); 
             },
 
             cancelProcessing: (errorMsg, type = "error") => {
-                app.hideProcessing();
-                app.showToast(errorMsg, type);
-                app.state.isProcessingScan = false;
-            },
-
-            hideProcessing: () => {
                 const modal = document.getElementById('processing-modal');
                 if(modal) {
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
                 }
+                app.showToast(errorMsg, type);
+                // Lock released safely in the finally block
             },
 
             showSuccessPopup: (name, type, timestamp) => {
