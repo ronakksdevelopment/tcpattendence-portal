@@ -14,9 +14,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Libraries -->
+    <!-- Libraries (Including MQTT for P2P Sync) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -254,8 +255,8 @@
                     <h3 class="text-blue-300 font-bold uppercase tracking-widest text-xs md:text-sm flex items-center gap-2">
                         <i class="ph ph-broadcast text-lg md:text-xl text-green-400 animate-pulse"></i> Live Sync Panel
                     </h3>
-                    <span class="text-[9px] md:text-[10px] text-green-400/80 bg-green-900/30 px-2 py-1 rounded-md border border-green-500/20 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Cloud Active
+                    <span id="p2p-status-indicator" class="text-[9px] md:text-[10px] text-green-400/80 bg-green-900/30 px-2 py-1 rounded-md border border-green-500/20 flex items-center gap-1 transition-colors">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> P2P Active
                     </span>
                 </div>
                 
@@ -499,9 +500,10 @@
                 localUser: null,
                 activeSessionCode: '-----',
                 qrInterval: null,
-                syncInterval: null,
                 logs: [],
-                pendingPin: null
+                pendingPin: null,
+                mqttClient: null,
+                mqttTopic: 'tcp_smart_attendance_p2p_sync_agartala'
             },
 
             // --- UI Management ---
@@ -511,7 +513,6 @@
                     const el = document.getElementById(`view-${v}`);
                     if(el) {
                         el.classList.add('hidden-view');
-                        // Remove display flex utility to force hidden on strict elements
                         if (v === 'terminal') el.classList.remove('flex');
                     }
                 });
@@ -519,7 +520,7 @@
                 const target = document.getElementById(`view-${viewId}`);
                 if(target) {
                     target.classList.remove('hidden-view');
-                    if (viewId === 'terminal') target.classList.add('flex'); // Add back flex for layout
+                    if (viewId === 'terminal') target.classList.add('flex');
                 }
                 
                 app.state.currentView = viewId;
@@ -578,7 +579,7 @@
                 }, 4000);
             },
 
-            // --- Geolocation Formatter ---
+            // --- Geolocation Formatter (Fixes Excel Issue) ---
             toDMS: (lat, lng) => {
                 const convert = (coord, pos, neg) => {
                     const absolute = Math.abs(coord);
@@ -633,14 +634,12 @@
                     }
                 }, 1000);
 
-                // START CLOUD POLLING FOR TERMINAL LIVE UPDATE
-                app.syncLiveLogsFromExcel(); // Fetch once immediately
-                app.state.syncInterval = setInterval(app.syncLiveLogsFromExcel, 5000); // Check every 5s
+                // Fetch logs once on startup to populate history (with cache buster)
+                app.syncLiveLogsFromExcel(); 
             },
 
             stopTerminalSession: () => {
                 if (app.state.qrInterval) clearInterval(app.state.qrInterval);
-                if (app.state.syncInterval) clearInterval(app.state.syncInterval);
             },
 
             generateNewSessionCode: () => {
@@ -672,14 +671,15 @@
             syncLiveLogsFromExcel: async () => {
                 if(app.state.currentView !== 'terminal') return;
                 try {
-                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=get_live`, { method: 'GET' });
+                    // Added a cache buster timestamp so it always pulls fresh data on terminal launch
+                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=get_live&_=${Date.now()}`, { method: 'GET' });
                     const result = await response.json();
                     if(result.status === 'success' && result.logs) {
                         localStorage.setItem('tcp_live_logs', JSON.stringify(result.logs));
                         app.renderLiveLogs();
                     }
                 } catch(e) {
-                    // Fail silently to prevent interrupting UX on bad internet
+                    // Fail silently to prevent interrupting UX
                 }
             },
 
@@ -820,31 +820,23 @@
 
                 let codeToCheck = submittedCode || "";
                 
-                // 1. ROBUST URL / STRING PARSING
                 if (codeToCheck.includes('?pin=')) {
-                    // Extract exact pin from query param natively
                     codeToCheck = codeToCheck.split('?pin=')[1].split('&')[0];
                 } else if (codeToCheck.startsWith("TCP_ATTENDANCE_")) {
                     codeToCheck = codeToCheck.replace("TCP_ATTENDANCE_", "");
                 }
 
-                // Clean the string ensuring no spaces, exact caps, and only alphanumeric chars
                 codeToCheck = codeToCheck.toUpperCase().trim().replace(/[^A-Z0-9]/g, '');
-
-                // Ensure strict 5 character pull in case of accidental trailing tags
                 codeToCheck = codeToCheck.substring(0, 5);
 
-                // Validation 
                 if (codeToCheck.length !== 5) {
                     app.state.isProcessingScan = false;
                     return app.showToast("Invalid Format! Session PIN must be 5 digits.", "error");
                 }
 
-                // Show Local Admin Approval modal if pending
                 if (app.state.localUser.status === 'pending') {
                     document.getElementById('approval-modal').classList.remove('hidden');
                     document.getElementById('approval-modal').classList.add('flex');
-                    // We DO NOT set isProcessingScan = false here, we wait for modal action.
                     return;
                 }
 
@@ -881,7 +873,7 @@
                 document.getElementById('approval-modal').classList.remove('flex');
                 document.getElementById('approval-admin-user').value = '';
                 document.getElementById('approval-admin-pass').value = '';
-                app.state.isProcessingScan = false; // RELEASE LOCK if cancelled
+                app.state.isProcessingScan = false; 
             },
 
             submitApprovalAuth: () => {
@@ -898,7 +890,6 @@
                     
                     app.showToast('Device Authorized Successfully!', 'success');
                     
-                    // Proceed to send the attendance to Excel now that they are approved locally
                     app.submitAttendance();
                 } else {
                     app.showToast("Invalid admin credentials.", "error");
@@ -958,7 +949,6 @@
                 document.getElementById('processing-modal').classList.remove('hidden');
                 document.getElementById('processing-modal').classList.add('flex');
 
-                // Wipe live logs as well
                 localStorage.removeItem('tcp_live_logs');
                 app.renderLiveLogs();
 
@@ -990,7 +980,6 @@
                     const customTimestamp = getCustomDateString();
                     const shortTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
 
-                    // Local UI toggle logic for Arrival/Departure feedback
                     const today = new Date().toDateString();
                     const userTodayLogs = app.state.logs.filter(l => l.userId === user.id && new Date(l.timestamp).toDateString() === today);
                     const isArrival = userTodayLogs.length === 0 || userTodayLogs.length % 2 === 0;
@@ -1000,16 +989,21 @@
                     app.state.logs.push({ userId: user.id, type, timestamp });
                     localStorage.setItem('tcp_logs', JSON.stringify(app.state.logs));
 
-                    // LIVE LOGS UPDATE (Synchronous for smooth UI across tabs)
-                    const liveLogEntry = { name: user.name, role: user.role, type: type, time: shortTime };
+                    // LIVE LOGS UPDATE - P2P Broadcasting over MQTT
+                    const liveLogEntry = { name: user.name, role: user.role, type: type, time: shortTime, timestamp: timestamp };
+                    
+                    // Update Local Storage Immediately for Mobile view
                     const currentLiveLogs = JSON.parse(localStorage.getItem('tcp_live_logs') || '[]');
                     currentLiveLogs.unshift(liveLogEntry);
-                    // Keep only last 50 logs for performance
                     if(currentLiveLogs.length > 50) currentLiveLogs.pop();
                     localStorage.setItem('tcp_live_logs', JSON.stringify(currentLiveLogs));
-                    app.renderLiveLogs(); // Force render on current tab
 
-                    // Get precise actual location
+                    // P2P BROADCAST: Send to Terminal instantly over WebSocket
+                    if (app.state.mqttClient && app.state.mqttClient.connected) {
+                        app.state.mqttClient.publish(app.state.mqttTopic, JSON.stringify(liveLogEntry));
+                    }
+
+                    // Get precise actual location in DMS Format
                     const loc = await app.getLocation();
 
                     // Master DB Push (Google Sheets)
@@ -1025,12 +1019,9 @@
 
                     const params = encodeURIComponent(JSON.stringify(payload));
                     
-                    // Attempt fetch, but don't hard block the success UI if it fails CORS/Network
-                    // The live log ensures it feels instantaneous
                     fetch(`${DEFAULT_SHEET_URL}?action=log&payload=${params}`, { method: 'GET' })
                         .catch(err => console.warn("API Background Error", err));
 
-                    // Success Feedback immediately
                     const modal = document.getElementById('processing-modal');
                     if(modal) {
                         modal.classList.add('hidden');
@@ -1091,11 +1082,9 @@
             },
 
             init: () => {
-                // Attach form listener
                 const regForm = document.getElementById('register-form');
                 if(regForm) regForm.addEventListener('submit', app.registerUser);
                 
-                // Read local data
                 try {
                     const stored = localStorage.getItem('tcp_user');
                     if (stored) app.state.localUser = JSON.parse(stored);
@@ -1103,7 +1092,50 @@
                     if (localLogs) app.state.logs = JSON.parse(localLogs);
                 } catch(e) {}
                 
-                // Cross-tab syncing for active session AND live logs
+                // --- P2P SYNC SETUP (Instant Updates Across Devices) ---
+                try {
+                    // Connect to a public, highly reliable free WebSocket message broker
+                    app.state.mqttClient = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
+                    
+                    app.state.mqttClient.on('connect', () => {
+                        app.state.mqttClient.subscribe(app.state.mqttTopic);
+                        const statusIndicator = document.getElementById('p2p-status-indicator');
+                        if(statusIndicator) {
+                            statusIndicator.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> P2P Active';
+                            statusIndicator.className = 'text-[9px] md:text-[10px] text-green-400/80 bg-green-900/30 px-2 py-1 rounded-md border border-green-500/20 flex items-center gap-1 transition-colors';
+                        }
+                    });
+
+                    app.state.mqttClient.on('message', (topic, message) => {
+                        if (topic === app.state.mqttTopic && app.state.currentView === 'terminal') {
+                            try {
+                                const newLog = JSON.parse(message.toString());
+                                const currentLiveLogs = JSON.parse(localStorage.getItem('tcp_live_logs') || '[]');
+                                
+                                // Prevent Duplicates
+                                if (!currentLiveLogs.some(l => l.timestamp === newLog.timestamp && l.name === newLog.name)) {
+                                    currentLiveLogs.unshift(newLog);
+                                    if(currentLiveLogs.length > 50) currentLiveLogs.pop();
+                                    localStorage.setItem('tcp_live_logs', JSON.stringify(currentLiveLogs));
+                                    app.renderLiveLogs();
+                                }
+                            } catch(e) {}
+                        }
+                    });
+                    
+                    app.state.mqttClient.on('offline', () => {
+                        const statusIndicator = document.getElementById('p2p-status-indicator');
+                        if(statusIndicator) {
+                            statusIndicator.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Disconnected';
+                            statusIndicator.className = 'text-[9px] md:text-[10px] text-red-400/80 bg-red-900/30 px-2 py-1 rounded-md border border-red-500/20 flex items-center gap-1 transition-colors';
+                        }
+                    });
+
+                } catch(e) {
+                    console.warn("P2P Setup Failed", e);
+                }
+                
+                // Cross-tab local syncing (If terminal and scanner are used on same device)
                 window.addEventListener('storage', (e) => {
                     if (e.key === 'tcp_active_session' && e.newValue) {
                         app.state.activeSessionCode = e.newValue;
@@ -1113,20 +1145,17 @@
                     }
                 });
 
-                // --- URL Parameter Handling (Deep linking from native phone QR scanners) ---
+                // URL Parameter Handling
                 const urlParams = new URLSearchParams(window.location.search);
                 const pinFromUrl = urlParams.get('pin');
 
                 if (pinFromUrl) {
-                    // Clean URL to prevent loop on manual refresh
                     window.history.replaceState({}, document.title, window.location.pathname);
 
                     if (app.state.localUser) {
-                        // Immediately process
                         app.switchView('scanner');
                         app.processAttendanceAttempt(pinFromUrl);
                     } else {
-                        // Guide to register, hold the PIN
                         app.state.pendingPin = pinFromUrl;
                         app.switchView('mobile-role');
                         setTimeout(() => {
@@ -1134,7 +1163,6 @@
                         }, 500);
                     }
                 } else {
-                    // Standard Startup
                     app.switchView('selector');
                 }
             }
