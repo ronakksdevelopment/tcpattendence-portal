@@ -219,17 +219,17 @@
         </section>
 
         <!-- VIEW 1: ATTENDANCE TERMINAL (QR & PIN & LIVE LOGS) -->
-        <section id="view-terminal" class="w-full max-w-5xl slide-up hidden-view flex flex-col md:flex-row items-center justify-center gap-4 h-full max-h-full">
+        <section id="view-terminal" class="w-full max-w-5xl slide-up hidden-view flex-col md:flex-row items-stretch justify-center gap-4 h-full md:h-[85vh] md:max-h-[550px] relative">
             
             <!-- Left Side: QR & PIN -->
-            <div class="glass p-4 md:p-8 rounded-3xl flex flex-col items-center justify-center gap-4 relative border-neon pulse-border w-full md:w-1/2 h-auto max-h-[50vh] md:max-h-[85vh] shrink-0">
+            <div class="glass p-4 md:p-8 rounded-3xl flex flex-col items-center justify-center gap-4 relative border-neon pulse-border w-full md:w-1/2 h-[45%] md:h-full shrink-0">
                 <div class="text-center w-full shrink-0">
                     <h2 class="text-xl md:text-3xl font-black text-white tracking-widest uppercase mb-1 text-neon">Live Terminal</h2>
                     <p class="text-blue-300/70 text-[10px] md:text-xs">Scan with ANY phone camera to log in</p>
                 </div>
                 
-                <div class="bg-white p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.2)] shrink-0">
-                    <div id="qrcode" class="w-32 h-32 md:w-64 md:h-64 flex justify-center items-center"></div>
+                <div class="bg-white p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-[0_0_40px_rgba(255,255,255,0.2)] shrink-0 flex items-center justify-center aspect-square max-h-[150px] md:max-h-[220px]">
+                    <div id="qrcode"></div>
                 </div>
                 
                 <div class="w-full max-w-xs bg-blue-950/50 border border-blue-500/30 rounded-xl p-2 md:p-3 text-center shadow-[0_0_20px_rgba(0,0,0,0.5)] shrink-0">
@@ -249,7 +249,7 @@
             </div>
 
             <!-- Right Side: Live Scan Logs -->
-            <div class="glass p-4 md:p-6 rounded-3xl w-full md:w-1/2 flex flex-col h-[40vh] md:h-[85vh] border border-blue-500/30 shrink-0">
+            <div class="glass p-4 md:p-6 rounded-3xl w-full md:w-1/2 flex flex-col h-[50%] md:h-full border border-blue-500/30 shrink-0">
                 <div class="flex items-center justify-between mb-3 md:mb-4 border-b border-blue-500/30 pb-2">
                     <h3 class="text-blue-300 font-bold uppercase tracking-widest text-xs md:text-sm flex items-center gap-2">
                         <i class="ph ph-broadcast text-lg md:text-xl text-green-400 animate-pulse"></i> Live Sync Panel
@@ -506,11 +506,18 @@
                 const views = ['selector', 'terminal', 'mobile-role', 'register', 'scanner'];
                 views.forEach(v => {
                     const el = document.getElementById(`view-${v}`);
-                    if(el) el.classList.add('hidden-view');
+                    if(el) {
+                        el.classList.add('hidden-view');
+                        // Remove display flex utility to force hidden on strict elements
+                        if (v === 'terminal') el.classList.remove('flex');
+                    }
                 });
                 
                 const target = document.getElementById(`view-${viewId}`);
-                if(target) target.classList.remove('hidden-view');
+                if(target) {
+                    target.classList.remove('hidden-view');
+                    if (viewId === 'terminal') target.classList.add('flex'); // Add back flex for layout
+                }
                 
                 app.state.currentView = viewId;
                 app.updateHeaderActions();
@@ -616,7 +623,7 @@
                 const qrcodeContainer = document.getElementById("qrcode");
                 qrcodeContainer.innerHTML = ''; 
                 
-                const size = window.innerWidth < 768 ? 128 : 256; 
+                const size = window.innerWidth < 768 ? 140 : 200; 
                 // Generates an actionable deep-link URL for standard scanner apps
                 const qrUrl = `${window.location.origin}${window.location.pathname}?pin=${code}`;
                 
@@ -767,24 +774,24 @@
 
                 let codeToCheck = submittedCode || "";
                 
-                // Parse if it's a URL (deep-link approach)
-                try {
-                    if (codeToCheck.includes('?pin=')) {
-                        codeToCheck = new URL(codeToCheck).searchParams.get('pin');
-                    }
-                } catch(e){}
-
-                if (codeToCheck.startsWith("TCP_ATTENDANCE_")) {
+                // 1. ROBUST URL / STRING PARSING
+                if (codeToCheck.includes('?pin=')) {
+                    // Extract exact pin from query param natively
+                    codeToCheck = codeToCheck.split('?pin=')[1].split('&')[0];
+                } else if (codeToCheck.startsWith("TCP_ATTENDANCE_")) {
                     codeToCheck = codeToCheck.replace("TCP_ATTENDANCE_", "");
                 }
 
-                codeToCheck = codeToCheck.toUpperCase().trim();
+                // Clean the string ensuring no spaces, exact caps, and only alphanumeric chars
+                codeToCheck = codeToCheck.toUpperCase().trim().replace(/[^A-Z0-9]/g, '');
 
-                // Validation fix: Check if it's a valid 5 digit alphanumeric code
-                // Due to cross-device limitations without a backend, we trust the 5-char regex
-                if (!/^[A-Z0-9]{5}$/.test(codeToCheck)) {
+                // Ensure strict 5 character pull in case of accidental trailing tags
+                codeToCheck = codeToCheck.substring(0, 5);
+
+                // Validation 
+                if (codeToCheck.length !== 5) {
                     app.state.isProcessingScan = false;
-                    return app.showToast("Invalid QR Code or PIN format.", "error");
+                    return app.showToast("Invalid Format! Session PIN must be 5 digits.", "error");
                 }
 
                 // Show Local Admin Approval modal if pending
