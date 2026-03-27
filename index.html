@@ -254,12 +254,14 @@
                     <h3 class="text-blue-300 font-bold uppercase tracking-widest text-xs md:text-sm flex items-center gap-2">
                         <i class="ph ph-broadcast text-lg md:text-xl text-green-400 animate-pulse"></i> Live Sync Panel
                     </h3>
-                    <span class="text-[9px] md:text-[10px] text-blue-400/60 bg-blue-900/30 px-2 py-1 rounded-md border border-blue-500/20">Local Session</span>
+                    <span class="text-[9px] md:text-[10px] text-green-400/80 bg-green-900/30 px-2 py-1 rounded-md border border-green-500/20 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Cloud Active
+                    </span>
                 </div>
                 
                 <div id="live-logs-container" class="flex-1 overflow-y-auto flex flex-col gap-2 p-1 custom-scrollbar">
                     <!-- Logs populated via JS -->
-                    <p class="text-center text-blue-400/50 text-xs mt-10 font-medium tracking-wide">Waiting for scans...</p>
+                    <p class="text-center text-blue-400/50 text-xs mt-10 font-medium tracking-wide">Waiting for cross-device scans...</p>
                 </div>
             </div>
 
@@ -497,6 +499,7 @@
                 localUser: null,
                 activeSessionCode: '-----',
                 qrInterval: null,
+                syncInterval: null,
                 logs: [],
                 pendingPin: null
             },
@@ -524,7 +527,6 @@
                 
                 if (viewId === 'terminal') {
                     app.startTerminalSession();
-                    app.renderLiveLogs(); // Load the logs panel on start
                 } else {
                     app.stopTerminalSession();
                 }
@@ -576,6 +578,31 @@
                 }, 4000);
             },
 
+            // --- Geolocation Formatter ---
+            toDMS: (lat, lng) => {
+                const convert = (coord, pos, neg) => {
+                    const absolute = Math.abs(coord);
+                    const degrees = Math.floor(absolute);
+                    const minutesNotTruncated = (absolute - degrees) * 60;
+                    const minutes = Math.floor(minutesNotTruncated);
+                    const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+                    const direction = coord >= 0 ? pos : neg;
+                    return `${degrees}° ${minutes}′ ${seconds}″ ${direction}`;
+                };
+                return `${convert(lat, 'N', 'S')}, ${convert(lng, 'E', 'W')}`;
+            },
+
+            getLocation: () => {
+                return new Promise((resolve) => {
+                    if (!navigator.geolocation) return resolve({ string: "Location Unavailable" });
+                    navigator.geolocation.getCurrentPosition(
+                        (pos) => resolve({ string: app.toDMS(pos.coords.latitude, pos.coords.longitude) }),
+                        (err) => resolve({ string: "Location Denied" }),
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                });
+            },
+
             // --- Terminal Generator & Live Logs ---
             startTerminalSession: () => {
                 app.generateNewSessionCode();
@@ -605,10 +632,15 @@
                         timerBar.style.transition = 'width 1s linear';
                     }
                 }, 1000);
+
+                // START CLOUD POLLING FOR TERMINAL LIVE UPDATE
+                app.syncLiveLogsFromExcel(); // Fetch once immediately
+                app.state.syncInterval = setInterval(app.syncLiveLogsFromExcel, 5000); // Check every 5s
             },
 
             stopTerminalSession: () => {
                 if (app.state.qrInterval) clearInterval(app.state.qrInterval);
+                if (app.state.syncInterval) clearInterval(app.state.syncInterval);
             },
 
             generateNewSessionCode: () => {
@@ -637,13 +669,27 @@
                 });
             },
 
+            syncLiveLogsFromExcel: async () => {
+                if(app.state.currentView !== 'terminal') return;
+                try {
+                    const response = await fetch(`${DEFAULT_SHEET_URL}?action=get_live`, { method: 'GET' });
+                    const result = await response.json();
+                    if(result.status === 'success' && result.logs) {
+                        localStorage.setItem('tcp_live_logs', JSON.stringify(result.logs));
+                        app.renderLiveLogs();
+                    }
+                } catch(e) {
+                    // Fail silently to prevent interrupting UX on bad internet
+                }
+            },
+
             renderLiveLogs: () => {
                 const container = document.getElementById('live-logs-container');
                 if(!container) return;
                 
                 const liveLogs = JSON.parse(localStorage.getItem('tcp_live_logs') || '[]');
                 if (liveLogs.length === 0) {
-                    container.innerHTML = `<p class="text-center text-blue-400/50 text-xs mt-10 font-medium tracking-wide">Waiting for scans...</p>`;
+                    container.innerHTML = `<p class="text-center text-blue-400/50 text-xs mt-10 font-medium tracking-wide">Waiting for cross-device scans...</p>`;
                     return;
                 }
 
@@ -936,7 +982,7 @@
             // --- API Communication ---
             submitAttendance: async () => {
                 try {
-                    document.getElementById('processing-text').innerText = "Recording Attendance...";
+                    document.getElementById('processing-text').innerText = "Fetching Location & Recording...";
                     document.getElementById('processing-modal').classList.remove('hidden');
                     document.getElementById('processing-modal').classList.add('flex');
 
@@ -963,6 +1009,9 @@
                     localStorage.setItem('tcp_live_logs', JSON.stringify(currentLiveLogs));
                     app.renderLiveLogs(); // Force render on current tab
 
+                    // Get precise actual location
+                    const loc = await app.getLocation();
+
                     // Master DB Push (Google Sheets)
                     const payload = {
                         name: user.name,
@@ -970,7 +1019,7 @@
                         reg_no: user.regNo || 'N/A',
                         course: user.course || 'N/A',
                         timestamp: customTimestamp,
-                        location: 'Location Skipped', // Geofencing disabled for better cross-device demo
+                        location: loc.string, 
                         type: type 
                     };
 
